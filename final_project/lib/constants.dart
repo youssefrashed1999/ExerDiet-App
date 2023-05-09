@@ -31,3 +31,5 @@ const SLOGAN1 = 'Healthy life,';
 const SLOGAN2 = 'Healthy Mind';
 
 const BASE_URL = 'https://exerdiet.pythonanywhere.com/';
+const ACCESS_KEY = 'access-key';
+const REFRESH_KEY = 'refresh-key';

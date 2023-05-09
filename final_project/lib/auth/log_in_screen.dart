@@ -1,13 +1,12 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
-import 'package:final_project/auth/open_screen.dart';
 import 'package:final_project/auth/sign_up_screen.dart';
 import 'package:final_project/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/token.dart';
 
 class LogInScreen extends StatelessWidget {
   static const routeName = '/Log-in-screen';
@@ -101,7 +100,11 @@ class _LogInCardState extends State<LogInCard> {
       }),
     );
     if (response.statusCode == 200) {
-      
+      //get response and save it in local storage
+      Token token = Token.fromJson(jsonDecode(response.body));
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString(ACCESS_KEY, token.access);
+      await prefs.setString(REFRESH_KEY, token.refresh);
     } else {
       print('resonse statuse code is :${response.statusCode}');
     }
