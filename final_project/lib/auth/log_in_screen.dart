@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:final_project/auth/open_screen.dart';
@@ -6,6 +7,7 @@ import 'package:final_project/auth/sign_up_screen.dart';
 import 'package:final_project/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:http/http.dart' as http;
 
 class LogInScreen extends StatelessWidget {
   static const routeName = '/Log-in-screen';
@@ -87,6 +89,24 @@ class _LogInCardState extends State<LogInCard> {
     Navigator.of(context).pushReplacementNamed(SignUpScreen.routeName);
   }
 
+  void _sendHttpRequest() async {
+    final response = await http.post(
+      Uri.parse('${BASE_URL}auth/jwt/create'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String?>{
+        'username': _authData['email'],
+        'password': _authData['password']
+      }),
+    );
+    if (response.statusCode == 200) {
+      
+    } else {
+      print('resonse statuse code is :${response.statusCode}');
+    }
+  }
+
   void _submit(BuildContext context) {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
@@ -96,9 +116,9 @@ class _LogInCardState extends State<LogInCard> {
     setState(() {
       _isLoading = true;
     });
-    Timer(Duration(seconds: 5), () { });
     //TO-DO
     //LogIn logic
+    _sendHttpRequest();
     setState(() {
       _isLoading = false;
     });
@@ -144,7 +164,7 @@ class _LogInCardState extends State<LogInCard> {
                         decoration: const InputDecoration(labelText: 'E-Mail'),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
-                          if (value!.isEmpty || !value.contains('@')) {
+                          if (value!.isEmpty) {
                             return 'Invalid email!';
                           }
                           return null;
