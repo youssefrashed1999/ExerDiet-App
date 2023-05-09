@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:final_project/auth/sign_up_screen.dart';
 import 'package:final_project/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -99,14 +100,23 @@ class _LogInCardState extends State<LogInCard> {
         'password': _authData['password']
       }),
     );
+    //success response
     if (response.statusCode == 200) {
       //get response and save it in local storage
       Token token = Token.fromJson(jsonDecode(response.body));
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString(ACCESS_KEY, token.access);
       await prefs.setString(REFRESH_KEY, token.refresh);
-    } else {
-      print('resonse statuse code is :${response.statusCode}');
+    }
+    //unauthorized response
+    else if (response.statusCode == 401) {
+      final message = jsonDecode(response.body)['detail'];
+      Fluttertoast.showToast(
+          msg: message,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.white,
+          textColor: MY_COLOR[300]);
     }
   }
 
