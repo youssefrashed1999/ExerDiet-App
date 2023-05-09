@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:final_project/auth/sign_up_screen.dart';
 import 'package:final_project/constants.dart';
@@ -11,8 +12,7 @@ import '../models/token.dart';
 
 class LogInScreen extends StatelessWidget {
   static const routeName = '/Log-in-screen';
-  final RoundedLoadingButtonController _btnController =
-      RoundedLoadingButtonController();
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -83,6 +83,8 @@ class _LogInCardState extends State<LogInCard> {
 
   var _isLoading = false;
   final _passwordController = TextEditingController();
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
 
   void navigateToSignUpScreen(BuildContext context) {
     Navigator.of(context).pushReplacementNamed(SignUpScreen.routeName);
@@ -90,6 +92,7 @@ class _LogInCardState extends State<LogInCard> {
 
   void _sendHttpRequest() async {
     FocusManager.instance.primaryFocus?.unfocus();
+    _btnController.start();
     final response = await http.post(
       Uri.parse('${BASE_URL}auth/jwt/create'),
       headers: <String, String>{
@@ -102,6 +105,7 @@ class _LogInCardState extends State<LogInCard> {
     );
     //success response
     if (response.statusCode == 200) {
+      _btnController.success();
       //get response and save it in local storage
       Token token = Token.fromJson(jsonDecode(response.body));
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -110,12 +114,16 @@ class _LogInCardState extends State<LogInCard> {
     }
     //unauthorized response
     else if (response.statusCode == 401) {
+      _btnController.error();
       final message = jsonDecode(response.body)['detail'];
       Fluttertoast.showToast(
           msg: message,
           toastLength: Toast.LENGTH_LONG,
           backgroundColor: Colors.white,
           textColor: MY_COLOR[300]);
+      Timer(Duration(seconds: 2), () {
+        _btnController.reset();
+      });
     }
   }
 
@@ -205,12 +213,11 @@ class _LogInCardState extends State<LogInCard> {
                     else
                       SizedBox(
                         width: 290,
-                        child: ElevatedButton(
+                        child: RoundedLoadingButton(
+                          controller: _btnController,
                           onPressed: () => _submit(context),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40)),
-                          ),
+                          color: MY_COLOR[300],
+                          borderRadius: 40,
                           child: const Text('LOGIN',
                               style: TextStyle(color: Colors.white)),
                         ),
