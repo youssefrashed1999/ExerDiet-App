@@ -1,6 +1,6 @@
 import 'package:final_project/constants.dart';
 import 'package:final_project/home/calorie_progress_bar.dart';
-import 'package:final_project/home/meals_buttons.dart';
+import 'package:final_project/home/adding_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -44,7 +44,7 @@ class HomePageScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [CaloriesProgressBar(), MealsButtons()],
+                children: [CaloriesProgressBar(), AddingButtons()],
               ),
             ),
           ),
