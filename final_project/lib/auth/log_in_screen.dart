@@ -113,8 +113,7 @@ class _LogInCardState extends State<LogInCard> {
       final message = jsonDecode(response.body)['detail'];
       Fluttertoast.showToast(
           msg: message,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          toastLength: Toast.LENGTH_LONG,
           backgroundColor: Colors.white,
           textColor: MY_COLOR[300]);
     }
@@ -171,21 +170,18 @@ class _LogInCardState extends State<LogInCard> {
                         ),
                       ),
                     ),
-                    Container(
-                      //padding: EdgeInsets.only(bottom: 20),
-                      child: TextFormField(
-                        decoration: const InputDecoration(labelText: 'E-Mail'),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Invalid email!';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _authData['email'] = value!;
-                        },
-                      ),
+                    TextFormField(
+                      decoration: const InputDecoration(labelText: 'E-Mail'),
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Invalid email!';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _authData['email'] = value!;
+                      },
                     ),
                     TextFormField(
                       decoration: const InputDecoration(labelText: 'Password'),
