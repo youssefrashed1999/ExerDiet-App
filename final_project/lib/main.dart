@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.normal,
                 color: Colors.grey),
           )),
-      home: LogInScreen(),
+      home: AddFoodScreen(),
       routes: {
         OpenScreen.routeName: (context) => const OpenScreen(),
         LogInScreen.routeName: (context) => LogInScreen(),
