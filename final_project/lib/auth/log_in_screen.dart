@@ -13,7 +13,6 @@ class LogInScreen extends StatelessWidget {
   static const routeName = '/Log-in-screen';
   final RoundedLoadingButtonController _btnController =
       RoundedLoadingButtonController();
-
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
