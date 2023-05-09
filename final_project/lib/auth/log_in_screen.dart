@@ -89,6 +89,7 @@ class _LogInCardState extends State<LogInCard> {
   }
 
   void _sendHttpRequest() async {
+    FocusManager.instance.primaryFocus?.unfocus();
     final response = await http.post(
       Uri.parse('${BASE_URL}auth/jwt/create'),
       headers: <String, String>{
