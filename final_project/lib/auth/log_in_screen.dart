@@ -8,6 +8,7 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../home/home_page_screen.dart';
 import '../models/token.dart';
 
 class LogInScreen extends StatelessWidget {
@@ -82,6 +83,7 @@ class _LogInCardState extends State<LogInCard> {
   };
 
   var _isLoading = false;
+  var _canAdvance = false;
   final _passwordController = TextEditingController();
   final RoundedLoadingButtonController _btnController =
       RoundedLoadingButtonController();
@@ -112,9 +114,11 @@ class _LogInCardState extends State<LogInCard> {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString(ACCESS_KEY, token.access);
         await prefs.setString(REFRESH_KEY, token.refresh);
+        _canAdvance = true;
       }
       //unauthorized response
       else if (response.statusCode == 401) {
+        _canAdvance = false;
         _btnController.error();
         final message = jsonDecode(response.body)['detail'];
         Fluttertoast.showToast(
@@ -129,6 +133,7 @@ class _LogInCardState extends State<LogInCard> {
     }
     //no internet connection
     catch (_) {
+      _canAdvance = false;
       _btnController.error();
       Fluttertoast.showToast(
           msg: 'Check your internet connection!',
@@ -139,21 +144,28 @@ class _LogInCardState extends State<LogInCard> {
         _btnController.reset();
       });
     }
-    //no internet connection
   }
 
   void _submit(BuildContext context) {
     if (!_formKey.currentState!.validate()) {
       // Invalid!
+      _btnController.error();
+      Timer(const Duration(seconds: 2), () {
+        _btnController.reset();
+      });
       return;
     }
     _formKey.currentState!.save();
     setState(() {
       _isLoading = true;
     });
-    //TO-DO
     //LogIn logic
     _sendHttpRequest();
+    //navigate to home page if response is ok
+    if (_canAdvance) {
+      //navigate to Home page
+      Navigator.of(context).pushReplacementNamed(HomePageScreen.routeName);
+    }
     setState(() {
       _isLoading = false;
     });
