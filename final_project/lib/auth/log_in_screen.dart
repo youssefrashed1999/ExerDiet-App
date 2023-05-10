@@ -93,38 +93,53 @@ class _LogInCardState extends State<LogInCard> {
   void _sendHttpRequest() async {
     FocusManager.instance.primaryFocus?.unfocus();
     _btnController.start();
-    final response = await http.post(
-      Uri.parse('${BASE_URL}auth/jwt/create'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String?>{
-        'username': _authData['email'],
-        'password': _authData['password']
-      }),
-    );
-    //success response
-    if (response.statusCode == 200) {
-      _btnController.success();
-      //get response and save it in local storage
-      Token token = Token.fromJson(jsonDecode(response.body));
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString(ACCESS_KEY, token.access);
-      await prefs.setString(REFRESH_KEY, token.refresh);
+    try {
+      final response = await http.post(
+        Uri.parse('${BASE_URL}auth/jwt/create'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String?>{
+          'username': _authData['email'],
+          'password': _authData['password']
+        }),
+      );
+      //success response
+      if (response.statusCode == 200) {
+        _btnController.success();
+        //get response and save it in local storage
+        Token token = Token.fromJson(jsonDecode(response.body));
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString(ACCESS_KEY, token.access);
+        await prefs.setString(REFRESH_KEY, token.refresh);
+      }
+      //unauthorized response
+      else if (response.statusCode == 401) {
+        _btnController.error();
+        final message = jsonDecode(response.body)['detail'];
+        Fluttertoast.showToast(
+            msg: message,
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.white,
+            textColor: MY_COLOR[300]);
+        Timer(const Duration(seconds: 2), () {
+          _btnController.reset();
+        });
+      }
     }
-    //unauthorized response
-    else if (response.statusCode == 401) {
+    //no internet connection
+    catch (_) {
       _btnController.error();
-      final message = jsonDecode(response.body)['detail'];
       Fluttertoast.showToast(
-          msg: message,
+          msg: 'Check your internet connection!',
           toastLength: Toast.LENGTH_LONG,
           backgroundColor: Colors.white,
           textColor: MY_COLOR[300]);
-      Timer(Duration(seconds: 2), () {
+      Timer(const Duration(seconds: 2), () {
         _btnController.reset();
       });
     }
+    //no internet connection
   }
 
   void _submit(BuildContext context) {
