@@ -82,7 +82,6 @@ class _LogInCardState extends State<LogInCard> {
     'password': '',
   };
 
-  var _isLoading = false;
   var _canAdvance = false;
   final _passwordController = TextEditingController();
   final RoundedLoadingButtonController _btnController =
@@ -93,7 +92,6 @@ class _LogInCardState extends State<LogInCard> {
   }
 
   void _sendHttpRequest() async {
-    FocusManager.instance.primaryFocus?.unfocus();
     _btnController.start();
     try {
       final response = await http.post(
@@ -160,6 +158,7 @@ class _LogInCardState extends State<LogInCard> {
   }
 
   void _submit(BuildContext context) {
+    FocusManager.instance.primaryFocus?.unfocus();
     if (!_formKey.currentState!.validate()) {
       // Invalid!
       _btnController.error();
@@ -168,20 +167,17 @@ class _LogInCardState extends State<LogInCard> {
       });
       return;
     }
-    _formKey.currentState!.save();
-    setState(() {
-      _isLoading = true;
-    });
+    //valid form state
     //LogIn logic
+    _formKey.currentState!.save();
+    setState(() {});
     _sendHttpRequest();
     //navigate to home page if response is ok
     if (_canAdvance) {
       //navigate to Home page
       Navigator.of(context).pushReplacementNamed(HomePageScreen.routeName);
     }
-    setState(() {
-      _isLoading = false;
-    });
+    setState(() {});
   }
 
   @override
@@ -248,20 +244,17 @@ class _LogInCardState extends State<LogInCard> {
                     const SizedBox(
                       height: 30,
                     ),
-                    if (_isLoading)
-                      const CircularProgressIndicator()
-                    else
-                      SizedBox(
-                        width: 290,
-                        child: RoundedLoadingButton(
-                          controller: _btnController,
-                          onPressed: () => _submit(context),
-                          color: MY_COLOR[300],
-                          borderRadius: 40,
-                          child: const Text('LOGIN',
-                              style: TextStyle(color: Colors.white)),
-                        ),
+                    SizedBox(
+                      width: 290,
+                      child: RoundedLoadingButton(
+                        controller: _btnController,
+                        onPressed: () => _submit(context),
+                        color: MY_COLOR[300],
+                        borderRadius: 40,
+                        child: const Text('LOGIN',
+                            style: TextStyle(color: Colors.white)),
                       ),
+                    ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
