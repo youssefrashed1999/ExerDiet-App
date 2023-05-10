@@ -130,6 +130,19 @@ class _LogInCardState extends State<LogInCard> {
           _btnController.reset();
         });
       }
+      //Server is down
+      else if (response.statusCode == 500) {
+        _canAdvance = false;
+        _btnController.error();
+        Fluttertoast.showToast(
+            msg: 'Server is down at the moment!\nTry again later.',
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.white,
+            textColor: MY_COLOR[300]);
+        Timer(const Duration(seconds: 2), () {
+          _btnController.reset();
+        });
+      }
     }
     //no internet connection
     catch (_) {
