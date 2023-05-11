@@ -1,14 +1,14 @@
-class Singleton {
+class User {
   // This constructor is private to prevent external object initialization.
-  Singleton._internal() {
+  User._internal() {
     // Do some initialization here.
   }
 
   // This is the static variable that stores the instance of the class.
-  static final Singleton _instance = Singleton._internal();
+  static final User _instance = User._internal();
 
   // This is the public getter for the instance of the class.
-  static Singleton get instance => _instance;
+  static User get instance => _instance;
 
   String _birthdate = '';
   String _gender = '';
@@ -68,7 +68,7 @@ class Singleton {
 
   // This method sets the name of the user.
 
-  static Singleton fromJson(Map<String, dynamic> json) {
+  static User fromJson(Map<String, dynamic> json) {
     _instance._birthdate = json["birthdate"];
     _instance._gender = json["gender"];
     _instance._height = json["height"];
