@@ -53,6 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
         //Server is down
         else if (response.statusCode == 500) {
+          print('server is down');
           Fluttertoast.showToast(
               msg: 'System is down at the moment!\nTry again later.',
               toastLength: Toast.LENGTH_LONG,
@@ -82,10 +83,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return AnimatedSplashScreen.withScreenFunction(
       splash: 'assets/images/main_icon.png',
-      duration: 30000,
+      duration: 5000,
       screenFunction: _decideRoute,
       splashTransition: SplashTransition.rotationTransition,
-      animationDuration: const Duration(seconds: 30),
+      animationDuration: const Duration(seconds: 5),
       backgroundColor: MY_COLOR.shade700,
     );
   }
