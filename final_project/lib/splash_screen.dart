@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
           String newAccessKey = jsonDecode(response.body)['access'];
           await prefs.setString(ACCESS_KEY, newAccessKey);
           //get user info
-          getUserInfo();
+          await getUserInfo();
         }
         //refresh key is outdated
         else if (response.statusCode == 401) {
@@ -76,14 +76,14 @@ class _SplashScreenState extends State<SplashScreen> {
         });
       }
     }
-    return const HomePageScreen();
+    return HomePageScreen();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen.withScreenFunction(
       splash: 'assets/images/main_icon.png',
-      duration: 5000,
+      duration: 0,
       screenFunction: _decideRoute,
       splashTransition: SplashTransition.rotationTransition,
       animationDuration: const Duration(seconds: 5),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
+import '../models/user.dart';
+
 class CaloriesProgressBar extends StatefulWidget {
   const CaloriesProgressBar({super.key});
 
@@ -34,6 +36,7 @@ Widget _innerWidget(double value, double max, BuildContext context) {
 }
 
 class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
+  User _user = User.instance;
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -59,9 +62,11 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                   width: deviceSize.width * 0.4,
                   height: deviceSize.height * 0.24,
                   child: SleekCircularSlider(
-                    initialValue: 300,
+                    initialValue:
+                        (_user.caloriesIntakeToday - _user.caloriesBurnedToday)
+                            .toDouble(),
                     min: 0,
-                    max: 1685,
+                    max: _user.dailyCaloriesNeeds.toDouble(),
                     appearance: CircularSliderAppearance(
                       startAngle: 270,
                       angleRange: 360,
@@ -74,8 +79,8 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                           hideShadow: true,
                           dotColor: Colors.white),
                     ),
-                    innerWidget: (percentage) =>
-                        _innerWidget(percentage, 1685, context),
+                    innerWidget: (percentage) => _innerWidget(percentage,
+                        _user.dailyCaloriesNeeds.toDouble(), context),
                   ),
                 ),
                 Column(
@@ -97,7 +102,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
                           Text(
-                            '1685',
+                            '${_user.dailyCaloriesNeeds}',
                             style: Theme.of(context).textTheme.titleMedium,
                           )
                         ],
@@ -121,7 +126,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
                           Text(
-                            '0',
+                            '${_user.caloriesIntakeToday}',
                             style: Theme.of(context).textTheme.titleMedium,
                           )
                         ],
@@ -142,7 +147,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
                           Text(
-                            '0',
+                            '${_user.caloriesBurnedToday}',
                             style: Theme.of(context).textTheme.titleMedium,
                           )
                         ],
@@ -184,7 +189,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                             fontWeight: FontWeight.normal,
                             color: Colors.grey),
                       ),
-                      Text('50/220g',
+                      Text('50/${_user.carbsGrams}g',
                           style: TextStyle(
                               fontFamily: 'RobotoCondensed',
                               fontSize: 18,
@@ -214,7 +219,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                             fontWeight: FontWeight.normal,
                             color: Colors.grey),
                       ),
-                      Text('20/60g',
+                      Text('20/${_user.fatsGrams}g',
                           style: TextStyle(
                               fontFamily: 'RobotoCondensed',
                               fontSize: 18,
@@ -244,7 +249,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                             fontWeight: FontWeight.normal,
                             color: Colors.grey),
                       ),
-                      Text('30/90g',
+                      Text('30/${_user.proteinGrams}g',
                           style: TextStyle(
                               fontFamily: 'RobotoCondensed',
                               fontSize: 18,

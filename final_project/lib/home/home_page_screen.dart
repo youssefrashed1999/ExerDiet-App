@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
-class HomePageScreen extends StatelessWidget {
-  const HomePageScreen({super.key});
-  static const routeName = '/Home-page';
+import '../models/user.dart';
 
+class HomePageScreen extends StatelessWidget {
+  HomePageScreen({super.key});
+  static const routeName = '/Home-page';
+  User _user = User.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +25,7 @@ class HomePageScreen extends StatelessWidget {
                 shape: BoxShape.circle, color: Colors.white),
             child: Center(
               child: Text(
-                '12',
+                '${_user.dailyCaloriesNeeds}',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
@@ -44,7 +46,10 @@ class HomePageScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [CaloriesProgressBar(), AddingButtons()],
+                children: [
+                  //CaloriesProgressBar(),
+                  AddingButtons()
+                ],
               ),
             ),
           ),

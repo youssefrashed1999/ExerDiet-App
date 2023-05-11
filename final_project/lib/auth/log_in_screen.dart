@@ -112,7 +112,7 @@ class _LogInCardState extends State<LogInCard> {
         await prefs.setString(ACCESS_KEY, token.access);
         await prefs.setString(REFRESH_KEY, token.refresh);
         //get user info
-        getUserInfo();
+        await getUserInfo();
         //navigate to home screen
         if (!context.mounted) return;
         Navigator.of(context).pushReplacementNamed(HomePageScreen.routeName);
