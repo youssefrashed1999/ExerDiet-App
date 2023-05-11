@@ -25,7 +25,7 @@ class HomePageScreen extends StatelessWidget {
                 shape: BoxShape.circle, color: Colors.white),
             child: Center(
               child: Text(
-                '${_user.dailyCaloriesNeeds}',
+                '${_user.dailyStrak}',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
@@ -47,7 +47,7 @@ class HomePageScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  //CaloriesProgressBar(),
+                  CaloriesProgressBar(),
                   AddingButtons()
                 ],
               ),

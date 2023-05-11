@@ -81,13 +81,24 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSplashScreen.withScreenFunction(
-      splash: 'assets/images/main_icon.png',
-      duration: 0,
-      screenFunction: _decideRoute,
-      splashTransition: SplashTransition.rotationTransition,
-      animationDuration: const Duration(seconds: 5),
-      backgroundColor: MY_COLOR.shade700,
-    );
+    return Stack(children: [
+      AnimatedSplashScreen.withScreenFunction(
+        splash: 'assets/images/main_icon.png',
+        duration: 2500,
+        screenFunction: _decideRoute,
+        splashTransition: SplashTransition.rotationTransition,
+        animationDuration: const Duration(seconds: 0),
+        backgroundColor: MY_COLOR.shade700,
+      ),
+      const Padding(
+        padding: EdgeInsets.only(bottom: 40),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: CircularProgressIndicator(
+            color: Colors.white,
+          ),
+        ),
+      )
+    ]);
   }
 }
