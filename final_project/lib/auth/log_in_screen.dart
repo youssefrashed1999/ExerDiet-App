@@ -82,7 +82,6 @@ class _LogInCardState extends State<LogInCard> {
     'password': '',
   };
 
-  var _canAdvance = false;
   final _passwordController = TextEditingController();
   final RoundedLoadingButtonController _btnController =
       RoundedLoadingButtonController();
@@ -112,11 +111,12 @@ class _LogInCardState extends State<LogInCard> {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString(ACCESS_KEY, token.access);
         await prefs.setString(REFRESH_KEY, token.refresh);
-        _canAdvance = true;
+        //navigate to home screen
+        if (!context.mounted) return;
+        Navigator.of(context).pushReplacementNamed(HomePageScreen.routeName);
       }
       //unauthorized response
       else if (response.statusCode == 401) {
-        _canAdvance = false;
         _btnController.error();
         final message = jsonDecode(response.body)['detail'];
         Fluttertoast.showToast(
@@ -130,7 +130,6 @@ class _LogInCardState extends State<LogInCard> {
       }
       //Server is down
       else if (response.statusCode == 500) {
-        _canAdvance = false;
         _btnController.error();
         Fluttertoast.showToast(
             msg: 'Server is down at the moment!\nTry again later.',
@@ -144,7 +143,6 @@ class _LogInCardState extends State<LogInCard> {
     }
     //no internet connection
     catch (_) {
-      _canAdvance = false;
       _btnController.error();
       Fluttertoast.showToast(
           msg: 'Check your internet connection!',
@@ -172,11 +170,6 @@ class _LogInCardState extends State<LogInCard> {
     _formKey.currentState!.save();
     setState(() {});
     _sendHttpRequest();
-    //navigate to home page if response is ok
-    if (_canAdvance) {
-      //navigate to Home page
-      Navigator.of(context).pushReplacementNamed(HomePageScreen.routeName);
-    }
     setState(() {});
   }
 
