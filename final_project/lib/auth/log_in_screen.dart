@@ -111,6 +111,8 @@ class _LogInCardState extends State<LogInCard> {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString(ACCESS_KEY, token.access);
         await prefs.setString(REFRESH_KEY, token.refresh);
+        //get user info
+        getUserInfo();
         //navigate to home screen
         if (!context.mounted) return;
         Navigator.of(context).pushReplacementNamed(HomePageScreen.routeName);
