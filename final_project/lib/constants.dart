@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'models/user.dart';
 
 const BOX_DECORATION = BoxDecoration(
   gradient: LinearGradient(
@@ -33,3 +39,33 @@ const SLOGAN2 = 'Healthy Mind';
 const BASE_URL = 'https://exerdiet.pythonanywhere.com/';
 const ACCESS_KEY = 'access-key';
 const REFRESH_KEY = 'refresh-key';
+
+void getUserInfo() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? accessKey = prefs.getString(ACCESS_KEY);
+  try {
+    final response = await http.get(
+      Uri.parse('${BASE_URL}core/trainees/me/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'JWT $accessKey'
+      },
+    );
+    //success response
+    if (response.statusCode == 200) {
+      User user = User.fromJson(jsonDecode(response.body));
+    }
+    //unauthorized response
+    else if (response.statusCode == 401) {
+      print('invalid access');
+    }
+    //Server is down
+    else if (response.statusCode == 500) {
+      print('server is down');
+    }
+  }
+  //no internet connection
+  catch (_) {
+    print('no internet connection');
+  }
+}
