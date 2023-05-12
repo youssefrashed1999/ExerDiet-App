@@ -23,13 +23,16 @@ class SelectionListTile extends StatelessWidget {
           child: ListTile(
             title: Text(
               text,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     color: isSelected
                         ? Theme.of(context).primaryColor
-                        : Theme.of(context).textTheme.headlineSmall?.color,
+                        : Theme.of(context).textTheme.headlineMedium?.color,
                   ),
             ),
-            subtitle: Text(subText ?? ''),
+            subtitle: subText == null
+                ? null
+                : Text(subText!,
+                    style: Theme.of(context).textTheme.headlineSmall),
             trailing: isSelected
                 ? Icon(
                     Icons.check,

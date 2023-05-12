@@ -160,6 +160,7 @@ class _SurveyPageState extends State<SurveyPage>
         if (state is PresentingSurveyState) {
           return Scaffold(
             backgroundColor: Colors.white,
+  
             appBar: state.currentStep.showAppBar
                 ? PreferredSize(
                     preferredSize: Size(
