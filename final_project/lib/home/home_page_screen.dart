@@ -4,17 +4,32 @@ import 'package:final_project/home/adding_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../auth/open_screen.dart';
 import '../models/user.dart';
 
 class HomePageScreen extends StatelessWidget {
   HomePageScreen({super.key});
   static const routeName = '/Home-page';
   User _user = User.instance;
+  void _logout(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(ACCESS_KEY);
+    await prefs.remove(REFRESH_KEY);
+    Navigator.of(context).pushReplacementNamed(OpenScreen.routeName);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: TextButton(
+          child: Text('Logout'),
+          onPressed: () {
+            _logout(context);
+          },
+        ),
         centerTitle: true,
         title: const Text('ExerDiet'),
         actions: [
@@ -46,10 +61,7 @@ class HomePageScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CaloriesProgressBar(),
-                  AddingButtons()
-                ],
+                children: [CaloriesProgressBar(), AddingButtons()],
               ),
             ),
           ),
