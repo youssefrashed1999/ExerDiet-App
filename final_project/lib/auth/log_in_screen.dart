@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:final_project/auth/sign_up_screen.dart';
 import 'package:final_project/constants.dart';
+import 'package:final_project/healthQuiz/health_quiz_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -112,10 +113,31 @@ class _LogInCardState extends State<LogInCard> {
         await prefs.setString(ACCESS_KEY, token.access);
         await prefs.setString(REFRESH_KEY, token.refresh);
         //get user info
-        await getUserInfo();
-        //navigate to home screen
-        if (!context.mounted) return;
-        Navigator.of(context).pushReplacementNamed(HomePageScreen.routeName);
+        int _status = await getUserInfo();
+        //navigate to home screen if old user
+        if (_status == 1) {
+          if (!context.mounted) return;
+          Navigator.of(context).pushReplacementNamed(HomePageScreen.routeName);
+        }
+        //navigate to health quiz screen if new user
+        else if (_status == 2) {
+          if (!context.mounted) return;
+          Navigator.of(context)
+              .pushReplacementNamed(HealthQuizScreen.routeName);
+        }
+        //display toast if can't retrieve user's info
+        else if (_status == 3) {
+          _btnController.error();
+          Fluttertoast.showToast(
+              msg:
+                  'Error occurred while retreiving user\'s information!\nTry again later.',
+              toastLength: Toast.LENGTH_LONG,
+              backgroundColor: Colors.white,
+              textColor: MY_COLOR[300]);
+          Timer(const Duration(seconds: 2), () {
+            _btnController.reset();
+          });
+        }
       }
       //unauthorized response
       else if (response.statusCode == 401) {
