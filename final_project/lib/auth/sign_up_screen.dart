@@ -1,7 +1,14 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:final_project/auth/log_in_screen.dart';
 import 'package:final_project/healthQuiz/health_quiz_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:http/http.dart' as http;
+
+import '../constants.dart';
 
 class SignUpScreen extends StatelessWidget {
   static const routeName = '/sign-up-screen';
@@ -79,6 +86,8 @@ class SignUpCard extends StatefulWidget {
 
 class _SignUpCardState extends State<SignUpCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
 
   Map<String, String> _authData = {
     'email': '',
@@ -87,29 +96,113 @@ class _SignUpCardState extends State<SignUpCard> {
     'lastname': '',
     'username': '',
   };
+  String? _emailErrorText = null;
+  String? _usernameErrorText = null;
+  String? _passwordErrorText = null;
+
   void navigateToLogInScreen(BuildContext context) {
     Navigator.of(context).pushReplacementNamed(LogInScreen.routeName);
   }
 
-  var _isLoading = false;
   final _passwordController = TextEditingController();
 
+  void _sendHttpRequest() async {
+    _btnController.start();
+    try {
+      final response = await http.post(
+        Uri.parse('${BASE_URL}auth/users/'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'WWW-Authenticate': 'JWT realm="api"'
+        },
+        body: jsonEncode(<String, String?>{
+          'username': _authData['username'],
+          'password': _authData['password'],
+          'email': _authData['email'],
+          'first_name': _authData['firstname'],
+          'last_name': _authData['lastname']
+        }),
+      );
+      print('status code:${response.statusCode}');
+      //account created successfully
+      if (response.statusCode == 201) {
+        _btnController.success();
+        Fluttertoast.showToast(
+            msg: 'Successful Signup.',
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.white,
+            textColor: MY_COLOR[300]);
+        Timer(const Duration(seconds: 2), () {
+          if (!context.mounted) return;
+          Navigator.of(context).pushReplacementNamed(LogInScreen.routeName);
+        });
+      }
+      //bad request
+      else if (response.statusCode == 400) {
+        _btnController.error();
+        //check what makes it a bad request
+        setState(() {
+          if (jsonDecode(response.body)['username'] != null) {
+            _usernameErrorText = jsonDecode(response.body)['username'][0];
+          }
+          if (jsonDecode(response.body)['email'] != null) {
+            _emailErrorText = jsonDecode(response.body)['email'][0];
+          }
+          if (jsonDecode(response.body)['password'] != null) {
+            _passwordErrorText = jsonDecode(response.body)['password'][0];
+          }
+        });
+        Timer(const Duration(seconds: 2), () {
+          _btnController.reset();
+        });
+      } else if (response.statusCode == 500) {
+        _btnController.error();
+        Fluttertoast.showToast(
+            msg: 'Server is down at the moment!\nTry again later.',
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.white,
+            textColor: MY_COLOR[300]);
+        Timer(const Duration(seconds: 2), () {
+          _btnController.reset();
+        });
+      }
+    }
+    //no internet connection
+    catch (_) {
+      _btnController.error();
+      Fluttertoast.showToast(
+          msg: 'Check your internet connection!',
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.white,
+          textColor: MY_COLOR[300]);
+      Timer(const Duration(seconds: 2), () {
+        _btnController.reset();
+      });
+    }
+  }
+
   void _submit() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    setState(() {
+      _emailErrorText = null;
+      _usernameErrorText = null;
+      _passwordErrorText = null;
+    });
+    //validate form
     if (!_formKey.currentState!.validate()) {
       // Invalid!
+      _btnController.error();
+      Timer(const Duration(seconds: 2), () {
+        _btnController.reset();
+      });
       return;
     }
+    //signup logic
     _formKey.currentState!.save();
-    setState(() {
-      _isLoading = true;
-    });
-    //TO-DO
-    //handle sign up
-    Navigator.of(context).pushReplacementNamed(HealthQuizScreen.routeName);
-    setState(() {
-      _isLoading = false;
-    });
-    Navigator.of(context).pushReplacementNamed(HealthQuizScreen.routeName);
+    setState(() {});
+    //send the request
+    _sendHttpRequest();
+    setState(() {});
   }
 
   @override
@@ -174,7 +267,8 @@ class _SignUpCardState extends State<SignUpCard> {
                       },
                     ),
                     TextFormField(
-                      decoration: const InputDecoration(labelText: 'Username'),
+                      decoration: InputDecoration(
+                          labelText: 'Username', errorText: _emailErrorText),
                       keyboardType: TextInputType.name,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -187,7 +281,8 @@ class _SignUpCardState extends State<SignUpCard> {
                       },
                     ),
                     TextFormField(
-                      decoration: const InputDecoration(labelText: 'E-Mail'),
+                      decoration: InputDecoration(
+                          labelText: 'E-Mail', errorText: _emailErrorText),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty || !value.contains('@')) {
@@ -200,11 +295,12 @@ class _SignUpCardState extends State<SignUpCard> {
                       },
                     ),
                     TextFormField(
-                      decoration: const InputDecoration(labelText: 'Password'),
+                      decoration: InputDecoration(
+                          labelText: 'Password', errorText: _passwordErrorText),
                       obscureText: true,
                       controller: _passwordController,
                       validator: (value) {
-                        if (value!.isEmpty || value.length < 5) {
+                        if (value!.isEmpty || value.length < 8) {
                           return 'Password is too short!';
                         }
                         return null;
@@ -226,21 +322,16 @@ class _SignUpCardState extends State<SignUpCard> {
                     const SizedBox(
                       height: 30,
                     ),
-                    if (_isLoading)
-                      const CircularProgressIndicator()
-                    else
-                      SizedBox(
-                        width: 290,
-                        child: ElevatedButton(
-                          onPressed: _submit,
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40)),
-                          ),
-                          child: const Text('SIGN UP',
-                              style: TextStyle(color: Colors.white)),
-                        ),
+                    SizedBox(
+                      width: 290,
+                      child: RoundedLoadingButton(
+                        controller: _btnController,
+                        onPressed: _submit,
+                        color: Theme.of(context).primaryColor,
+                        child: const Text('SIGN UP',
+                            style: TextStyle(color: Colors.white)),
                       ),
+                    ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
