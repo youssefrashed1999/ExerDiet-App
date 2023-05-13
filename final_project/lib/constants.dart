@@ -40,7 +40,7 @@ const BASE_URL = 'https://exerdiet.pythonanywhere.com/';
 const ACCESS_KEY = 'access-key';
 const REFRESH_KEY = 'refresh-key';
 
-Future<bool> getUserInfo() async {
+Future<int> getUserInfo() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final String? accessKey = prefs.getString(ACCESS_KEY);
   try {
@@ -56,21 +56,26 @@ Future<bool> getUserInfo() async {
       User user = User.fromJson(jsonDecode(response.body));
       print('im here');
       print(user.dailyCaloriesNeeds);
-      return true;
+      return 1;
     }
     //unauthorized response
     else if (response.statusCode == 401) {
       print('invalid access');
+      return 3;
+    }
+    //new user
+    else if (response.statusCode == 403) {
+      return 2;
     }
     //Server is down
     else if (response.statusCode == 500) {
-      print('server is down');
+      return 3;
     }
   }
   //no internet connection
   catch (_) {
     print('no internet connection');
-    return false;
+    return 3;
   }
-  return false;
+  return 3;
 }
