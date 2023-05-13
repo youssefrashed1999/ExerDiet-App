@@ -268,7 +268,7 @@ class _SignUpCardState extends State<SignUpCard> {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                          labelText: 'Username', errorText: _emailErrorText),
+                          labelText: 'Username', errorText: _usernameErrorText),
                       keyboardType: TextInputType.name,
                       validator: (value) {
                         if (value!.isEmpty) {
