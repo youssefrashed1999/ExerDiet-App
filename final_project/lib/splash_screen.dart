@@ -40,7 +40,9 @@ class _SplashScreenState extends State<SplashScreen> {
           print('perfect request');
           //save new access
           String newAccessKey = jsonDecode(response.body)['access'];
+          String newRefreshKey = jsonDecode(response.body)['access'];
           await prefs.setString(ACCESS_KEY, newAccessKey);
+          prefs.setString(REFRESH_KEY, newRefreshKey);
           //get user info
           await getUserInfo();
         }

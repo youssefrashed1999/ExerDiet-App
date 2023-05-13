@@ -54,13 +54,10 @@ Future<int> getUserInfo() async {
     //success response
     if (response.statusCode == 200) {
       User user = User.fromJson(jsonDecode(response.body));
-      print('im here');
-      print(user.dailyCaloriesNeeds);
       return 1;
     }
     //unauthorized response
     else if (response.statusCode == 401) {
-      print('invalid access');
       return 3;
     }
     //new user
@@ -74,7 +71,6 @@ Future<int> getUserInfo() async {
   }
   //no internet connection
   catch (_) {
-    print('no internet connection');
     return 3;
   }
   return 3;

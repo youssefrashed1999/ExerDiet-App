@@ -108,7 +108,7 @@ class _ScaleAnswerViewState extends State<ScaleAnswerView> {
                       divisions: (_scaleAnswerFormat.maximumValue -
                               _scaleAnswerFormat.minimumValue) ~/
                           _scaleAnswerFormat.step,
-                      label: _sliderValue.toString(),
+                      //label: _sliderValue.toString(),
                     ),
                   ],
                 ),
