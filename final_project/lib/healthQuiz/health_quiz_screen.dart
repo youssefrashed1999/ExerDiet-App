@@ -70,8 +70,6 @@ class _HealthQuizScreenState extends State<HealthQuizScreen> {
           Navigator.of(context).pushReplacementNamed(HomePageScreen.routeName);
         }
         //display toast if otherwise
-        //TO-DO
-        //Bug here
         else {
           Fluttertoast.showToast(
               msg:
