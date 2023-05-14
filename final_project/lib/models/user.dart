@@ -22,12 +22,15 @@ class User {
   double _carbsRatio = -1;
   double _fatsRatio = -1;
   double _proteinRatio = -1;
-  double _carbsGrams = -1;
-  double _fatsGrams = -1;
-  double _proteinGrams = -1;
+  double _carbsNeeds = -1;
+  double _fatsNeeds = -1;
+  double _proteinNeeds = -1;
+  double _carbsIntakeToday = -1;
+  double _fatsIntakeToday = -1;
+  double _proteinIntakeToday = -1;
   String _activityLevel = '';
   String _goal = '';
-  int _dailyStrak = -1;
+  int _dailyStreak = -1;
 
   //getters
   get birthdate => _birthdate;
@@ -54,17 +57,23 @@ class User {
 
   get proteinRatio => _proteinRatio;
 
-  get carbsGrams => _carbsGrams;
+  get carbsIntakeToday => _carbsIntakeToday;
 
-  get fatsGrams => _fatsGrams;
+  get fatsIntakeToday => _fatsIntakeToday;
 
-  get proteinGrams => _proteinGrams;
+  get proteinIntakeToday => _proteinIntakeToday;
+
+  get carbsNeeds => _carbsNeeds;
+
+  get fatsNeeds => _fatsNeeds;
+
+  get proteinNeeds => _proteinNeeds;
 
   get activityLevel => _activityLevel;
 
   get goal => _goal;
 
-  get dailyStrak => _dailyStrak;
+  get dailyStreak => _dailyStreak;
 
   // This method sets the name of the user.
 
@@ -81,12 +90,15 @@ class User {
     _instance._carbsRatio = json["carbs_ratio"];
     _instance._fatsRatio = json["fats_ratio"];
     _instance._proteinRatio = json["protein_ratio"];
-    _instance._carbsGrams = json["carbs_grams"];
-    _instance._fatsGrams = json["fats_grams"];
-    _instance._proteinGrams = json["protein_grams"];
+    _instance._carbsIntakeToday = json["carbs_intake_today"];
+    _instance._fatsIntakeToday = json["fats_intake_today"];
+    _instance._proteinIntakeToday = json["protein_intake_today"];
+    _instance._carbsNeeds = json["carbs_needs"];
+    _instance._fatsNeeds = json["fats_needs"];
+    _instance._proteinNeeds = json["protein_needs"];
     _instance._activityLevel = json["activity_level"];
     _instance._goal = json["goal"];
-    _instance._dailyStrak = json["daily_streak"];
+    _instance._dailyStreak = json["daily_streak"];
     return _instance;
   }
 }
