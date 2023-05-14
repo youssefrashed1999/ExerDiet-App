@@ -183,7 +183,6 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen> {
                   style: const TextStyle(color: Colors.white))),
         ],
       ),
-      
     );
   }
 }
