@@ -189,7 +189,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                             fontWeight: FontWeight.normal,
                             color: Colors.grey),
                       ),
-                      Text('50/${_user.carbsGrams}g',
+                      Text('${_user.carbsIntakeToday}/${_user.carbsNeeds}g',
                           style: TextStyle(
                               fontFamily: 'RobotoCondensed',
                               fontSize: 18,
@@ -219,7 +219,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                             fontWeight: FontWeight.normal,
                             color: Colors.grey),
                       ),
-                      Text('20/${_user.fatsGrams}g',
+                      Text('${_user.fatsIntakeToday}/${_user.fatsNeeds}g',
                           style: TextStyle(
                               fontFamily: 'RobotoCondensed',
                               fontSize: 18,
@@ -249,7 +249,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                             fontWeight: FontWeight.normal,
                             color: Colors.grey),
                       ),
-                      Text('30/${_user.proteinGrams}g',
+                      Text('${_user.proteinIntakeToday}/${_user.proteinNeeds}g',
                           style: TextStyle(
                               fontFamily: 'RobotoCondensed',
                               fontSize: 18,

@@ -40,7 +40,7 @@ class HomePageScreen extends StatelessWidget {
                 shape: BoxShape.circle, color: Colors.white),
             child: Center(
               child: Text(
-                '${_user.dailyStrak}',
+                '${_user.dailyStreak}',
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
