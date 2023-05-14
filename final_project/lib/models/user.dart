@@ -80,25 +80,25 @@ class User {
   static User fromJson(Map<String, dynamic> json) {
     _instance._birthdate = json["birthdate"];
     _instance._gender = json["gender"];
-    _instance._height = json["height"];
-    _instance._weight = json["weight"];
-    _instance._dailyCaloriesNeeds = json["daily_calories_needs"];
-    _instance._caloriesIntakeToday = json["calories_intake_today"];
-    _instance._caloriesBurnedToday = json["calories_burned_today"];
-    _instance._dailyWaterNeeds = json["daily_water_needs"];
-    _instance._waterIntakeToday = json["water_intake_today"];
-    _instance._carbsRatio = json["carbs_ratio"];
-    _instance._fatsRatio = json["fats_ratio"];
-    _instance._proteinRatio = json["protein_ratio"];
-    _instance._carbsIntakeToday = json["carbs_intake_today"];
-    _instance._fatsIntakeToday = json["fats_intake_today"];
-    _instance._proteinIntakeToday = json["protein_intake_today"];
-    _instance._carbsNeeds = json["carbs_needs"];
-    _instance._fatsNeeds = json["fats_needs"];
-    _instance._proteinNeeds = json["protein_needs"];
+    _instance._height = json["height"].toDouble();
+    _instance._weight = json["weight"].toDouble();
+    _instance._dailyCaloriesNeeds = json["daily_calories_needs"].toInt();
+    _instance._caloriesIntakeToday = json["calories_intake_today"].toInt();
+    _instance._caloriesBurnedToday = json["calories_burned_today"].toInt();
+    _instance._dailyWaterNeeds = json["daily_water_needs"].toInt();
+    _instance._waterIntakeToday = json["water_intake_today"].toInt();
+    _instance._carbsRatio = json["carbs_ratio"].toDouble();
+    _instance._fatsRatio = json["fats_ratio"].toDouble();
+    _instance._proteinRatio = json["protein_ratio"].toDouble();
+    _instance._carbsIntakeToday = json["carbs_intake_today"].toDouble();
+    _instance._fatsIntakeToday = json["fats_intake_today"].toDouble();
+    _instance._proteinIntakeToday = json["protein_intake_today"].toDouble();
+    _instance._carbsNeeds = json["carbs_needs"].toDouble();
+    _instance._fatsNeeds = json["fats_needs"].toDouble();
+    _instance._proteinNeeds = json["protein_needs"].toDouble();
     _instance._activityLevel = json["activity_level"];
     _instance._goal = json["goal"];
-    _instance._dailyStreak = json["daily_streak"];
+    _instance._dailyStreak = json["daily_streak"].toInt();
     return _instance;
   }
 }
