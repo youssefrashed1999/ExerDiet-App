@@ -7,7 +7,6 @@ import 'package:final_project/healthQuiz/health_quiz_screen.dart';
 import 'package:final_project/home/home_page_screen.dart';
 import 'package:final_project/splash_screen.dart';
 import 'package:flutter/material.dart';
-
 import 'constants.dart';
 
 void main() {
@@ -46,12 +45,12 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.normal,
                 color: Colors.grey),
           )),
-      home: FoodOverviewScreen(),
+      home: AddFoodScreen(),
       routes: {
         OpenScreen.routeName: (context) => const OpenScreen(),
         LogInScreen.routeName: (context) => LogInScreen(),
         SignUpScreen.routeName: (context) => SignUpScreen(),
-        HealthQuizScreen.routeName: (context) => HealthQuizScreen(),
+        HealthQuizScreen.routeName: (context) => const HealthQuizScreen(),
         HomePageScreen.routeName: (context) => HomePageScreen(),
         FoodOverviewScreen.routeName: (context) => FoodOverviewScreen()
       },

@@ -18,11 +18,10 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
     'carbs': 0,
     'imageUrl': ''
   };
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final _deviceSize = MediaQuery.of(context).size;
-    final _formKey = GlobalKey<FormState>();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
