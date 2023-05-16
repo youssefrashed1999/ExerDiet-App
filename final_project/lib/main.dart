@@ -6,6 +6,7 @@ import 'package:final_project/Food/food_overview_screen.dart';
 import 'package:final_project/healthQuiz/health_quiz_screen.dart';
 import 'package:final_project/home/home_page_screen.dart';
 import 'package:final_project/splash_screen.dart';
+import 'package:final_project/workouts/exercise_overview_screen.dart';
 import 'package:flutter/material.dart';
 import 'constants.dart';
 
@@ -52,7 +53,8 @@ class MyApp extends StatelessWidget {
         SignUpScreen.routeName: (context) => SignUpScreen(),
         HealthQuizScreen.routeName: (context) => const HealthQuizScreen(),
         HomePageScreen.routeName: (context) => HomePageScreen(),
-        FoodOverviewScreen.routeName: (context) => FoodOverviewScreen()
+        FoodOverviewScreen.routeName: (context) => FoodOverviewScreen(),
+        ExerciseOverviewScreen.routeName: (context) => ExerciseOverviewScreen()
       },
     );
   }
