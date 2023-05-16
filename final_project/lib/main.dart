@@ -9,6 +9,7 @@ import 'package:final_project/splash_screen.dart';
 import 'package:final_project/workouts/exercise_overview_screen.dart';
 import 'package:flutter/material.dart';
 import 'constants.dart';
+import 'home/dashboard/dashboard_main_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,12 +28,12 @@ class MyApp extends StatelessWidget {
             bodyLarge: TextStyle(fontFamily: 'RobotoCondensed', fontSize: 16),
             titleLarge: TextStyle(
                 fontFamily: 'RobotoCondensed',
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: Colors.white),
             headlineLarge: TextStyle(
                 fontFamily: 'RobotoCondensed',
-                fontSize: 26,
+                fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.white),
             titleMedium: TextStyle(
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.normal,
                 color: Colors.grey),
           )),
-      home: AddFoodScreen(),
+      home: DashboardMainScreen(),
       routes: {
         OpenScreen.routeName: (context) => const OpenScreen(),
         LogInScreen.routeName: (context) => LogInScreen(),
