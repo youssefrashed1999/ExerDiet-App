@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../auth/open_screen.dart';
+import '../../constants.dart';
 import '../../models/user.dart';
 
 class DashboardMainScreen extends StatelessWidget {
   DashboardMainScreen({super.key});
   User _user = User.instance;
+  void _logout(BuildContext context) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(ACCESS_KEY);
+    await prefs.remove(REFRESH_KEY);
+    Navigator.of(context).pushReplacementNamed(OpenScreen.routeName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -214,10 +223,11 @@ class DashboardMainScreen extends StatelessWidget {
               child: SizedBox(
                 width: deviceSize.width * 0.7,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => _logout(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
+                      backgroundColor: Theme.of(context).primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40))),
                   child: const Text(
                     'Log out',
                     style: TextStyle(color: Colors.white),
