@@ -1,8 +1,3 @@
-<<<<<<< Updated upstream
-=======
-import 'package:final_project/Food/add_food_screen.dart';
-import 'package:final_project/Food/add_water_screen.dart';
->>>>>>> Stashed changes
 import 'package:final_project/auth/log_in_screen.dart';
 import 'package:final_project/auth/open_screen.dart';
 import 'package:final_project/auth/sign_up_screen.dart';
