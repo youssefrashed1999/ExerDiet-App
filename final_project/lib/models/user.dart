@@ -41,13 +41,13 @@ class User {
 
   get weight => _weight;
 
-  get dailyCaloriesNeeds => _dailyCaloriesNeeds;
+  int get dailyCaloriesNeeds => _dailyCaloriesNeeds;
 
   get caloriesIntakeToday => _caloriesIntakeToday;
 
   get caloriesBurnedToday => _caloriesBurnedToday;
 
-  get dailyWaterNeeds => _dailyWaterNeeds;
+  int get dailyWaterNeeds => _dailyWaterNeeds;
 
   get waterIntakeToday => _waterIntakeToday;
 
@@ -69,11 +69,15 @@ class User {
 
   get proteinNeeds => _proteinNeeds;
 
-  get activityLevel => _activityLevel;
+  String get activityLevel => _activityLevel;
 
-  get goal => _goal;
+  String get goal => _goal;
 
   get dailyStreak => _dailyStreak;
+
+  //setters - not every attribute has setters
+  set setDailyWaterNeeds(int value) => _dailyWaterNeeds = value;
+  set setDailyCaloriesNeeds(int value) => _dailyCaloriesNeeds = value;
 
   // This method sets the name of the user.
 
