@@ -74,6 +74,8 @@ flutter:
   assets:
     - assets/images/main_icon.png
     - assets/images/main_screen_background.jpg
+    - assets/images/main_screen_background_2.jpg
+    - assets/images/main_screen_background_3.jpg
     - assets/images/breakfast_background.jpg
     - assets/images/lunch_background.jpeg
     - assets/images/dinner_background.jpg
