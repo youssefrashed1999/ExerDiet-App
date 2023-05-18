@@ -1,15 +1,19 @@
-import 'package:final_project/Food/add_food_screen.dart';
 import 'package:final_project/auth/log_in_screen.dart';
 import 'package:final_project/auth/open_screen.dart';
 import 'package:final_project/auth/sign_up_screen.dart';
 import 'package:final_project/Food/food_overview_screen.dart';
 import 'package:final_project/healthQuiz/health_quiz_screen.dart';
+import 'package:final_project/home/dashboard/change_goal_screen.dart';
+import 'package:final_project/home/dashboard/change_password_screen.dart';
+import 'package:final_project/home/dashboard/change_ratios_screen.dart';
+import 'package:final_project/home/dashboard/change_username_screen.dart';
+import 'package:final_project/home/dashboard/set_calories_screen.dart';
+import 'package:final_project/home/dashboard/set_water_intake_screen.dart';
 import 'package:final_project/home/home_page_screen.dart';
 import 'package:final_project/splash_screen.dart';
 import 'package:final_project/workouts/exercise_overview_screen.dart';
 import 'package:flutter/material.dart';
 import 'constants.dart';
-import 'home/dashboard/dashboard_main_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: MY_COLOR,
           textTheme: const TextTheme(
-            bodyLarge: TextStyle(fontFamily: 'RobotoCondensed', fontSize: 16),
+            bodyLarge: TextStyle(fontFamily: 'RobotoCondensed', fontSize: 18),
             titleLarge: TextStyle(
                 fontFamily: 'RobotoCondensed',
                 fontSize: 18,
@@ -47,7 +51,7 @@ class MyApp extends StatelessWidget {
                 fontWeight: FontWeight.normal,
                 color: Colors.grey),
           )),
-      home: DashboardMainScreen(),
+      home: SplashScreen(),
       routes: {
         OpenScreen.routeName: (context) => const OpenScreen(),
         LogInScreen.routeName: (context) => LogInScreen(),
@@ -55,7 +59,16 @@ class MyApp extends StatelessWidget {
         HealthQuizScreen.routeName: (context) => const HealthQuizScreen(),
         HomePageScreen.routeName: (context) => HomePageScreen(),
         FoodOverviewScreen.routeName: (context) => FoodOverviewScreen(),
-        ExerciseOverviewScreen.routeName: (context) => ExerciseOverviewScreen()
+        ExerciseOverviewScreen.routeName: (context) => ExerciseOverviewScreen(),
+        ChangePasswordScreen.routeName: (context) =>
+            const ChangePasswordScreen(),
+        ChangeUsernameScreen.routeName: (context) =>
+            const ChangeUsernameScreen(),
+        SetCaloriesScreen.routeName: (context) => const SetCaloriesScreen(),
+        SetWaterIntakeScreen.routeName: (context) =>
+            const SetWaterIntakeScreen(),
+        ChangeRatiosScreen.routeName: (context) => const ChangeRatiosScreen(),
+        ChangeGoalScreen.routeName: (context) => const ChangeGoalScreen()
       },
     );
   }
