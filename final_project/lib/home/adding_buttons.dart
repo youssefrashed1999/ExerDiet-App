@@ -1,3 +1,4 @@
+import 'package:final_project/Food/add_water_screen.dart';
 import 'package:final_project/Food/food_overview_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -5,6 +6,10 @@ class AddingButtons extends StatelessWidget {
   const AddingButtons({super.key});
   void _navigateToFoodList(BuildContext context) {
     Navigator.of(context).pushNamed(FoodOverviewScreen.routeName);
+  }
+
+  void _navigateToAddWater(BuildContext context) {
+    Navigator.of(context).pushNamed(AddWater.routeName);
   }
 
   @override
@@ -138,17 +143,17 @@ class AddingButtons extends StatelessWidget {
                 colorFilter: ColorFilter.mode(
                     Colors.black.withOpacity(0.6), BlendMode.darken))),
         child: ListTile(
-          title: Text(
-            'Add water',
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
-          trailing: const Icon(
-            Icons.navigate_next_outlined,
-            color: Colors.white,
-          ),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
+            title: Text(
+              'Add water',
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+            trailing: const Icon(
+              Icons.navigate_next_outlined,
+              color: Colors.white,
+            ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            onTap: () => _navigateToFoodList(context)),
       ),
     ]);
   }
