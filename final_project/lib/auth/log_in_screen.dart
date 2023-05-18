@@ -79,7 +79,7 @@ class LogInCard extends StatefulWidget {
 class _LogInCardState extends State<LogInCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   Map<String, String> _authData = {
-    'email': '',
+    'username': '',
     'password': '',
   };
 
@@ -100,7 +100,7 @@ class _LogInCardState extends State<LogInCard> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String?>{
-          'username': _authData['email'],
+          'username': _authData['username'],
           'password': _authData['password']
         }),
       );
@@ -232,16 +232,16 @@ class _LogInCardState extends State<LogInCard> {
                       ),
                     ),
                     TextFormField(
-                      decoration: const InputDecoration(labelText: 'E-Mail'),
+                      decoration: const InputDecoration(labelText: 'Username'),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Invalid email!';
+                          return 'Invalid username!';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        _authData['email'] = value!;
+                        _authData['username'] = value!;
                       },
                     ),
                     TextFormField(

@@ -61,7 +61,7 @@ Future<int> getUserInfo() async {
       return 3;
     }
     //new user
-    else if (response.statusCode == 403) {
+    else if (response.statusCode == 404) {
       return 2;
     }
     //Server is down
