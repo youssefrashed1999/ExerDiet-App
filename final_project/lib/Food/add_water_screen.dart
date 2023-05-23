@@ -38,17 +38,17 @@ Widget _innerWidget(double value, double max, BuildContext context) {
 
 class _AddWaterState extends State<AddWater> {
   User _user = User.instance;
+  var amount = 250;
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    var amount = 250;
 
     void d() => showDialog(
           context: context,
           builder: (BuildContext context) {
             return Expanded(
               child: AlertDialog(
-                title: Text(
+                title: const Text(
                   'Measurements',
                   style: TextStyle(color: Color.fromRGBO(125, 236, 216, 1)),
                 ),
@@ -144,9 +144,9 @@ class _AddWaterState extends State<AddWater> {
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: SleekCircularSlider(
-                      initialValue: (_user.waterIntakeToday).toDouble(),
+                      initialValue: 50,
                       min: 0,
-                      max: _user.dailyWaterNeeds.toDouble(),
+                      max: 1000,
                       appearance: CircularSliderAppearance(
                         startAngle: 270,
                         angleRange: 360,
@@ -159,8 +159,8 @@ class _AddWaterState extends State<AddWater> {
                             hideShadow: true,
                             dotColor: Colors.white),
                       ),
-                      innerWidget: (percentage) => _innerWidget(percentage,
-                          _user.dailyWaterNeeds.toDouble(), context),
+                      innerWidget: (percentage) =>
+                          _innerWidget(percentage, 1000, context),
                     ),
                   ),
                 ),
@@ -171,7 +171,7 @@ class _AddWaterState extends State<AddWater> {
               onPressed: () {
                 d();
               },
-              child: iconpicker())
+              child: iconpicker()),
         ],
       ),
     );
