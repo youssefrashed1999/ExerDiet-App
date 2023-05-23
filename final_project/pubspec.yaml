@@ -83,6 +83,10 @@ flutter:
     - assets/images/snack_background.jpg
     - assets/images/water_background.jpg
     - assets/images/workout_background.jpg
+    - assets/icons/bottle-350.png
+    - assets/icons/bottle-450.png
+    - assets/icons/cup-250.png
+    
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
