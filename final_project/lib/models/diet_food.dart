@@ -1,11 +1,11 @@
 class DietFood {
-  final String id;
+  final int id;
   final String name;
-  final double calories;
+  final int calories;
   final double fats;
   final double protein;
   final double carbs;
-  final String imageUrl;
+  final String? imageUrl;
   final int rate;
 
   DietFood(
@@ -17,4 +17,14 @@ class DietFood {
       required this.carbs,
       required this.imageUrl,
       this.rate = 0});
+  factory DietFood.fromjson(Map<String, dynamic> json) {
+    return DietFood(
+        id: json['id'],
+        name: json['name'],
+        calories: json['calories'].toInt(),
+        fats: json['fats'].toDouble(),
+        protein: json['protein'].toDouble(),
+        carbs: json['carbs'].toDouble(),
+        imageUrl: json['image']);
+  }
 }
