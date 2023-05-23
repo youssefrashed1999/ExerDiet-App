@@ -39,6 +39,7 @@ Widget _innerWidget(double value, double max, BuildContext context) {
 class _AddWaterState extends State<AddWater> {
   User _user = User.instance;
   var amount = 250;
+  List<double> watercups = [];
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -116,13 +117,14 @@ class _AddWaterState extends State<AddWater> {
       appBar: AppBar(
         title: const Text('Add Water'),
       ),
+      /*
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromRGBO(125, 236, 216, 1),
         foregroundColor: Colors.white,
         onPressed: () {},
         child: Icon(Icons.add),
-      ),
+      ),*/
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -167,11 +169,50 @@ class _AddWaterState extends State<AddWater> {
               ),
             ),
           ),
-          ElevatedButton(
-              onPressed: () {
-                d();
-              },
-              child: iconpicker()),
+          Center(
+            child: SizedBox(
+              height: deviceSize.height * 0.4,
+              width: deviceSize.width * 0.85,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                elevation: 8,
+                child: SizedBox(
+                  width: deviceSize.width * 0.3,
+                  height: deviceSize.height * 0.1,
+                ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Icon(Icons.add),
+                    style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(20),
+                        backgroundColor: Color.fromRGBO(125, 236, 216, 1)),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      d();
+                    },
+                    child: iconpicker(),
+                    style: ElevatedButton.styleFrom(
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.all(20),
+                        backgroundColor: Color.fromRGBO(125, 236, 216, 1)),
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
