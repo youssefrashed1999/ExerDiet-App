@@ -102,6 +102,7 @@ class _SetWaterIntakeScreenState extends State<SetWaterIntakeScreen> {
       });
     }
   }
+
   //set water nedds automatically
   void _resetDailyWaterNeeds() async {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -175,7 +176,7 @@ class _SetWaterIntakeScreenState extends State<SetWaterIntakeScreen> {
                               fontWeight: FontWeight.normal,
                               color: Colors.black87),
                       errorText: waterError),
-                  initialValue: user.dailyCaloriesNeeds.toString(),
+                  initialValue: user.dailyWaterNeeds.toString(),
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium!
