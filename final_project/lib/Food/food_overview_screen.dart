@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../constants.dart';
 import '../models/diet_food.dart';
 import 'diet_food_item.dart';
+import 'package:http/http.dart' as http;
 
 class FoodOverviewScreen extends StatefulWidget {
   static const routeName = '/food';
@@ -10,62 +15,48 @@ class FoodOverviewScreen extends StatefulWidget {
 }
 
 class _FoodOverviewScreenState extends State<FoodOverviewScreen> {
-  static List<DietFood> loadedfood = [
-    DietFood(
-        id: '1',
-        name: 'apple',
-        calories: 21,
-        fats: 23,
-        protein: 2,
-        carbs: 0,
-        imageUrl:
-            'https://images.everydayhealth.com/images/apples-101-about-1440x810.jpg'),
-    DietFood(
-        id: '2',
-        name: 'banana',
-        calories: 21,
-        fats: 23,
-        protein: 2,
-        carbs: 0,
-        imageUrl:
-            'https://www.pureearete.com/wp-content/uploads/2020/06/banana_m.jpg'),
-    DietFood(
-        id: '3',
-        name: 'orange',
-        calories: 21,
-        fats: 23,
-        protein: 2,
-        carbs: 0,
-        imageUrl:
-            'https://www.pittmandavis.com/images/xl/buy-navel-oranges-bo.jpg?v=1'),
-    DietFood(
-        id: '4',
-        name: 'rice',
-        calories: 23,
-        fats: 22,
-        protein: 0,
-        carbs: 23,
-        imageUrl:
-            'https://www.budgetbytes.com/wp-content/uploads/2022/04/How-to-Cook-Rice-bowl.jpg'),
-    DietFood(
-        id: '5',
-        name: 'pasta',
-        calories: 23,
-        fats: 33,
-        protein: 0,
-        carbs: 33,
-        imageUrl:
-            'https://thedizzycook.com/wp-content/uploads/2019/12/Boursin-pasta-500x500.jpg')
-  ];
+  List<DietFood> loadedfood = List.empty(growable: true);
+  String? nextPage = "https://exerdiet.pythonanywhere.com/diet/foods/";
   bool is_food_clicked = true;
-  List<DietFood> displayloadedfood = List.from(loadedfood);
-  void updateList(String value) {
-    setState(() {
-      displayloadedfood = loadedfood
-          .where((element) =>
-              element.name.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-    });
+  // List<DietFood> displayloadedfood = List.from(loadedfood);
+  // void updateList(String value) {
+  //   setState(() {
+  //     displayloadedfood = loadedfood
+  //         .where((element) =>
+  //             element.name.toLowerCase().contains(value.toLowerCase()))
+  //         .toList();
+  //   });
+  // }
+  void getFood() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? accessKey = prefs.getString(ACCESS_KEY);
+    try {
+      final response = await http.get(
+        Uri.parse(nextPage!),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'JWT $accessKey'
+        },
+      );
+      //success response
+      if (response.statusCode == 200) {
+        nextPage = jsonDecode(response.body)['next'];
+        int count = jsonDecode(response.body)['results'].length;
+        for (int i = 0; i < count; i++) {
+          loadedfood
+              .add(DietFood.fromjson(jsonDecode(response.body)['results'][i]));
+        }
+        setState(() {});
+      }
+    } catch (e) {
+      print('problem is $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getFood();
   }
 
   @override
@@ -92,7 +83,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen> {
             padding: EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width * 0.1),
             child: TextField(
-              onChanged: (value) => updateList(value),
+              //onChanged: (value) => updateList(value),
               style: const TextStyle(
                   color: Color.fromARGB(255, 97, 219, 213), fontSize: 12),
               decoration: InputDecoration(
@@ -153,23 +144,39 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen> {
                               : Colors.white)))
             ],
           ),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              itemCount: displayloadedfood.length,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) => DietFoodItem(
-                id: loadedfood[index].id,
-                name: loadedfood[index].name,
-                imageUrl: loadedfood[index].imageUrl,
-                calories: loadedfood[index].calories,
-                fats: loadedfood[index].fats,
-                protein: loadedfood[index].protein,
-                carbs: loadedfood[index].carbs,
+          if (loadedfood.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                itemCount: nextPage == null
+                    ? loadedfood.length
+                    : loadedfood.length + 1,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  if (nextPage!=null &&index == loadedfood.length) {
+                    return ElevatedButton(
+                        onPressed: () {
+                          getFood();
+                        },
+                        child: const Text('Load more'));
+                  } else {
+                    return DietFoodItem(
+                      id: loadedfood[index].id,
+                      name: loadedfood[index].name,
+                      imageUrl: loadedfood[index].imageUrl,
+                      calories: loadedfood[index].calories,
+                      fats: loadedfood[index].fats,
+                      protein: loadedfood[index].protein,
+                      carbs: loadedfood[index].carbs,
+                    );
+                  }
+                },
+                scrollDirection: Axis.vertical,
               ),
-              scrollDirection: Axis.vertical,
-            ),
-          ),
+            )
+          else
+            const CircularProgressIndicator(),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                 elevation: 4,
