@@ -40,11 +40,12 @@ class _AddWaterState extends State<AddWater> {
   User _user = User.instance;
   var amount = 250;
   List<double> watercups = [];
+  void add_water_amount() {}
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
-    void d() => showDialog(
+    void change_cup_measurements() => showDialog(
           context: context,
           builder: (BuildContext context) {
             return Expanded(
@@ -68,19 +69,20 @@ class _AddWaterState extends State<AddWater> {
                                     amount = 250;
                                   });
                                 },
-                                icon: Icon(Icons.water))
+                                icon: Image.asset('assets/icons/cup-250.png'))
                           ],
                         ),
                         Row(
                           children: [
                             Text('350'),
                             IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    amount = 350;
-                                  });
-                                },
-                                icon: Icon(Icons.water_drop))
+                              onPressed: () {
+                                setState(() {
+                                  amount = 350;
+                                });
+                              },
+                              icon: Image.asset('assets/icons/bottle-350.png'),
+                            )
                           ],
                         ),
                         Row(
@@ -92,7 +94,8 @@ class _AddWaterState extends State<AddWater> {
                                     amount = 450;
                                   });
                                 },
-                                icon: Icon(Icons.coffee_maker))
+                                icon:
+                                    Image.asset('assets/icons/bottle-450.png'))
                           ],
                         ),
                       ],
@@ -103,13 +106,13 @@ class _AddWaterState extends State<AddWater> {
             );
           },
         );
-    Icon iconpicker() {
+    Image iconpicker() {
       if (amount == 250) {
-        return Icon(Icons.water);
+        return Image.asset('assets/icons/cup-250.png');
       } else if (amount == 350) {
-        return Icon(Icons.water_drop);
+        return Image.asset('assets/icons/bottle-350.png');
       } else {
-        return Icon(Icons.coffee_maker);
+        return Image.asset('assets/icons/bottle-450.png');
       }
     }
 
@@ -169,20 +172,8 @@ class _AddWaterState extends State<AddWater> {
               ),
             ),
           ),
-          Center(
-            child: SizedBox(
-              height: deviceSize.height * 0.4,
-              width: deviceSize.width * 0.85,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                elevation: 8,
-                child: SizedBox(
-                  width: deviceSize.width * 0.3,
-                  height: deviceSize.height * 0.1,
-                ),
-              ),
-            ),
+          SizedBox(
+            height: deviceSize.height * 0.4,
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -190,6 +181,7 @@ class _AddWaterState extends State<AddWater> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   ElevatedButton(
                     onPressed: () {},
@@ -199,16 +191,22 @@ class _AddWaterState extends State<AddWater> {
                         padding: EdgeInsets.all(20),
                         backgroundColor: Color.fromRGBO(125, 236, 216, 1)),
                   ),
-                  ElevatedButton(
+                  IconButton(
+                      onPressed: () {
+                        change_cup_measurements();
+                      },
+                      icon: iconpicker()),
+                  /* ElevatedButton(
                     onPressed: () {
-                      d();
+                      change_cup_measurements();
                     },
                     child: iconpicker(),
                     style: ElevatedButton.styleFrom(
+                        elevation: 0,
                         shape: CircleBorder(),
-                        padding: EdgeInsets.all(20),
-                        backgroundColor: Color.fromRGBO(125, 236, 216, 1)),
-                  ),
+                        padding: EdgeInsets.all(10),
+                        backgroundColor: Colors.transparent),
+                  ),*/
                 ],
               ),
             ),
