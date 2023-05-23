@@ -153,7 +153,7 @@ class AddingButtons extends StatelessWidget {
             ),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            onTap: () => _navigateToFoodList(context)),
+            onTap: () => _navigateToAddWater(context)),
       ),
     ]);
   }
