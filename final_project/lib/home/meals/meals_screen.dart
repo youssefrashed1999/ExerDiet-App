@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:final_project/Food/food_overview_screen.dart';
 import 'package:final_project/home/meals/food_instance_item.dart';
 import 'package:final_project/models/diet_recipe.dart';
 import 'package:final_project/models/food_instance.dart';
@@ -12,19 +13,20 @@ import 'package:intl/intl.dart';
 
 import '../../models/meal.dart';
 
-class BreakfastScreen extends StatefulWidget {
+class MealsScreen extends StatefulWidget {
   static const routeName = '/meal-screen';
-  const BreakfastScreen({super.key});
+  const MealsScreen({super.key});
 
   @override
-  State<BreakfastScreen> createState() => _BreakfastScreenState();
+  State<MealsScreen> createState() => _MealsScreenState();
 }
 
-class _BreakfastScreenState extends State<BreakfastScreen> {
+class _MealsScreenState extends State<MealsScreen> {
   List<FoodInstance> loadedfood = List.empty(growable: true);
   List<DietRecipe> loadedRecipe = List.empty(growable: true);
   bool isLoadingComplete = false;
   int mealId = -1;
+  late String mealName;
   late Meal meal;
   void loadData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -33,7 +35,7 @@ class _BreakfastScreenState extends State<BreakfastScreen> {
     try {
       final response = await http.get(
         Uri.parse(
-            '${BASE_URL}diet/meals/?search=breakfast&time_eaten__gte=${DateFormat('yyyy-MM-dd').format(DateTime.now())}'),
+            '${BASE_URL}diet/meals/?search=$mealName&time_eaten__gte=${DateFormat('yyyy-MM-dd').format(DateTime.now())}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'JWT $accessKey'
@@ -75,11 +77,13 @@ class _BreakfastScreenState extends State<BreakfastScreen> {
   @override
   void initState() {
     super.initState();
+
     loadData();
   }
-  
+
   @override
   Widget build(BuildContext context) {
+    mealName = ModalRoute.of(context)!.settings.arguments as String;
     void showDetails() => showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -122,7 +126,7 @@ class _BreakfastScreenState extends State<BreakfastScreen> {
         );
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Breafast'),
+        title: Text(mealName),
         actions: [
           if (mealId != -1)
             TextButton(
@@ -141,7 +145,7 @@ class _BreakfastScreenState extends State<BreakfastScreen> {
           if (isLoadingComplete == false) const CircularProgressIndicator(),
           if (isLoadingComplete == true &&
               (loadedRecipe.isEmpty && loadedfood.isEmpty))
-            const Center(child: Text('No breakfast added today!'))
+            Center(child: Text('No $mealName added today!'))
           else
             Expanded(
               child: ListView.builder(
@@ -164,7 +168,9 @@ class _BreakfastScreenState extends State<BreakfastScreen> {
                           right: Radius.circular(40),
                           left: Radius.circular(40))),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed(FoodOverviewScreen.routeName);
+                },
                 child: const Text('Add more',
                     style: TextStyle(color: Colors.white))),
           ),

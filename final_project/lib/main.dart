@@ -11,7 +11,7 @@ import 'package:final_project/home/dashboard/change_username_screen.dart';
 import 'package:final_project/home/dashboard/set_calories_screen.dart';
 import 'package:final_project/home/dashboard/set_water_intake_screen.dart';
 import 'package:final_project/home/home_page_screen.dart';
-import 'package:final_project/home/meals/breakfast_screen.dart';
+import 'package:final_project/home/meals/meals_screen.dart';
 import 'package:final_project/splash_screen.dart';
 import 'package:final_project/workouts/exercise_overview_screen.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
             const SetWaterIntakeScreen(),
         ChangeRatiosScreen.routeName: (context) => const ChangeRatiosScreen(),
         ChangeGoalScreen.routeName: (context) => const ChangeGoalScreen(),
-        BreakfastScreen.routeName:(context) => const BreakfastScreen(),
+        MealsScreen.routeName: (context) => const MealsScreen(),
       },
     );
   }
