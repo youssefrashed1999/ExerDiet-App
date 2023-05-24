@@ -1,11 +1,12 @@
 import 'package:final_project/Food/add_water_screen.dart';
 import 'package:final_project/Food/food_overview_screen.dart';
+import 'package:final_project/home/meals/breakfast_screen.dart';
 import 'package:flutter/material.dart';
 
 class AddingButtons extends StatelessWidget {
   const AddingButtons({super.key});
   void _navigateToFoodList(BuildContext context) {
-    Navigator.of(context).pushNamed(FoodOverviewScreen.routeName);
+    Navigator.of(context).pushNamed(BreakfastScreen.routeName);
   }
 
   void _navigateToAddWater(BuildContext context) {
