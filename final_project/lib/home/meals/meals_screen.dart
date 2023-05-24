@@ -11,9 +11,10 @@ import 'package:http/http.dart' as http;
 import '../../constants.dart';
 import 'package:intl/intl.dart';
 
+import '../../main.dart';
 import '../../models/meal.dart';
 
-class MealsScreen extends StatefulWidget {
+class MealsScreen extends StatefulWidget with RouteAware {
   static const routeName = '/meal-screen';
   const MealsScreen({super.key});
 
@@ -21,7 +22,8 @@ class MealsScreen extends StatefulWidget {
   State<MealsScreen> createState() => _MealsScreenState();
 }
 
-class _MealsScreenState extends State<MealsScreen> {
+class _MealsScreenState extends State<MealsScreen> with RouteAware {
+  
   List<FoodInstance> loadedfood = List.empty(growable: true);
   List<DietRecipe> loadedRecipe = List.empty(growable: true);
   bool isLoadingComplete = false;
@@ -77,8 +79,19 @@ class _MealsScreenState extends State<MealsScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      routeObserver.subscribe(this, ModalRoute.of(context)!);
+    });
+    loadData();    
+  }
 
-    loadData();
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    setState(() {
+      print('im here and this function works and you suck');
+      loadData();
+    });
   }
 
   @override
@@ -112,6 +125,8 @@ class _MealsScreenState extends State<MealsScreen> {
                 )
               ],
             ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             actions: [
               TextButton(
                   onPressed: () {

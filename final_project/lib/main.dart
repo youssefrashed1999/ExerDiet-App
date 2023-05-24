@@ -20,6 +20,7 @@ import 'constants.dart';
 void main() {
   runApp(const MyApp());
 }
+final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
                 color: Colors.grey),
           )),
       home: SplashScreen(),
+      navigatorObservers: [routeObserver],
       routes: {
         OpenScreen.routeName: (context) => const OpenScreen(),
         LogInScreen.routeName: (context) => LogInScreen(),
