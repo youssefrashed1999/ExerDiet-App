@@ -23,7 +23,6 @@ class MealsScreen extends StatefulWidget with RouteAware {
 }
 
 class _MealsScreenState extends State<MealsScreen> with RouteAware {
-  
   List<FoodInstance> loadedfood = List.empty(growable: true);
   List<DietRecipe> loadedRecipe = List.empty(growable: true);
   bool isLoadingComplete = false;
@@ -82,7 +81,7 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       routeObserver.subscribe(this, ModalRoute.of(context)!);
     });
-    loadData();    
+    loadData();
   }
 
   @override
@@ -90,7 +89,12 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
     super.didPopNext();
     setState(() {
       print('im here and this function works and you suck');
-      loadData();
+      loadedfood = List.empty(growable: true);
+      loadedRecipe = List.empty(growable: true);
+      isLoadingComplete = false;
+      setState(() {
+        loadData();
+      });
     });
   }
 
