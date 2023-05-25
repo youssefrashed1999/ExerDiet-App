@@ -1,6 +1,7 @@
 class DietFood {
   final int id;
   final String name;
+  final String category;
   final int calories;
   final double fats;
   final double protein;
@@ -11,6 +12,7 @@ class DietFood {
   DietFood(
       {required this.id,
       required this.name,
+      this.category = 'food',
       required this.calories,
       required this.fats,
       required this.protein,
