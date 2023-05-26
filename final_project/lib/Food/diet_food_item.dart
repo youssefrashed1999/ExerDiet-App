@@ -18,7 +18,6 @@ class DietFoodItem extends StatelessWidget {
   final GlobalKey<FormState> _formkey = GlobalKey();
   double amount = 0;
   void addFood() async {
-    print('${BASE_URL}diet/meals/$mealId/food_instances/');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? accessKey = prefs.getString(ACCESS_KEY);
     try {
@@ -179,7 +178,8 @@ class DietFoodItem extends StatelessWidget {
                 height: 100,
                 child: dietFood.imageUrl == null
                     ? null
-                    : Image.network(dietFood.imageUrl!, fit: BoxFit.fill),
+                    : Image.network('${BASE_URL}${dietFood.imageUrl!}',
+                        fit: BoxFit.fill),
               ),
               const SizedBox(
                 width: 7,

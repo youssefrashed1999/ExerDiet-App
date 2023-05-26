@@ -122,13 +122,7 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
     });
   }
 
-  @override
-  void didPop() {
-    super.didPop();
-    setState(() {
-      getUserInfo();
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

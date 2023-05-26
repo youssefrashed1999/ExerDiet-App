@@ -1,3 +1,4 @@
+import 'package:final_project/Food/add_food_screen.dart';
 import 'package:final_project/auth/log_in_screen.dart';
 import 'package:final_project/auth/open_screen.dart';
 import 'package:final_project/auth/sign_up_screen.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
         ChangeRatiosScreen.routeName: (context) => const ChangeRatiosScreen(),
         ChangeGoalScreen.routeName: (context) => const ChangeGoalScreen(),
         MealsScreen.routeName: (context) => const MealsScreen(),
+        AddFoodScreen.routeName: (context) => AddFoodScreen()
       },
     );
   }
