@@ -1,7 +1,11 @@
 import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:final_project/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class AddFoodScreen extends StatefulWidget {
   AddFoodScreen({super.key});
@@ -17,7 +21,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
     'category': 'F',
     'calories': 0,
     'fats': 0,
-    'proteins': 0,
+    'protein': 0,
     'carbs': 0,
     'imageUrl': ''
   };
@@ -30,7 +34,52 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
     } else if (selectedCategory.contains('B')) {
       return '/100 ml';
     } else {
-      return '/1 spoon';
+      return '/1 tbsp';
+    }
+  }
+
+  void submit() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    _formKey.currentState!.save();
+    sendHttpRequest();
+  }
+
+  void sendHttpRequest() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? accessKey = prefs.getString(ACCESS_KEY);
+    Response? response;
+    try {
+      if (_myimage == null) {
+      } else {
+        File image = _myimage as File;
+        FormData formData = FormData.fromMap({
+          'name': _foodData['name'].toString(),
+          'category': _foodData['category'].toString(),
+          'calories': int.parse(_foodData['calories']),
+          'carbs': double.parse(_foodData['carbs']),
+          'fats': double.parse(_foodData['fats']),
+          'protein': double.parse(_foodData['protein']),
+          'image': await MultipartFile.fromFile(image.path)
+        });
+        final dio = Dio();
+        response = await dio.post('${BASE_URL}diet/custom_foods/',
+            options: Options(headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'JWT $accessKey'
+            }),
+            data: formData);
+        print('status code: ${response.statusCode}');
+        print(response.data.toString());
+        if (response.statusCode == 201) {
+          print('horraaaaaaaay');
+        }
+      }
+    } catch (e) {
+      print(e);
+      print('status code: ${response?.statusCode}');
+      print(response?.data.toString());
     }
   }
 
@@ -40,23 +89,23 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text('Upload photo from',
+              title: const Text('Upload photo from',
                   style: TextStyle(color: Colors.black)),
               content: SingleChildScrollView(
                 child: Column(
                   children: [
                     ListTile(
-                      leading: Icon(Icons.image),
-                      title: Text('Gallery'),
+                      leading: const Icon(Icons.image),
+                      title: const Text('Gallery'),
                       onTap: () {
-                        _UploadFromGallery(context);
+                        _uploadFromGallery(context);
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.camera),
-                      title: Text('Camera'),
+                      leading: const Icon(Icons.camera),
+                      title: const Text('Camera'),
                       onTap: () {
-                        _UploadFromCamera(context);
+                        _uploadFromCamera(context);
                       },
                     )
                   ],
@@ -65,7 +114,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
             ));
   }
 
-  Future _UploadFromGallery(BuildContext context) async {
+  Future _uploadFromGallery(BuildContext context) async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       _myimage = File(image!.path);
@@ -73,7 +122,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
     Navigator.pop(context);
   }
 
-  Future _UploadFromCamera(BuildContext context) async {
+  Future _uploadFromCamera(BuildContext context) async {
     var image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
       _myimage = File(image!.path);
@@ -83,7 +132,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _deviceSize = MediaQuery.of(context).size;
+    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -167,8 +216,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               ),
               elevation: 8.0,
               child: Container(
-                constraints: BoxConstraints(minWidth: _deviceSize.width * 0.75),
-                width: _deviceSize.width * 0.75,
+                constraints: BoxConstraints(minWidth: deviceSize.width * 0.75),
+                width: deviceSize.width * 0.75,
                 padding: const EdgeInsets.all(20),
                 child: Form(
                   key: _formKey,
@@ -228,7 +277,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                           return null;
                         },
                         onSaved: (value) {
-                          _foodData['proteins'] = value;
+                          _foodData['protein'] = value;
                         },
                       ),
                       TextFormField(
@@ -252,8 +301,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                       SizedBox(
                         width: 290,
                         child: ElevatedButton(
-                          onPressed: () =>
-                              {if (_formKey.currentState!.validate()) {}},
+                          onPressed: () => submit(),
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40)),
@@ -267,28 +315,6 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                 ),
               ),
             )
-            /*Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            const Text('Name: '),
-                            TextFormField(
-                              keyboardType: TextInputType.name,
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Name field is required!';
-                                }
-                              },
-                              onSaved: (newValue) {
-                                _foodData['name'] = newValue;
-                              },
-                            )
-                          ],
-                        )
-                      ],
-                    ))*/
           ],
         ),
       ),
