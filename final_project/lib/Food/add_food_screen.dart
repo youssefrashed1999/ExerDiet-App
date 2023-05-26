@@ -12,20 +12,32 @@ class AddFoodScreen extends StatefulWidget {
 class _AddFoodScreenState extends State<AddFoodScreen> {
   Map<String, dynamic> _foodData = {
     'name': '',
+    'category': 'food',
     'calories': 0,
     'fats': 0,
     'proteins': 0,
     'carbs': 0,
     'imageUrl': ''
   };
+  String selectedCategory = 'food';
   final _formKey = GlobalKey<FormState>();
+  String measurmentPicker() {
+    if (selectedCategory.contains('food')) {
+      return '/100 gm';
+    } else if (selectedCategory.contains('beverage')) {
+      return '/100 ml';
+    } else {
+      return '/1 spoon';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Create new food'),
+        title: const Text('Add new food'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -34,7 +46,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
             const SizedBox(
               height: 20,
             ),
-            const Text('Create new food',
+            const Text('Add new food',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color.fromARGB(255, 97, 219, 213),
@@ -44,7 +56,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                 )),
             Center(
               child: Container(
-                margin: const EdgeInsets.all(15),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 width: 150,
                 height: 150,
                 color: Color.fromARGB(134, 158, 158, 158),
@@ -53,21 +66,46 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                 ),
               ),
             ),
+            Center(
+              child: DropdownButton<String>(
+                value: _foodData['category'],
+
+                items: <String>['food', 'beverage', 'seasoning']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: TextStyle(
+                          fontSize: 16, color: Color.fromARGB(136, 0, 0, 0)),
+                    ),
+                  );
+                }).toList(),
+                // Step 5.
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _foodData['category'] = newValue!;
+                    selectedCategory = newValue;
+                    //print(_foodData['category']);
+                  });
+                },
+              ),
+            ),
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
               ),
               elevation: 8.0,
               child: Container(
-                constraints: BoxConstraints(minWidth: _deviceSize.width * 0.7),
-                width: _deviceSize.width * 0.7,
+                constraints: BoxConstraints(minWidth: _deviceSize.width * 0.75),
+                width: _deviceSize.width * 0.75,
                 padding: const EdgeInsets.all(20),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'title'),
+                        decoration: const InputDecoration(hintText: 'name'),
                         keyboardType: TextInputType.name,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -80,7 +118,9 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'calories'),
+                        decoration: InputDecoration(
+                            hintText: 'calories',
+                            suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -93,7 +133,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'fats'),
+                        decoration: InputDecoration(
+                            hintText: 'fats', suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -106,7 +147,9 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'proteins'),
+                        decoration: InputDecoration(
+                            hintText: 'proteins',
+                            suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -119,7 +162,9 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'carbs'),
+                        decoration: InputDecoration(
+                            hintText: 'carbs',
+                            suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -137,12 +182,13 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                       SizedBox(
                         width: 290,
                         child: ElevatedButton(
-                          onPressed: () => {},
+                          onPressed: () =>
+                              {if (_formKey.currentState!.validate()) {}},
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40)),
                           ),
-                          child: const Text('Create',
+                          child: const Text('Save',
                               style: TextStyle(color: Colors.white)),
                         ),
                       ),
