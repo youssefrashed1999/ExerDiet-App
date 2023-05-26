@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:http/http.dart' as http;
 import '../constants.dart';
 import '../models/diet_food.dart';
 
@@ -9,13 +12,50 @@ class DietFoodItem extends StatelessWidget {
   //const DietFoodItem({super.key});
 
   final DietFood dietFood;
+  late int mealId;
 
-  DietFoodItem({super.key, required this.dietFood});
+  DietFoodItem({super.key, required this.dietFood, required this.mealId});
   final GlobalKey<FormState> _formkey = GlobalKey();
   double amount = 0;
   void addFood() async {
+    print('${BASE_URL}diet/meals/$mealId/food_instances/');
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? accessKey = prefs.getString(ACCESS_KEY);
+    try {
+      final response = await http.post(
+          Uri.parse('${BASE_URL}diet/meals/$mealId/food_instances/'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'JWT $accessKey'
+          },
+          body: jsonEncode(
+              <String, dynamic>{'food_id': dietFood.id, 'quantity': amount}));
+      print('code is:${response.body.toString()}');
+      if (response.statusCode == 201) {
+        Fluttertoast.showToast(
+            msg: 'Food added successfully',
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.white,
+            textColor: MY_COLOR[300]);
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Error adding food!\nTry again later!',
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.white,
+            textColor: MY_COLOR[300]);
+      }
+    } catch (_) {}
+  }
+
+  void submit() {
+    if (!_formkey.currentState!.validate()) {
+      // Invalid!
+      return;
+    }
+    //valid form state
+    //LogIn logic
+    _formkey.currentState!.save();
+    addFood();
   }
 
   @override
@@ -107,10 +147,11 @@ class DietFoodItem extends StatelessWidget {
                   },
                   child: const Text(
                     'Back',
-                    style: TextStyle(fontSize: 20,color: Colors.grey),
+                    style: TextStyle(fontSize: 20, color: Colors.grey),
                   )),
               TextButton(
                   onPressed: () {
+                    submit();
                     Navigator.pop(context);
                   },
                   child: const Text(

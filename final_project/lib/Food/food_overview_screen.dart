@@ -35,7 +35,8 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
   String? nextCustomFoodPage =
       "https://exerdiet.pythonanywhere.com/diet/custom_foods/";
   bool isCustomFoodLoadingComplete = false;
-
+  //meal id
+  late int mealId;
   //get food-recipes-custom foods functions
   void getFood() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -249,7 +250,10 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                       },
                       child: const Text('Load more'));
                 } else {
-                  return DietFoodItem(dietFood: loadedfood[index]);
+                  return DietFoodItem(
+                    dietFood: loadedfood[index],
+                    mealId: mealId,
+                  );
                 }
               },
               scrollDirection: Axis.vertical,
@@ -314,7 +318,10 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                       },
                       child: const Text('Load more'));
                 } else {
-                  return DietFoodItem(dietFood: loadedrecipe[index]);
+                  return DietFoodItem(
+                    dietFood: loadedrecipe[index],
+                    mealId: mealId,
+                  );
                 }
               },
               scrollDirection: Axis.vertical,
@@ -394,7 +401,10 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                       },
                       child: const Text('Load more'));
                 } else {
-                  return DietFoodItem(dietFood: loadedcustomfood[index]);
+                  return DietFoodItem(
+                    dietFood: loadedcustomfood[index],
+                    mealId: mealId,
+                  );
                 }
               },
               scrollDirection: Axis.vertical,
@@ -431,6 +441,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
   late TabController controller;
   @override
   Widget build(BuildContext context) {
+    mealId = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Food'),
