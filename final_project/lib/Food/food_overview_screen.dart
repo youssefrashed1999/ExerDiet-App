@@ -35,7 +35,8 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
   String? nextCustomFoodPage =
       "https://exerdiet.pythonanywhere.com/diet/custom_foods/";
   bool isCustomFoodLoadingComplete = false;
-
+  //meal id
+  late int mealId;
   //get food-recipes-custom foods functions
   void getFood() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -250,13 +251,8 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                       child: const Text('Load more'));
                 } else {
                   return DietFoodItem(
-                    id: loadedfood[index].id,
-                    name: loadedfood[index].name,
-                    imageUrl: loadedfood[index].imageUrl,
-                    calories: loadedfood[index].calories,
-                    fats: loadedfood[index].fats,
-                    protein: loadedfood[index].protein,
-                    carbs: loadedfood[index].carbs,
+                    dietFood: loadedfood[index],
+                    mealId: mealId,
                   );
                 }
               },
@@ -323,13 +319,8 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                       child: const Text('Load more'));
                 } else {
                   return DietFoodItem(
-                    id: loadedrecipe[index].id,
-                    name: loadedrecipe[index].name,
-                    imageUrl: loadedrecipe[index].imageUrl,
-                    calories: loadedrecipe[index].calories,
-                    fats: loadedrecipe[index].fats,
-                    protein: loadedrecipe[index].protein,
-                    carbs: loadedrecipe[index].carbs,
+                    dietFood: loadedrecipe[index],
+                    mealId: mealId,
                   );
                 }
               },
@@ -411,13 +402,8 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                       child: const Text('Load more'));
                 } else {
                   return DietFoodItem(
-                    id: loadedcustomfood[index].id,
-                    name: loadedcustomfood[index].name,
-                    imageUrl: loadedcustomfood[index].imageUrl,
-                    calories: loadedcustomfood[index].calories,
-                    fats: loadedcustomfood[index].fats,
-                    protein: loadedcustomfood[index].protein,
-                    carbs: loadedcustomfood[index].carbs,
+                    dietFood: loadedcustomfood[index],
+                    mealId: mealId,
                   );
                 }
               },
@@ -455,6 +441,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
   late TabController controller;
   @override
   Widget build(BuildContext context) {
+    mealId = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Food'),
