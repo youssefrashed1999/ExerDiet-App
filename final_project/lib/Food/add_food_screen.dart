@@ -12,13 +12,25 @@ class AddFoodScreen extends StatefulWidget {
 class _AddFoodScreenState extends State<AddFoodScreen> {
   Map<String, dynamic> _foodData = {
     'name': '',
+    'category': 'food',
     'calories': 0,
     'fats': 0,
     'proteins': 0,
     'carbs': 0,
     'imageUrl': ''
   };
+  String selectedCategory = 'food';
   final _formKey = GlobalKey<FormState>();
+  String measurmentPicker() {
+    if (selectedCategory.contains('food')) {
+      return '/100 gm';
+    } else if (selectedCategory.contains('beverage')) {
+      return '/100 ml';
+    } else {
+      return '/1 spoon';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final _deviceSize = MediaQuery.of(context).size;
@@ -44,13 +56,39 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                 )),
             Center(
               child: Container(
-                margin: const EdgeInsets.all(15),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 width: 150,
                 height: 150,
                 color: Color.fromARGB(134, 158, 158, 158),
                 child: const Center(
                   child: Icon(Icons.add_a_photo_sharp),
                 ),
+              ),
+            ),
+            Center(
+              child: DropdownButton<String>(
+                value: _foodData['category'],
+
+                items: <String>['food', 'beverage', 'seasoning']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: TextStyle(
+                          fontSize: 16, color: Color.fromARGB(136, 0, 0, 0)),
+                    ),
+                  );
+                }).toList(),
+                // Step 5.
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _foodData['category'] = newValue!;
+                    selectedCategory = newValue;
+                    //print(_foodData['category']);
+                  });
+                },
               ),
             ),
             Card(
@@ -80,8 +118,9 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(
-                            hintText: 'calories', suffix: Text('/100 gm')),
+                        decoration: InputDecoration(
+                            hintText: 'calories',
+                            suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -94,8 +133,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(
-                            hintText: 'fats', suffix: Text('/100 gm')),
+                        decoration: InputDecoration(
+                            hintText: 'fats', suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -108,8 +147,9 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(
-                            hintText: 'proteins', suffix: Text('/100 gm')),
+                        decoration: InputDecoration(
+                            hintText: 'proteins',
+                            suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -122,8 +162,9 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(
-                            hintText: 'carbs', suffix: Text('/100 gm')),
+                        decoration: InputDecoration(
+                            hintText: 'carbs',
+                            suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
