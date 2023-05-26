@@ -55,15 +55,15 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               ),
               elevation: 8.0,
               child: Container(
-                constraints: BoxConstraints(minWidth: _deviceSize.width * 0.7),
-                width: _deviceSize.width * 0.7,
+                constraints: BoxConstraints(minWidth: _deviceSize.width * 0.75),
+                width: _deviceSize.width * 0.75,
                 padding: const EdgeInsets.all(20),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'title'),
+                        decoration: const InputDecoration(hintText: 'name'),
                         keyboardType: TextInputType.name,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -72,73 +72,53 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                           return null;
                         },
                         onSaved: (value) {
-                          /*_foodData['name'] = value;*/
+                          _recipeData['name'] = value;
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'calories'),
-                        keyboardType: TextInputType.number,
+                        decoration:
+                            const InputDecoration(hintText: 'instructions'),
+                        keyboardType: TextInputType.multiline,
+                        minLines: 1,
+                        maxLines: 30,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'calories are required!';
+                            return 'instructions is required!';
                           }
                           return null;
                         },
                         onSaved: (value) {
-                          /* _foodData['calories'] = value;*/
+                          _recipeData['instructions'] = value;
                         },
                       ),
-                      TextFormField(
-                        decoration: const InputDecoration(hintText: 'fats'),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'fats are required!';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          /* _foodData['fats'] = value;*/
-                        },
+                      SizedBox(
+                        height: 10,
                       ),
-                      TextFormField(
-                        decoration: const InputDecoration(hintText: 'proteins'),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'proteins are required!';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          /* _foodData['proteins'] = value;*/
-                        },
-                      ),
-                      TextFormField(
-                        decoration: const InputDecoration(hintText: 'carbs'),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'carbs are required!';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          /*_foodData['carbs'] = value;*/
-                        },
-                      ),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(horizontal: -1)),
+                          onPressed: () {},
+                          child: Row(
+                            children: [
+                              Text('ingredients'),
+                              Icon(Icons.arrow_right)
+                            ],
+                          )),
                       const SizedBox(
                         height: 30,
                       ),
                       SizedBox(
                         width: 290,
                         child: ElevatedButton(
-                          onPressed: () => {},
+                          onPressed: () =>
+                              {if (_formKey.currentState!.validate()) {}},
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40)),
                           ),
-                          child: const Text('Create',
+                          child: const Text('save',
                               style: TextStyle(color: Colors.white)),
                         ),
                       ),
