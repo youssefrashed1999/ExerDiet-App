@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:final_project/Food/add_food_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -421,7 +422,9 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                     borderRadius: BorderRadius.horizontal(
                         right: Radius.circular(40), left: Radius.circular(40))),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(AddFoodScreen.routeName);
+              },
               child: const Text('create new food',
                   style: TextStyle(color: Colors.white))),
         ),
