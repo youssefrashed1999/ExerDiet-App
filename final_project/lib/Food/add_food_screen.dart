@@ -25,7 +25,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Create new food'),
+        title: const Text('Add new food'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -34,7 +34,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
             const SizedBox(
               height: 20,
             ),
-            const Text('Create new food',
+            const Text('Add new food',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color.fromARGB(255, 97, 219, 213),
@@ -59,15 +59,15 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               ),
               elevation: 8.0,
               child: Container(
-                constraints: BoxConstraints(minWidth: _deviceSize.width * 0.7),
-                width: _deviceSize.width * 0.7,
+                constraints: BoxConstraints(minWidth: _deviceSize.width * 0.75),
+                width: _deviceSize.width * 0.75,
                 padding: const EdgeInsets.all(20),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'title'),
+                        decoration: const InputDecoration(hintText: 'name'),
                         keyboardType: TextInputType.name,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -80,7 +80,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'calories'),
+                        decoration: const InputDecoration(
+                            hintText: 'calories', suffix: Text('/100 gm')),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -93,7 +94,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'fats'),
+                        decoration: const InputDecoration(
+                            hintText: 'fats', suffix: Text('/100 gm')),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -106,7 +108,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'proteins'),
+                        decoration: const InputDecoration(
+                            hintText: 'proteins', suffix: Text('/100 gm')),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -119,7 +122,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         },
                       ),
                       TextFormField(
-                        decoration: const InputDecoration(hintText: 'carbs'),
+                        decoration: const InputDecoration(
+                            hintText: 'carbs', suffix: Text('/100 gm')),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -137,12 +141,13 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                       SizedBox(
                         width: 290,
                         child: ElevatedButton(
-                          onPressed: () => {},
+                          onPressed: () =>
+                              {if (_formKey.currentState!.validate()) {}},
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40)),
                           ),
-                          child: const Text('Create',
+                          child: const Text('Save',
                               style: TextStyle(color: Colors.white)),
                         ),
                       ),
