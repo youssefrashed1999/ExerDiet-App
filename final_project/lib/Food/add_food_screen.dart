@@ -12,19 +12,19 @@ class AddFoodScreen extends StatefulWidget {
 class _AddFoodScreenState extends State<AddFoodScreen> {
   Map<String, dynamic> _foodData = {
     'name': '',
-    'category': 'food',
+    'category': 'F',
     'calories': 0,
     'fats': 0,
     'proteins': 0,
     'carbs': 0,
     'imageUrl': ''
   };
-  String selectedCategory = 'food';
+  String selectedCategory = 'F';
   final _formKey = GlobalKey<FormState>();
   String measurmentPicker() {
-    if (selectedCategory.contains('food')) {
+    if (selectedCategory.contains('F')) {
       return '/100 gm';
-    } else if (selectedCategory.contains('beverage')) {
+    } else if (selectedCategory.contains('B')) {
       return '/100 ml';
     } else {
       return '/1 spoon';
@@ -70,12 +70,16 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               child: DropdownButton<String>(
                 value: _foodData['category'],
 
-                items: <String>['food', 'beverage', 'seasoning']
+                items: <String>['F', 'B', 'S']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(
-                      value,
+                      value.contains('F')
+                          ? 'food'
+                          : value.contains('B')
+                              ? 'beverage'
+                              : 'seasoning',
                       style: TextStyle(
                           fontSize: 16, color: Color.fromARGB(136, 0, 0, 0)),
                     ),
@@ -86,7 +90,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                   setState(() {
                     _foodData['category'] = newValue!;
                     selectedCategory = newValue;
-                    //print(_foodData['category']);
+                    print(_foodData['category']);
                   });
                 },
               ),
