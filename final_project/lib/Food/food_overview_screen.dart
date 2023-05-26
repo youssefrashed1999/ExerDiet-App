@@ -1,14 +1,17 @@
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../constants.dart';
 import '../models/diet_food.dart';
 import 'diet_food_item.dart';
-import 'package:http/http.dart' as http;
 
 class FoodOverviewScreen extends StatefulWidget {
   static const routeName = '/food';
+
+  const FoodOverviewScreen({super.key});
 
   @override
   State<FoodOverviewScreen> createState() => _FoodOverviewScreenState();
@@ -16,19 +19,24 @@ class FoodOverviewScreen extends StatefulWidget {
 
 class _FoodOverviewScreenState extends State<FoodOverviewScreen>
     with SingleTickerProviderStateMixin {
+  //food tab controllers and attributes
   List<DietFood> loadedfood = List.empty(growable: true);
-  List<DietFood> loadedrecipe = List.empty(growable: true);
-  List<DietFood> loadedcustomfood = List.empty(growable: true);
-  TextEditingController foodController = TextEditingController();
-  TextEditingController recipeController = TextEditingController();
-  TextEditingController customFoodController = TextEditingController();
   String? nextFoodPage = "https://exerdiet.pythonanywhere.com/diet/foods/";
+  TextEditingController foodController = TextEditingController();
+  bool isFoodLoadingComplete = false;
+  //recipe tab controllers and attributes
+  List<DietFood> loadedrecipe = List.empty(growable: true);
+  TextEditingController recipeController = TextEditingController();
   String? nextRecipePage = "https://exerdiet.pythonanywhere.com/diet/recipes/";
+  bool isRecipeLoadingComplete = false;
+  //custom food tab controllers and attributes
+  List<DietFood> loadedcustomfood = List.empty(growable: true);
+  TextEditingController customFoodController = TextEditingController();
   String? nextCustomFoodPage =
       "https://exerdiet.pythonanywhere.com/diet/custom_foods/";
-  bool isFoodLoadingComplete = false;
-  bool isRecipeLoadingComplete = false;
   bool isCustomFoodLoadingComplete = false;
+
+  //get food-recipes-custom foods functions
   void getFood() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? accessKey = prefs.getString(ACCESS_KEY);
@@ -52,9 +60,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
           isFoodLoadingComplete = true;
         });
       }
-    } catch (e) {
-      print('problem is $e');
-    }
+    } catch (_) {}
   }
 
   void getRecipe() async {
@@ -80,9 +86,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
           isRecipeLoadingComplete = true;
         });
       }
-    } catch (e) {
-      print('problem is $e');
-    }
+    } catch (_) {}
   }
 
   void getCustomFood() async {
@@ -108,11 +112,10 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
           isCustomFoodLoadingComplete = true;
         });
       }
-    } catch (e) {
-      print('problem is $e');
-    }
+    } catch (_) {}
   }
 
+  //search methods
   void searchFood(String value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? accessKey = prefs.getString(ACCESS_KEY);
@@ -136,9 +139,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
           isFoodLoadingComplete = true;
         });
       }
-    } catch (e) {
-      print('problem is $e');
-    }
+    } catch (_) {}
   }
 
   void searchRecipe(String value) async {
@@ -164,9 +165,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
           isRecipeLoadingComplete = true;
         });
       }
-    } catch (e) {
-      print('problem is $e');
-    }
+    } catch (_) {}
   }
 
   void searchCustomFood(String value) async {
@@ -192,20 +191,10 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
           isCustomFoodLoadingComplete = true;
         });
       }
-    } catch (e) {
-      print('problem is $e');
-    }
+    } catch (_) {}
   }
 
-  @override
-  void initState() {
-    controller = TabController(length: 3, vsync: this);
-    super.initState();
-    getFood();
-    getRecipe();
-    getCustomFood();
-  }
-
+  //widgets
   Widget foodTab() {
     return Column(
       children: [
@@ -366,7 +355,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
     );
   }
 
-  Widget myFoodTab() {
+  Widget customFoodTab() {
     return Column(
       children: [
         const SizedBox(
@@ -454,101 +443,13 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
     );
   }
 
-  Widget tabWidget(List foodList, bool isLoadingComplete, String value,
-      Function load, Function search) {
-    TextEditingController controller = TextEditingController();
-    return Column(
-      children: [
-        const SizedBox(
-          height: 7,
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.1),
-          child: TextField(
-            controller: controller,
-            //onChanged: (value) => updateList(value),
-            style: const TextStyle(
-                color: Color.fromARGB(255, 97, 219, 213), fontSize: 12),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: const Color(0x00000000),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-              hintText: "eg: Orange",
-              suffixIcon: InkWell(
-                child: const Icon(Icons.search),
-                onTap: () {
-                  setState(() {
-                    if (value == 'Food') {
-                      nextFoodPage =
-                          "https://exerdiet.pythonanywhere.com/diet/foods/";
-                    } else if (value == 'Recipe') {
-                      nextRecipePage =
-                          "https://exerdiet.pythonanywhere.com/diet/recipes/";
-                    } else {
-                      nextCustomFoodPage =
-                          "https://exerdiet.pythonanywhere.com/diet/custom_foods/";
-                    }
-                    foodList = List.empty(growable: true);
-                    isLoadingComplete = false;
-                  });
-                  search(controller.value);
-                },
-              ),
-            ),
-          ),
-        ),
-        if (isLoadingComplete == false)
-          const CircularProgressIndicator()
-        else if (isLoadingComplete == true && foodList.isNotEmpty)
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              itemCount:
-                  nextFoodPage == null ? foodList.length : foodList.length + 1,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                if (nextFoodPage != null && index == loadedfood.length) {
-                  return ElevatedButton(
-                      onPressed: () {
-                        load();
-                      },
-                      child: const Text('Load more'));
-                } else {
-                  return DietFoodItem(
-                    id: loadedfood[index].id,
-                    name: loadedfood[index].name,
-                    imageUrl: loadedfood[index].imageUrl,
-                    calories: loadedfood[index].calories,
-                    fats: loadedfood[index].fats,
-                    protein: loadedfood[index].protein,
-                    carbs: loadedfood[index].carbs,
-                  );
-                }
-              },
-              scrollDirection: Axis.vertical,
-            ),
-          )
-        else
-          Center(child: Text('No $value found on Database!')),
-        if (value != 'Food')
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 4,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.horizontal(
-                          right: Radius.circular(40),
-                          left: Radius.circular(40))),
-                ),
-                onPressed: () {},
-                child: Text('create new $value',
-                    style: const TextStyle(color: Colors.white))),
-          ),
-      ],
-    );
+  @override
+  void initState() {
+    controller = TabController(length: 3, vsync: this);
+    super.initState();
+    getFood();
+    getRecipe();
+    getCustomFood();
   }
 
   late TabController controller;
@@ -579,7 +480,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
       ),
       body: TabBarView(
           controller: controller,
-          children: [foodTab(), recipeTab(), myFoodTab()]),
+          children: [foodTab(), recipeTab(), customFoodTab()]),
     );
   }
 }

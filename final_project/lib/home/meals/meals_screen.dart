@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:final_project/Food/food_overview_screen.dart';
 import 'package:final_project/home/meals/food_instance_item.dart';
 import 'package:final_project/models/diet_recipe.dart';
 import 'package:final_project/models/food_instance.dart';
@@ -8,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import '../../Food/food_overview_screen.dart';
 import '../../constants.dart';
 import 'package:intl/intl.dart';
 

@@ -1,8 +1,7 @@
 import 'package:final_project/auth/log_in_screen.dart';
 import 'package:final_project/auth/open_screen.dart';
 import 'package:final_project/auth/sign_up_screen.dart';
-import 'package:final_project/Food/food_overview_screen.dart';
-import 'package:final_project/Food/add_water_screen.dart';
+
 import 'package:final_project/healthQuiz/health_quiz_screen.dart';
 import 'package:final_project/home/dashboard/change_goal_screen.dart';
 import 'package:final_project/home/dashboard/change_password_screen.dart';
@@ -15,11 +14,13 @@ import 'package:final_project/home/meals/meals_screen.dart';
 import 'package:final_project/splash_screen.dart';
 import 'package:final_project/workouts/exercise_overview_screen.dart';
 import 'package:flutter/material.dart';
+import 'Food/food_overview_screen.dart';
 import 'constants.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 class MyApp extends StatelessWidget {
