@@ -249,15 +249,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                       },
                       child: const Text('Load more'));
                 } else {
-                  return DietFoodItem(
-                    id: loadedfood[index].id,
-                    name: loadedfood[index].name,
-                    imageUrl: loadedfood[index].imageUrl,
-                    calories: loadedfood[index].calories,
-                    fats: loadedfood[index].fats,
-                    protein: loadedfood[index].protein,
-                    carbs: loadedfood[index].carbs,
-                  );
+                  return DietFoodItem(dietFood: loadedfood[index]);
                 }
               },
               scrollDirection: Axis.vertical,
@@ -322,15 +314,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                       },
                       child: const Text('Load more'));
                 } else {
-                  return DietFoodItem(
-                    id: loadedrecipe[index].id,
-                    name: loadedrecipe[index].name,
-                    imageUrl: loadedrecipe[index].imageUrl,
-                    calories: loadedrecipe[index].calories,
-                    fats: loadedrecipe[index].fats,
-                    protein: loadedrecipe[index].protein,
-                    carbs: loadedrecipe[index].carbs,
-                  );
+                  return DietFoodItem(dietFood: loadedrecipe[index]);
                 }
               },
               scrollDirection: Axis.vertical,
@@ -410,15 +394,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                       },
                       child: const Text('Load more'));
                 } else {
-                  return DietFoodItem(
-                    id: loadedcustomfood[index].id,
-                    name: loadedcustomfood[index].name,
-                    imageUrl: loadedcustomfood[index].imageUrl,
-                    calories: loadedcustomfood[index].calories,
-                    fats: loadedcustomfood[index].fats,
-                    protein: loadedcustomfood[index].protein,
-                    carbs: loadedcustomfood[index].carbs,
-                  );
+                  return DietFoodItem(dietFood: loadedcustomfood[index]);
                 }
               },
               scrollDirection: Axis.vertical,

@@ -12,7 +12,7 @@ class DietFood {
   DietFood(
       {required this.id,
       required this.name,
-      this.category = 'food',
+      this.category = 'F',
       required this.calories,
       required this.fats,
       required this.protein,
@@ -27,6 +27,7 @@ class DietFood {
         fats: json['fats'].toDouble(),
         protein: json['protein'].toDouble(),
         carbs: json['carbs'].toDouble(),
-        imageUrl: json['image']);
+        imageUrl: json['image'],
+        category: json['category']);
   }
 }

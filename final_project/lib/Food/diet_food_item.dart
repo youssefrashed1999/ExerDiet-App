@@ -3,28 +3,14 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';
+import '../models/diet_food.dart';
 
 class DietFoodItem extends StatelessWidget {
   //const DietFoodItem({super.key});
 
-  final int id;
-  final String name;
-  final String? imageUrl;
-  final int calories;
-  final double fats;
-  final double protein;
-  final double carbs;
+  final DietFood dietFood;
 
-  DietFoodItem({
-    super.key,
-    required this.id,
-    required this.name,
-    required this.imageUrl,
-    required this.calories,
-    required this.fats,
-    required this.protein,
-    required this.carbs,
-  });
+  DietFoodItem({super.key, required this.dietFood});
   final GlobalKey<FormState> _formkey = GlobalKey();
   double amount = 0;
   void addFood() async {
@@ -88,18 +74,29 @@ class DietFoodItem extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 14, color: Theme.of(context).primaryColor),
                   ),
-                  TextFormField(
-                    initialValue: 100.toString(),
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    validator: (value) {
-                      if (value!.isEmpty || double.parse(value) <= 0) {
-                        return 'Quantity can\'t be negative';
-                      }
-                      return null;
-                    },
-                    onSaved: (newValue) => amount = double.parse(newValue!),
-                  ),
+                  Row(children: [
+                    SizedBox(
+                      width: 100,
+                      child: TextFormField(
+                        initialValue: 100.toString(),
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        validator: (value) {
+                          if (value!.isEmpty || double.parse(value) <= 0) {
+                            return 'Quantity can\'t be negative';
+                          }
+                          return null;
+                        },
+                        onSaved: (newValue) => amount = double.parse(newValue!),
+                      ),
+                    ),
+                    if (dietFood.category == 'F')
+                      const Text('grams')
+                    else if (dietFood.category == 'L')
+                      const Text('mL')
+                    else
+                      const Text('tbsp'),
+                  ]),
                 ],
               ),
             ),
@@ -109,15 +106,15 @@ class DietFoodItem extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   child: const Text(
-                    'Ok',
-                    style: TextStyle(fontSize: 20),
+                    'Back',
+                    style: TextStyle(fontSize: 20,color: Colors.grey),
                   )),
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
                   child: const Text(
-                    'Back',
+                    'Add',
                     style: TextStyle(fontSize: 20),
                   ))
             ],
@@ -139,9 +136,9 @@ class DietFoodItem extends StatelessWidget {
               SizedBox(
                 width: 100,
                 height: 100,
-                child: imageUrl == null
+                child: dietFood.imageUrl == null
                     ? null
-                    : Image.network(imageUrl!, fit: BoxFit.fill),
+                    : Image.network(dietFood.imageUrl!, fit: BoxFit.fill),
               ),
               const SizedBox(
                 width: 7,
@@ -154,15 +151,15 @@ class DietFoodItem extends StatelessWidget {
                   children: [
                     FittedBox(
                       child: Text(
-                        '$name\n',
+                        '${dietFood.name}\n',
                         style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Text('calories: $calories g'),
-                    Text('fats: $fats g'),
-                    Text('protien: $protein g'),
-                    Text('carbs: $carbs g'),
+                    Text('calories: ${dietFood.calories} g'),
+                    Text('fats: ${dietFood.fats} g'),
+                    Text('protien: ${dietFood.protein} g'),
+                    Text('carbs: ${dietFood.carbs} g'),
                   ],
                 ),
               ),
