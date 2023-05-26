@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import '../../Food/food_overview_screen.dart';
 import '../../constants.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 import '../../main.dart';
 import '../../models/meal.dart';
@@ -77,6 +78,27 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
     } catch (_) {}
   }
 
+  void createMeal() async {
+    if (mealId == -1) {
+      try {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final String? accessKey = prefs.getString(ACCESS_KEY);
+        final response = await http.post(Uri.parse('${BASE_URL}diet/meals/'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'JWT $accessKey'
+            },
+            body: jsonEncode(<String, String>{'name': mealName}));
+        if (response.statusCode == 201) {
+          mealId = jsonDecode(response.body)['id'];
+        }
+      } catch (_) {}
+    }
+    if (!context.mounted) return;
+    Navigator.of(context)
+        .pushNamed(FoodOverviewScreen.routeName, arguments: mealId);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -97,6 +119,14 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
       setState(() {
         loadData();
       });
+    });
+  }
+
+  @override
+  void didPop() {
+    super.didPop();
+    setState(() {
+      getUserInfo();
     });
   }
 
@@ -190,7 +220,7 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
                           left: Radius.circular(40))),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(FoodOverviewScreen.routeName);
+                  createMeal();
                 },
                 child: const Text('Add more',
                     style: TextStyle(color: Colors.white))),
