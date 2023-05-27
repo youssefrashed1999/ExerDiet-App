@@ -1,6 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import '../constants.dart';
 import '../models/user.dart';
 
 class AddWater extends StatefulWidget {
@@ -38,9 +43,44 @@ Widget _innerWidget(double value, double max, BuildContext context) {
 
 class _AddWaterState extends State<AddWater> {
   User _user = User.instance;
-  var amount = 250;
-  List<double> watercups = [];
-  void add_water_amount() {}
+  int amount = 250;
+
+  void add_water_amount() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? accessKey = prefs.getString(ACCESS_KEY);
+    try {
+      final response = await http.post(Uri.parse('${BASE_URL}diet/waters/'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'JWT $accessKey'
+          },
+          body: jsonEncode(<String, int>{'amount': amount.toInt()}));
+      if (response.statusCode == 201) {
+        Fluttertoast.showToast(
+            msg: 'Water added successfully!',
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.white,
+            textColor: MY_COLOR[300]);
+        await getUserInfo();
+        setState(() {
+          _user = User.instance;
+        });
+      } else {
+        Fluttertoast.showToast(
+            msg: 'Error occurred!\n please try again later.',
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.white,
+            textColor: MY_COLOR[300]);
+      }
+    } catch (_) {
+      Fluttertoast.showToast(
+          msg: 'Error occurred!\n please try again later.',
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.white,
+          textColor: MY_COLOR[300]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -54,15 +94,15 @@ class _AddWaterState extends State<AddWater> {
                   'Measurements',
                   style: TextStyle(color: Color.fromRGBO(125, 236, 216, 1)),
                 ),
-                content: Text('pick your amount of choice'),
+                content: const Text('pick your amount of choice'),
                 actions: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            Text('250'),
+                            const Text('250'),
                             IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -74,7 +114,7 @@ class _AddWaterState extends State<AddWater> {
                         ),
                         Row(
                           children: [
-                            Text('350'),
+                            const Text('350'),
                             IconButton(
                               onPressed: () {
                                 setState(() {
@@ -87,7 +127,7 @@ class _AddWaterState extends State<AddWater> {
                         ),
                         Row(
                           children: [
-                            Text('450'),
+                            const Text('450'),
                             IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -149,9 +189,9 @@ class _AddWaterState extends State<AddWater> {
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: SleekCircularSlider(
-                      initialValue: 50,
+                      initialValue: _user.waterIntakeToday.toDouble(),
                       min: 0,
-                      max: 1000,
+                      max: _user.dailyWaterNeeds.toDouble(),
                       appearance: CircularSliderAppearance(
                         startAngle: 270,
                         angleRange: 360,
@@ -164,8 +204,8 @@ class _AddWaterState extends State<AddWater> {
                             hideShadow: true,
                             dotColor: Colors.white),
                       ),
-                      innerWidget: (percentage) =>
-                          _innerWidget(percentage, 1000, context),
+                      innerWidget: (percentage) => _innerWidget(percentage,
+                          _user.dailyWaterNeeds.toDouble(), context),
                     ),
                   ),
                 ),
@@ -184,12 +224,15 @@ class _AddWaterState extends State<AddWater> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
-                    child: Icon(Icons.add),
+                    onPressed: () {
+                      add_water_amount();
+                    },
                     style: ElevatedButton.styleFrom(
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(20),
-                        backgroundColor: Color.fromRGBO(125, 236, 216, 1)),
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(20),
+                        backgroundColor:
+                            const Color.fromRGBO(125, 236, 216, 1)),
+                    child: const Icon(Icons.add),
                   ),
                   IconButton(
                       onPressed: () {
