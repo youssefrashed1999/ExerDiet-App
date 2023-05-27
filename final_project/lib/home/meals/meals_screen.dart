@@ -10,7 +10,6 @@ import 'package:http/http.dart' as http;
 import '../../Food/food_overview_screen.dart';
 import '../../constants.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 
 import '../../main.dart';
 import '../../models/meal.dart';
@@ -29,7 +28,7 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
   bool isLoadingComplete = false;
   int mealId = -1;
   late String mealName;
-  late Meal meal;
+  Meal? meal;
   void loadData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? accessKey = prefs.getString(ACCESS_KEY);
@@ -112,7 +111,6 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
   void didPopNext() {
     super.didPopNext();
     setState(() {
-      print('im here and this function works and you suck');
       loadedfood = List.empty(growable: true);
       loadedRecipe = List.empty(growable: true);
       isLoadingComplete = false;
@@ -121,8 +119,6 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
       });
     });
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +132,7 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  meal.name,
+                  meal!.name,
                   style: const TextStyle(fontSize: 20),
                 ),
                 const SizedBox(
@@ -146,11 +142,11 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        'Eaten in: ${DateFormat('EEE yyyy-MM-dd hh:mm a').format(DateTime.parse(meal.timeEaten))}'),
-                    Text('total Calories: ${meal.totalCalories} cal'),
-                    Text('total protein: ${meal.totalProtein} g'),
-                    Text('total fats: ${meal.totalFats} g'),
-                    Text('total carbs: ${meal.totalCarbs} g'),
+                        'Eaten in: ${DateFormat('EEE yyyy-MM-dd hh:mm a').format(DateTime.parse(meal!.timeEaten))}'),
+                    Text('total Calories: ${meal!.totalCalories} cal'),
+                    Text('total protein: ${meal!.totalProtein} g'),
+                    Text('total fats: ${meal!.totalFats} g'),
+                    Text('total carbs: ${meal!.totalCarbs} g'),
                   ],
                 )
               ],
@@ -178,7 +174,7 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
                 onPressed: () {
                   showDetails();
                 },
-                child: Text('Total calories: ${meal.totalCalories.toString()}',
+                child: Text('Total calories: ${meal!.totalCalories.toString()}',
                     style: Theme.of(context).textTheme.titleMedium)),
         ],
       ),
