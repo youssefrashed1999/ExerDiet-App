@@ -1,3 +1,4 @@
+import 'package:final_project/constants.dart';
 import 'package:final_project/models/food_instance.dart';
 import 'package:flutter/material.dart';
 
@@ -59,7 +60,7 @@ class FoodInstanceItem extends StatelessWidget {
                 height: 100,
                 child: food.food.imageUrl == null
                     ? null
-                    : Image.network(food.food.imageUrl!, fit: BoxFit.fill),
+                    : Image.network('$BASE_URL${food.food.imageUrl!}', fit: BoxFit.fill),
               ),
               const SizedBox(
                 width: 7,
