@@ -1,13 +1,16 @@
 import 'dart:convert';
 
 import 'package:final_project/Food/add_food_screen.dart';
+import 'package:final_project/Food/add_recipe_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants.dart';
 import '../models/diet_food.dart';
+import '../models/diet_recipe.dart';
 import 'diet_food_item.dart';
+import 'diet_recipe_item.dart';
 
 class FoodOverviewScreen extends StatefulWidget {
   static const routeName = '/food';
@@ -26,7 +29,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
   TextEditingController foodController = TextEditingController();
   bool isFoodLoadingComplete = false;
   //recipe tab controllers and attributes
-  List<DietFood> loadedrecipe = List.empty(growable: true);
+  List<DietRecipe> loadedrecipe = List.empty(growable: true);
   TextEditingController recipeController = TextEditingController();
   String? nextRecipePage = "https://exerdiet.pythonanywhere.com/diet/recipes/";
   bool isRecipeLoadingComplete = false;
@@ -81,14 +84,16 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
         nextRecipePage = jsonDecode(response.body)['next'];
         int count = jsonDecode(response.body)['results'].length;
         for (int i = 0; i < count; i++) {
-          loadedrecipe
-              .add(DietFood.fromjson(jsonDecode(response.body)['results'][i]));
+          loadedrecipe.add(
+              DietRecipe.fromjson(jsonDecode(response.body)['results'][i]));
         }
         setState(() {
           isRecipeLoadingComplete = true;
         });
       }
-    } catch (_) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   void getCustomFood() async {
@@ -160,8 +165,8 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
         nextRecipePage = jsonDecode(response.body)['next'];
         int count = jsonDecode(response.body)['results'].length;
         for (int i = 0; i < count; i++) {
-          loadedrecipe
-              .add(DietFood.fromjson(jsonDecode(response.body)['results'][i]));
+          loadedrecipe.add(
+              DietRecipe.fromjson(jsonDecode(response.body)['results'][i]));
         }
         setState(() {
           isRecipeLoadingComplete = true;
@@ -254,6 +259,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                   return DietFoodItem(
                     dietFood: loadedfood[index],
                     mealId: mealId,
+                    mealDomain: 'meals',
                   );
                 }
               },
@@ -319,8 +325,8 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                       },
                       child: const Text('Load more'));
                 } else {
-                  return DietFoodItem(
-                    dietFood: loadedrecipe[index],
+                  return DietRecipeItem(
+                    recipe: loadedrecipe[index],
                     mealId: mealId,
                   );
                 }
@@ -339,7 +345,9 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                     borderRadius: BorderRadius.horizontal(
                         right: Radius.circular(40), left: Radius.circular(40))),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(AddRecipeScreen.routeName);
+              },
               child: const Text('create new recipe',
                   style: TextStyle(color: Colors.white))),
         ),
@@ -405,6 +413,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                   return DietFoodItem(
                     dietFood: loadedcustomfood[index],
                     mealId: mealId,
+                    mealDomain: 'meals',
                   );
                 }
               },
