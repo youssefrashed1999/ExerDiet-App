@@ -1,8 +1,17 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../constants.dart';
+import 'add_food_intances_to_recipe.dart';
 
 class AddRecipeScreen extends StatefulWidget {
+  static const routeName = '/add-recipe';
   const AddRecipeScreen({super.key});
 
   @override
@@ -17,27 +26,89 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     'ingredients': '',
   };
   var _myimage;
+  int recipeId = -1;
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
+  final _formKey = GlobalKey<FormState>();
+  void submit() {
+    if (!_formKey.currentState!.validate()) {
+      _btnController.error();
+      Timer(const Duration(seconds: 2), () {
+        _btnController.reset();
+      });
+      return;
+    }
+    _formKey.currentState!.save();
+    sendHttpRequest();
+  }
+
+  void sendHttpRequest() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? accessKey = prefs.getString(ACCESS_KEY);
+    late FormData formData;
+    try {
+      if (_myimage == null) {
+        formData = FormData.fromMap({
+          'name': _recipeData['name'].toString(),
+          'instructions': _recipeData['instructions'].toString()
+        });
+      } else {
+        File image = _myimage as File;
+        formData = FormData.fromMap({
+          'name': _recipeData['name'].toString(),
+          'instructions': _recipeData['instructions'].toString(),
+          'image': await MultipartFile.fromFile(image.path)
+        });
+        final dio = Dio();
+        final response = await dio.post('${BASE_URL}diet/recipes/',
+            options: Options(headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Authorization': 'JWT $accessKey'
+            }),
+            data: formData);
+        if (response.statusCode == 201) {
+          _btnController.success();
+          recipeId = response.data['id'] as int;
+          Timer(const Duration(seconds: 2), () {
+            Navigator.of(context)
+                .pushNamed(AddFoodInsances.routeName, arguments: recipeId);
+          });
+        } else {
+          _btnController.error();
+          Timer(const Duration(seconds: 2), () {
+            _btnController.reset();
+          });
+        }
+      }
+    } catch (e) {
+      _btnController.error();
+      Timer(const Duration(seconds: 2), () {
+        _btnController.reset();
+      });
+    }
+  }
+
   _showOption(BuildContext context) {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              title: Text('Upload photo from',
+              title: const Text('Upload photo from',
                   style: TextStyle(color: Colors.black)),
               content: SingleChildScrollView(
                 child: Column(
                   children: [
                     ListTile(
-                      leading: Icon(Icons.image),
-                      title: Text('Gallery'),
+                      leading: const Icon(Icons.image),
+                      title: const Text('Gallery'),
                       onTap: () {
-                        _UploadFromGallery(context);
+                        _uploadFromGallery(context);
                       },
                     ),
                     ListTile(
                       leading: Icon(Icons.camera),
                       title: Text('Camera'),
                       onTap: () {
-                        _UploadFromCamera(context);
+                        _uploadFromCamera(context);
                       },
                     )
                   ],
@@ -46,7 +117,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
             ));
   }
 
-  Future _UploadFromGallery(BuildContext context) async {
+  Future _uploadFromGallery(BuildContext context) async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       _myimage = File(image!.path);
@@ -54,7 +125,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     Navigator.pop(context);
   }
 
-  Future _UploadFromCamera(BuildContext context) async {
+  Future _uploadFromCamera(BuildContext context) async {
     var image = await ImagePicker().pickImage(source: ImageSource.camera);
     setState(() {
       _myimage = File(image!.path);
@@ -62,12 +133,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
     Navigator.pop(context);
   }
 
-  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final _deviceSize = MediaQuery.of(context).size;
+    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Create new recipe'),
       ),
@@ -120,8 +189,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               ),
               elevation: 8.0,
               child: Container(
-                constraints: BoxConstraints(minWidth: _deviceSize.width * 0.75),
-                width: _deviceSize.width * 0.75,
+                constraints: BoxConstraints(minWidth: deviceSize.width * 0.75),
+                width: deviceSize.width * 0.75,
                 padding: const EdgeInsets.all(20),
                 child: Form(
                   key: _formKey,
@@ -147,26 +216,28 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                         minLines: 1,
                         maxLines: 30,
                         validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'instructions is required!';
-                          }
                           return null;
                         },
                         onSaved: (value) {
-                          _recipeData['instructions'] = value;
+                          if (value!.isEmpty) {
+                            _recipeData['instructions'] = '';
+                          } else {
+                            _recipeData['instructions'] = value;
+                          }
                         },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               elevation: 0,
                               backgroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(horizontal: -1)),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: -1)),
                           onPressed: () {},
                           child: Row(
-                            children: [
+                            children: const [
                               Text('ingredients'),
                               Icon(Icons.arrow_right)
                             ],
@@ -176,17 +247,15 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       ),
                       SizedBox(
                         width: 290,
-                        child: ElevatedButton(
-                          onPressed: () =>
-                              {if (_formKey.currentState!.validate()) {}},
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40)),
-                          ),
-                          child: const Text('save',
+                        child: RoundedLoadingButton(
+                          controller: _btnController,
+                          onPressed: () => submit(),
+                          color: MY_COLOR[300],
+                          borderRadius: 40,
+                          child: const Text('Save',
                               style: TextStyle(color: Colors.white)),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),
