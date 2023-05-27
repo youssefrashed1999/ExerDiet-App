@@ -1,11 +1,12 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:final_project/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 class AddFoodScreen extends StatefulWidget {
   AddFoodScreen({super.key});
@@ -26,6 +27,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
     'imageUrl': ''
   };
   final _formKey = GlobalKey<FormState>();
+  final RoundedLoadingButtonController _btnController =
+      RoundedLoadingButtonController();
   //the function that determines the measurement unit based on food category//
   String selectedCategory = 'F';
   String measurmentPicker() {
@@ -40,6 +43,10 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
 
   void submit() {
     if (!_formKey.currentState!.validate()) {
+      _btnController.error();
+      Timer(const Duration(seconds: 2), () {
+        _btnController.reset();
+      });
       return;
     }
     _formKey.currentState!.save();
@@ -49,12 +56,23 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
   void sendHttpRequest() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? accessKey = prefs.getString(ACCESS_KEY);
-    Response? response;
+    late FormData formData;
     try {
+      //send request without the image
       if (_myimage == null) {
-      } else {
+        formData = FormData.fromMap({
+          'name': _foodData['name'].toString(),
+          'category': _foodData['category'].toString(),
+          'calories': int.parse(_foodData['calories']),
+          'carbs': double.parse(_foodData['carbs']),
+          'fats': double.parse(_foodData['fats']),
+          'protein': double.parse(_foodData['protein']),
+        });
+      }
+      //send request with the image
+      else {
         File image = _myimage as File;
-        FormData formData = FormData.fromMap({
+        formData = FormData.fromMap({
           'name': _foodData['name'].toString(),
           'category': _foodData['category'].toString(),
           'calories': int.parse(_foodData['calories']),
@@ -63,23 +81,30 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
           'protein': double.parse(_foodData['protein']),
           'image': await MultipartFile.fromFile(image.path)
         });
-        final dio = Dio();
-        response = await dio.post('${BASE_URL}diet/custom_foods/',
-            options: Options(headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': 'JWT $accessKey'
-            }),
-            data: formData);
-        print('status code: ${response.statusCode}');
-        print(response.data.toString());
-        if (response.statusCode == 201) {
-          print('horraaaaaaaay');
-        }
       }
-    } catch (e) {
-      print(e);
-      print('status code: ${response?.statusCode}');
-      print(response?.data.toString());
+      final dio = Dio();
+      final response = await dio.post('${BASE_URL}diet/custom_foods/',
+          options: Options(headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'JWT $accessKey'
+          }),
+          data: formData);
+      if (response.statusCode == 201) {
+        _btnController.success();
+        Timer(const Duration(seconds: 2), () {
+          _btnController.reset();
+        });
+      } else {
+        _btnController.error();
+        Timer(const Duration(seconds: 2), () {
+          _btnController.reset();
+        });
+      }
+    } catch (_) {
+      _btnController.error();
+      Timer(const Duration(seconds: 2), () {
+        _btnController.reset();
+      });
     }
   }
 
@@ -134,7 +159,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Add new food'),
       ),
@@ -205,7 +230,6 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                   setState(() {
                     _foodData['category'] = newValue!;
                     selectedCategory = newValue;
-                    print(_foodData['category']);
                   });
                 },
               ),
@@ -242,8 +266,10 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                             suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'calories are required!';
+                          if (value!.isEmpty ||
+                              value.contains('.') ||
+                              int.parse(value) <= 0) {
+                            return 'Calories must be a valid integer!';
                           }
                           return null;
                         },
@@ -256,8 +282,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                             hintText: 'fats', suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'fats are required!';
+                          if (value!.isEmpty || double.parse(value) < 0) {
+                            return 'Fats must be greater than or equal 0!';
                           }
                           return null;
                         },
@@ -271,8 +297,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                             suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'proteins are required!';
+                          if (value!.isEmpty || double.parse(value) < 0) {
+                            return 'Protein must be greater than or equal 0!';
                           }
                           return null;
                         },
@@ -286,8 +312,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                             suffix: Text(measurmentPicker())),
                         keyboardType: TextInputType.number,
                         validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'carbs are required!';
+                          if (value!.isEmpty || double.parse(value) < 0) {
+                            return 'Carbs must be greater than or equal 0!';
                           }
                           return null;
                         },
@@ -300,16 +326,15 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                       ),
                       SizedBox(
                         width: 290,
-                        child: ElevatedButton(
+                        child: RoundedLoadingButton(
+                          controller: _btnController,
                           onPressed: () => submit(),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40)),
-                          ),
+                          color: MY_COLOR[300],
+                          borderRadius: 40,
                           child: const Text('Save',
                               style: TextStyle(color: Colors.white)),
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),
