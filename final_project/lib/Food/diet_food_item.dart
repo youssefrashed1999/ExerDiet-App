@@ -197,7 +197,7 @@ class DietFoodItem extends StatelessWidget {
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Text('calories: ${dietFood.calories} g'),
+                    Text('calories: ${dietFood.calories} cal'),
                     Text('fats: ${dietFood.fats} g'),
                     Text('protien: ${dietFood.protein} g'),
                     Text('carbs: ${dietFood.carbs} g'),
