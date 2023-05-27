@@ -3,12 +3,16 @@ import 'package:final_project/Food/add_water_screen.dart';
 import 'package:final_project/home/meals/meals_screen.dart';
 import 'package:flutter/material.dart';
 
+import 'meals/snacks_screen.dart';
+
 class AddingButtons extends StatelessWidget {
   const AddingButtons({super.key});
   void _navigateToFoodList(BuildContext context, String mealName) {
     Navigator.of(context).pushNamed(MealsScreen.routeName, arguments: mealName);
   }
-
+  void _naviagateToSnackList(BuildContext context){
+    Navigator.of(context).pushNamed(SnackScreen.routeName);
+  }
   void _navigateToAddWater(BuildContext context) {
     Navigator.of(context).pushNamed(AddWater.routeName);
   }
@@ -108,7 +112,7 @@ class AddingButtons extends StatelessWidget {
             ),
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            onTap: () => _navigateToFoodList(context, 'snack')),
+            onTap: () => _naviagateToSnackList(context)),
       ),
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
