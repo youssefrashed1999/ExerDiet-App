@@ -13,8 +13,13 @@ class DietFoodItem extends StatelessWidget {
 
   final DietFood dietFood;
   late int mealId;
+  late String mealDomain;
 
-  DietFoodItem({super.key, required this.dietFood, required this.mealId});
+  DietFoodItem(
+      {super.key,
+      required this.dietFood,
+      required this.mealId,
+      required this.mealDomain});
   final GlobalKey<FormState> _formkey = GlobalKey();
   double amount = 0;
   void addFood() async {
@@ -22,7 +27,7 @@ class DietFoodItem extends StatelessWidget {
     final String? accessKey = prefs.getString(ACCESS_KEY);
     try {
       final response = await http.post(
-          Uri.parse('${BASE_URL}diet/meals/$mealId/food_instances/'),
+          Uri.parse('${BASE_URL}diet/$mealDomain/$mealId/food_instances/'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'JWT $accessKey'
