@@ -1,8 +1,11 @@
+import 'package:final_project/Food/add_food_intances_to_recipe.dart';
 import 'package:final_project/Food/add_food_screen.dart';
+import 'package:final_project/Food/add_recipe_screen.dart';
+import 'package:final_project/Food/add_water_screen.dart';
+import 'package:final_project/Food/recipe_detailed_item.dart';
 import 'package:final_project/auth/log_in_screen.dart';
 import 'package:final_project/auth/open_screen.dart';
 import 'package:final_project/auth/sign_up_screen.dart';
-
 import 'package:final_project/healthQuiz/health_quiz_screen.dart';
 import 'package:final_project/home/dashboard/change_goal_screen.dart';
 import 'package:final_project/home/dashboard/change_password_screen.dart';
@@ -12,6 +15,8 @@ import 'package:final_project/home/dashboard/set_calories_screen.dart';
 import 'package:final_project/home/dashboard/set_water_intake_screen.dart';
 import 'package:final_project/home/home_page_screen.dart';
 import 'package:final_project/home/meals/meals_screen.dart';
+import 'package:final_project/home/meals/snack_detailed.dart';
+import 'package:final_project/home/meals/snacks_screen.dart';
 import 'package:final_project/splash_screen.dart';
 import 'package:final_project/workouts/exercise_overview_screen.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +69,7 @@ class MyApp extends StatelessWidget {
         SignUpScreen.routeName: (context) => SignUpScreen(),
         HealthQuizScreen.routeName: (context) => const HealthQuizScreen(),
         HomePageScreen.routeName: (context) => HomePageScreen(),
-        FoodOverviewScreen.routeName: (context) => FoodOverviewScreen(),
+        FoodOverviewScreen.routeName: (context) => const FoodOverviewScreen(),
         ExerciseOverviewScreen.routeName: (context) => ExerciseOverviewScreen(),
         ChangePasswordScreen.routeName: (context) =>
             const ChangePasswordScreen(),
@@ -76,7 +81,13 @@ class MyApp extends StatelessWidget {
         ChangeRatiosScreen.routeName: (context) => const ChangeRatiosScreen(),
         ChangeGoalScreen.routeName: (context) => const ChangeGoalScreen(),
         MealsScreen.routeName: (context) => const MealsScreen(),
-        AddFoodScreen.routeName: (context) => AddFoodScreen()
+        AddFoodScreen.routeName: (context) => AddFoodScreen(),
+        AddFoodInsances.routeName: (context) => const AddFoodInsances(),
+        AddRecipeScreen.routeName: (context) => const AddRecipeScreen(),
+        RecipeDetailedItem.routeName: (context) => RecipeDetailedItem(),
+        SnackScreen.routeName: (context) => const SnackScreen(),
+        SnackDetailedScreen.routeName:(context) => SnackDetailedScreen(),
+        AddWater.routeName:(context) => const AddWater()
       },
     );
   }
