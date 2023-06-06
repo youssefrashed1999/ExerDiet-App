@@ -1,8 +1,8 @@
+// ignore_for_file: prefer_final_fields
+
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'package:final_project/auth/log_in_screen.dart';
-import 'package:final_project/healthQuiz/health_quiz_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
@@ -10,8 +10,21 @@ import 'package:http/http.dart' as http;
 
 import '../constants.dart';
 
-class SignUpScreen extends StatelessWidget {
+bool _isSignUpCompleted = false;
+
+class SignUpScreen extends StatefulWidget {
   static const routeName = '/sign-up-screen';
+
+  const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  void setstate() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,20 +47,21 @@ class SignUpScreen extends StatelessWidget {
           height: deviceSize.height,
           width: deviceSize.width,
           child: Column(
-            mainAxisAlignment: MediaQuery.of(context).viewInsets.bottom == 0
-                ? MainAxisAlignment.center
-                : MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               MediaQuery.of(context).viewInsets.bottom == 0
-                  ? const Center(
-                      child: Text(
-                        'ExerDiet',
-                        style: TextStyle(
-                          color: Color.fromARGB(214, 255, 255, 255),
-                          fontSize: 36,
-                          fontFamily: 'Anton',
-                          fontWeight: FontWeight.normal,
+                  ? const Padding(
+                      padding: EdgeInsets.only(top: 30),
+                      child: Center(
+                        child: Text(
+                          'ExerDiet',
+                          style: TextStyle(
+                            color: Color.fromARGB(214, 255, 255, 255),
+                            fontSize: 28,
+                            fontFamily: 'RobotoCondensed',
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     )
@@ -63,10 +77,18 @@ class SignUpScreen extends StatelessWidget {
                   : const SizedBox(
                       height: 1,
                     ),
-              Flexible(
-                flex: deviceSize.width > 600 ? 2 : 1,
-                child: SignUpCard(),
-              )
+              if (!_isSignUpCompleted)
+                Flexible(
+                  flex: deviceSize.width > 600 ? 2 : 1,
+                  child: _SignUpCard(
+                    setstate: setstate,
+                  ),
+                ),
+              if (_isSignUpCompleted)
+                SizedBox(
+                  height: deviceSize.height * 0.15,
+                ),
+              if (_isSignUpCompleted) const _CompletedSignUp(),
             ],
           ),
         ),
@@ -75,8 +97,10 @@ class SignUpScreen extends StatelessWidget {
   }
 }
 
-class SignUpCard extends StatefulWidget {
-  const SignUpCard({
+class _SignUpCard extends StatefulWidget {
+  final Function() setstate;
+  const _SignUpCard({
+    required this.setstate,
     Key? key,
   }) : super(key: key);
 
@@ -84,7 +108,7 @@ class SignUpCard extends StatefulWidget {
   _SignUpCardState createState() => _SignUpCardState();
 }
 
-class _SignUpCardState extends State<SignUpCard> {
+class _SignUpCardState extends State<_SignUpCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final RoundedLoadingButtonController _btnController =
       RoundedLoadingButtonController();
@@ -96,9 +120,9 @@ class _SignUpCardState extends State<SignUpCard> {
     'lastname': '',
     'username': '',
   };
-  String? _emailErrorText = null;
-  String? _usernameErrorText = null;
-  String? _passwordErrorText = null;
+  String? _emailErrorText;
+  String? _usernameErrorText;
+  String? _passwordErrorText;
 
   void navigateToLogInScreen(BuildContext context) {
     Navigator.of(context).pushReplacementNamed(LogInScreen.routeName);
@@ -123,19 +147,11 @@ class _SignUpCardState extends State<SignUpCard> {
           'last_name': _authData['lastname']
         }),
       );
-      print('status code:${response.statusCode}');
+
       //account created successfully
       if (response.statusCode == 201) {
-        _btnController.success();
-        Fluttertoast.showToast(
-            msg: 'Successful Signup.',
-            toastLength: Toast.LENGTH_LONG,
-            backgroundColor: Colors.white,
-            textColor: MY_COLOR[300]);
-        Timer(const Duration(seconds: 2), () {
-          if (!context.mounted) return;
-          Navigator.of(context).pushReplacementNamed(LogInScreen.routeName);
-        });
+        _isSignUpCompleted = true;
+        widget.setstate();
       }
       //bad request
       else if (response.statusCode == 400) {
@@ -208,6 +224,7 @@ class _SignUpCardState extends State<SignUpCard> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -234,7 +251,7 @@ class _SignUpCardState extends State<SignUpCard> {
                         style: TextStyle(
                           color: Color.fromARGB(255, 97, 219, 213),
                           fontSize: 20,
-                          fontFamily: 'Anton',
+                          fontFamily: 'RobotoCondensed',
                           fontWeight: FontWeight.normal,
                         ),
                       ),
@@ -317,6 +334,7 @@ class _SignUpCardState extends State<SignUpCard> {
                         if (value != _passwordController.text) {
                           return 'Passwords do not match!';
                         }
+                        return null;
                       },
                     ),
                     const SizedBox(
@@ -348,6 +366,75 @@ class _SignUpCardState extends State<SignUpCard> {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class _CompletedSignUp extends StatelessWidget {
+  const _CompletedSignUp();
+
+  @override
+  Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      elevation: 8.0,
+      child: Container(
+        width: deviceSize.width * 0.85,
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Icon(
+              Icons.check_circle_outline,
+              color: Theme.of(context).primaryColor,
+              size: 50,
+            ),
+            Text(
+              'Account created successfully!',
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(color: Theme.of(context).primaryColor),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Text('An activation email is sent to your email address.',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Colors.black, fontSize: 14)),
+            Text('Activate your account to start your journey.',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(color: Colors.black, fontSize: 14)),
+            const SizedBox(
+              height: 30,
+            ),
+            SizedBox(
+              width: deviceSize.width * 0.7,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40))),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushReplacementNamed(LogInScreen.routeName);
+                },
+                child: Text('Login',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: Colors.white, fontSize: 14)),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
