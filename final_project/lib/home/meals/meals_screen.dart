@@ -175,7 +175,7 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
                 onPressed: () {
                   showDetails();
                 },
-                child: Text('Total calories: ${meal!.totalCalories.toString()}',
+                child: Text('Total calories: ${meal?.totalCalories.toString()}',
                     style: Theme.of(context).textTheme.titleMedium)),
         ],
       ),
