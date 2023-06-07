@@ -345,13 +345,80 @@ class _ForgotPasswordWigdet extends StatefulWidget {
   const _ForgotPasswordWigdet();
 
   @override
-  State<_ForgotPasswordWigdet> createState() => __ForgotPasswordWigdetState();
+  State<_ForgotPasswordWigdet> createState() => _ForgotPasswordWigdetState();
 }
 
-class __ForgotPasswordWigdetState extends State<_ForgotPasswordWigdet> {
-  final _formKey = GlobalKey();
+class _ForgotPasswordWigdetState extends State<_ForgotPasswordWigdet> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
   final _btnController = RoundedLoadingButtonController();
-  String? email;
+  bool _isEmailSent = false;
+  //to show error returned from the server
+  String? _emailError;
+  //to save the email from the user input to send it in the request
+  String? _email;
+  void _submit() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    if (!_formKey.currentState!.validate()) {
+      _btnController.error();
+      Timer(const Duration(seconds: 2), () {
+        _btnController.reset();
+      });
+      return;
+    }
+    //save the form
+    _formKey.currentState!.save();
+    //send request
+    _sendHttpRequest();
+  }
+
+  void _sendHttpRequest() async {
+    try {
+      final response = await http.post(
+        Uri.parse('${BASE_URL}auth/users/reset_password/'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String?>{'email': _email}),
+      );
+      //success response
+      if (response.statusCode == 204) {
+        setState(() {
+          _isEmailSent = true;
+        });
+      } else if (response.statusCode == 400) {
+        _btnController.error();
+        setState(() {
+          if (jsonDecode(response.body)['email'] != null) {
+            _emailError = jsonDecode(response.body)['email'][0];
+          }
+          Timer(const Duration(seconds: 2), () {
+            _btnController.reset();
+          });
+        });
+      } else if (response.statusCode == 500) {
+        _btnController.error();
+        Fluttertoast.showToast(
+            msg: 'Server is down at the moment!\nTry again later.',
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Colors.white,
+            textColor: MY_COLOR[300]);
+        Timer(const Duration(seconds: 2), () {
+          _btnController.reset();
+        });
+      }
+    } catch (_) {
+      _btnController.error();
+      Fluttertoast.showToast(
+          msg: 'Check your internet connection!',
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.white,
+          textColor: MY_COLOR[300]);
+      Timer(const Duration(seconds: 2), () {
+        _btnController.reset();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -364,58 +431,58 @@ class __ForgotPasswordWigdetState extends State<_ForgotPasswordWigdet> {
           ),
           elevation: 8.0,
           child: Container(
-            //height: _authMode == AuthMode.Signup ? 700 : 347,
-            constraints: BoxConstraints(minWidth: deviceSize.width * 0.85),
-            width: deviceSize.width * 0.85,
-            padding: const EdgeInsets.all(20),
-            //padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 26.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: const Text(
-                      'Forgot Password',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 97, 219, 213),
-                        fontSize: 20,
-                        fontFamily: 'RobotoCondensed',
-                        fontWeight: FontWeight.normal,
+              //height: _authMode == AuthMode.Signup ? 700 : 347,
+              constraints: BoxConstraints(minWidth: deviceSize.width * 0.85),
+              width: deviceSize.width * 0.85,
+              padding: const EdgeInsets.all(20),
+              //padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 26.0),
+              child: !_isEmailSent
+                  ? Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: const Text(
+                              'Forgot Password',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 97, 219, 213),
+                                fontSize: 20,
+                                fontFamily: 'RobotoCondensed',
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          TextFormField(
+                            decoration: InputDecoration(
+                                labelText: 'Email', errorText: _emailError),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value!.isEmpty || !value.contains('@')) {
+                                return 'Invalid Email!';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _email = value;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          SizedBox(
+                            width: 290,
+                            child: RoundedLoadingButton(
+                              controller: _btnController,
+                              onPressed: () => _submit(),
+                              color: MY_COLOR[300],
+                              borderRadius: 40,
+                              child: const Text('SUBMIT',
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(labelText: 'Email'),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Invalid Email!';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      email = value;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  SizedBox(
-                    width: 290,
-                    child: RoundedLoadingButton(
-                      controller: _btnController,
-                      onPressed: () {},
-                      color: MY_COLOR[300],
-                      borderRadius: 40,
-                      child: const Text('SUBMIT',
-                          style: TextStyle(color: Colors.white)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
         )
       ],
     );
