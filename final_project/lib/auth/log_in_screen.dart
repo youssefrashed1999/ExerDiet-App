@@ -12,34 +12,51 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../home/home_page_screen.dart';
 import '../models/token.dart';
 
-class LogInScreen extends StatelessWidget {
+class LogInScreen extends StatefulWidget {
   static const routeName = '/Log-in-screen';
+
+  const LogInScreen({super.key});
+
+  @override
+  State<LogInScreen> createState() => _LogInScreenState();
+}
+
+class _LogInScreenState extends State<LogInScreen> {
+  bool isForgotPassword = false;
+  void setstate() {
+    setState(() {
+      //toggle the boolean
+      isForgotPassword = !isForgotPassword;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        decoration: BOX_DECORATION,
-        child: SizedBox(
-          height: deviceSize.height,
-          width: deviceSize.width,
-          child: Column(
-            mainAxisAlignment: MediaQuery.of(context).viewInsets.bottom == 0
-                ? MainAxisAlignment.center
-                : MainAxisAlignment.start,
+      body: Stack(
+        children: [
+          Container(
+            width: deviceSize.width,
+            height: deviceSize.height,
+            decoration: BOX_DECORATION,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               MediaQuery.of(context).viewInsets.bottom == 0
-                  ? const Center(
-                      child: Text(
-                        'ExerDiet',
-                        style: TextStyle(
-                          color: Color.fromARGB(214, 255, 255, 255),
-                          fontSize: 36,
-                          fontFamily: 'Anton',
-                          fontWeight: FontWeight.normal,
+                  ? const Padding(
+                      padding: EdgeInsets.only(top: 30),
+                      child: Center(
+                        child: Text(
+                          'ExerDiet',
+                          style: TextStyle(
+                            color: Color.fromARGB(214, 255, 255, 255),
+                            fontSize: 28,
+                            fontFamily: 'RobotoCondensed',
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     )
@@ -55,20 +72,23 @@ class LogInScreen extends StatelessWidget {
                   : const SizedBox(
                       height: 1,
                     ),
-              Flexible(
-                flex: deviceSize.width > 600 ? 2 : 1,
-                child: LogInCard(),
-              )
             ],
           ),
-        ),
+          if (!isForgotPassword)
+            const Align(
+              alignment: Alignment.center,
+              child: _LogInCard(),
+            )
+          else
+            const _ForgotPasswordWigdet()
+        ],
       ),
     );
   }
 }
 
-class LogInCard extends StatefulWidget {
-  const LogInCard({
+class _LogInCard extends StatefulWidget {
+  const _LogInCard({
     Key? key,
   }) : super(key: key);
 
@@ -76,8 +96,9 @@ class LogInCard extends StatefulWidget {
   _LogInCardState createState() => _LogInCardState();
 }
 
-class _LogInCardState extends State<LogInCard> {
+class _LogInCardState extends State<_LogInCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  // ignore: prefer_final_fields
   Map<String, String> _authData = {
     'username': '',
     'password': '',
@@ -113,20 +134,20 @@ class _LogInCardState extends State<LogInCard> {
         await prefs.setString(ACCESS_KEY, token.access);
         await prefs.setString(REFRESH_KEY, token.refresh);
         //get user info
-        int _status = await getUserInfo();
+        int status = await getUserInfo();
         //navigate to home screen if old user
-        if (_status == 1) {
+        if (status == 1) {
           if (!context.mounted) return;
           Navigator.of(context).pushReplacementNamed(HomePageScreen.routeName);
         }
         //navigate to health quiz screen if new user
-        else if (_status == 2) {
+        else if (status == 2) {
           if (!context.mounted) return;
           Navigator.of(context)
               .pushReplacementNamed(HealthQuizScreen.routeName);
         }
         //display toast if can't retrieve user's info
-        else if (_status == 3) {
+        else if (status == 3) {
           _btnController.error();
           Fluttertoast.showToast(
               msg:
@@ -226,7 +247,7 @@ class _LogInCardState extends State<LogInCard> {
                         style: TextStyle(
                           color: Color.fromARGB(255, 97, 219, 213),
                           fontSize: 20,
-                          fontFamily: 'Anton',
+                          fontFamily: 'RobotoCondensed',
                           fontWeight: FontWeight.normal,
                         ),
                       ),
@@ -258,8 +279,21 @@ class _LogInCardState extends State<LogInCard> {
                         _authData['password'] = value!;
                       },
                     ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent),
+                        onPressed: () => navigateToSignUpScreen(context),
+                        child: const Text('Forgot password?',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 97, 219, 213),
+                                fontSize: 13)),
+                      ),
+                    ),
                     const SizedBox(
-                      height: 30,
+                      height: 5,
                     ),
                     SizedBox(
                       width: 290,
@@ -289,6 +323,87 @@ class _LogInCardState extends State<LogInCard> {
           )
         ],
       ),
+    );
+  }
+}
+
+class _ForgotPasswordWigdet extends StatefulWidget {
+  const _ForgotPasswordWigdet();
+
+  @override
+  State<_ForgotPasswordWigdet> createState() => __ForgotPasswordWigdetState();
+}
+
+class __ForgotPasswordWigdetState extends State<_ForgotPasswordWigdet> {
+  final _formKey = GlobalKey();
+  final _btnController = RoundedLoadingButtonController();
+  String? email;
+  @override
+  Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          elevation: 8.0,
+          child: Container(
+            //height: _authMode == AuthMode.Signup ? 700 : 347,
+            constraints: BoxConstraints(minWidth: deviceSize.width * 0.85),
+            width: deviceSize.width * 0.85,
+            padding: const EdgeInsets.all(20),
+            //padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 26.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: const Text(
+                      'Forgot Password',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 97, 219, 213),
+                        fontSize: 20,
+                        fontFamily: 'RobotoCondensed',
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(labelText: 'Email'),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Invalid Email!';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      email = value;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  SizedBox(
+                    width: 290,
+                    child: RoundedLoadingButton(
+                      controller: _btnController,
+                      onPressed: () {},
+                      color: MY_COLOR[300],
+                      borderRadius: 40,
+                      child: const Text('SUBMIT',
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }
