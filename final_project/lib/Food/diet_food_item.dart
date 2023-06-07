@@ -97,74 +97,85 @@ class DietFoodItem extends StatelessWidget {
           ),
         );
 
-    void selectPortion() => showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(
-              'Quantity',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge!
-                  .copyWith(color: Theme.of(context).primaryColor),
-            ),
-            content: Form(
-              key: _formkey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Enter quantity',
-                    style: TextStyle(
-                        fontSize: 14, color: Theme.of(context).primaryColor),
-                  ),
-                  Row(children: [
-                    SizedBox(
-                      width: 100,
-                      child: TextFormField(
-                        initialValue: 100.toString(),
-                        keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
-                        validator: (value) {
-                          if (value!.isEmpty || double.parse(value) <= 0) {
-                            return 'Quantity can\'t be negative';
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) => amount = double.parse(newValue!),
+    void selectPortion() => showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                    top: 10,
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+                child: Form(
+                  key: _formkey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Quantity',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge!
+                            .copyWith(color: Theme.of(context).primaryColor),
                       ),
-                    ),
-                    if (dietFood.category == 'F')
-                      const Text('grams')
-                    else if (dietFood.category == 'L')
-                      const Text('mL')
-                    else
-                      const Text('tbsp'),
-                  ]),
-                ],
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Enter quantity',
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).primaryColor),
+                        ),
+                      ),
+                      Row(children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5 - 10,
+                          child: TextFormField(
+                            initialValue: 100.toString(),
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            validator: (value) {
+                              if (value!.isEmpty || double.parse(value) <= 0) {
+                                return 'Quantity can\'t be negative';
+                              }
+                              return null;
+                            },
+                            onSaved: (newValue) =>
+                                amount = double.parse(newValue!),
+                          ),
+                        ),
+                        if (dietFood.category == 'F')
+                          const Text('grams')
+                        else if (dietFood.category == 'L')
+                          const Text('mL')
+                        else
+                          const Text('tbsp'),
+                      ]),
+                      SizedBox(
+                        width: deviceSize.width * 0.8,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(40))),
+                          onPressed: () {
+                            submit();
+                            Navigator.pop(context);
+                          },
+                          child: Text('ADD',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(color: Colors.white, fontSize: 14)),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    'Back',
-                    style: TextStyle(fontSize: 20, color: Colors.grey),
-                  )),
-              TextButton(
-                  onPressed: () {
-                    submit();
-                    Navigator.pop(context);
-                  },
-                  child: const Text(
-                    'Add',
-                    style: TextStyle(fontSize: 20),
-                  ))
-            ],
-          ),
-        );
+            ));
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Material(
