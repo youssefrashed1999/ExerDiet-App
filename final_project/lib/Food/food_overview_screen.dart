@@ -484,12 +484,14 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
           mealId: mealId,
           nextPage: "https://exerdiet.pythonanywhere.com/diet/foods/",
           category: 'Food',
+          mealDomain: 'meals',
         ),
         RecipeTab(mealId: mealId),
         FoodTab(
           mealId: mealId,
           nextPage: "https://exerdiet.pythonanywhere.com/diet/custom_foods/",
           category: 'CustomFood',
+          mealDomain: 'meals',
         )
       ]),
     );

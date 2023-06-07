@@ -13,11 +13,13 @@ class FoodTab extends StatefulWidget {
   final int mealId;
   final String? nextPage;
   final String category;
+  final String mealDomain;
   const FoodTab(
       {super.key,
       required this.mealId,
       required this.category,
-      required this.nextPage});
+      required this.nextPage,
+      required this.mealDomain});
 
   @override
   State<FoodTab> createState() => _FoodTabState();
@@ -143,7 +145,7 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
                   return DietFoodItem(
                     dietFood: loadedfood[index],
                     mealId: widget.mealId,
-                    mealDomain: 'meals',
+                    mealDomain: widget.mealDomain,
                   );
                 }
               },
@@ -152,7 +154,7 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
           )
         else
           const Center(child: Text('No Food found on Database!')),
-        if (widget.category == 'CustomFood')
+        if (widget.category == 'CustomFood' && widget.mealDomain=='meals')
           Align(
             alignment: Alignment.bottomCenter,
             child: ElevatedButton(
