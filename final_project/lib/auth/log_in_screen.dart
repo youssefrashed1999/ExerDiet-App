@@ -33,60 +33,70 @@ class _LogInScreenState extends State<LogInScreen> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            width: deviceSize.width,
-            height: deviceSize.height,
-            decoration: BOX_DECORATION,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              MediaQuery.of(context).viewInsets.bottom == 0
-                  ? const Padding(
-                      padding: EdgeInsets.only(top: 30),
-                      child: Center(
-                        child: Text(
-                          'ExerDiet',
-                          style: TextStyle(
-                            color: Color.fromARGB(214, 255, 255, 255),
-                            fontSize: 28,
-                            fontFamily: 'RobotoCondensed',
-                            fontWeight: FontWeight.bold,
+    return WillPopScope(
+      onWillPop: () async {
+        if (isForgotPassword) {
+          toggleWidgets();
+          return false;
+        } else {
+          return true;
+        }
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Container(
+              width: deviceSize.width,
+              height: deviceSize.height,
+              decoration: BOX_DECORATION,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                MediaQuery.of(context).viewInsets.bottom == 0
+                    ? const Padding(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Center(
+                          child: Text(
+                            'ExerDiet',
+                            style: TextStyle(
+                              color: Color.fromARGB(214, 255, 255, 255),
+                              fontSize: 28,
+                              fontFamily: 'RobotoCondensed',
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
+                      )
+                    : const SizedBox(
+                        height: 1,
                       ),
-                    )
-                  : const SizedBox(
-                      height: 1,
-                    ),
-              MediaQuery.of(context).viewInsets.bottom == 0
-                  ? Image.asset(
-                      'assets/images/main_icon.png',
-                      height: 60,
-                      width: 60,
-                    )
-                  : const SizedBox(
-                      height: 1,
-                    ),
-            ],
-          ),
-          if (!isForgotPassword)
-            Align(
-              alignment: Alignment.center,
-              child: _LogInCard(
-                toggleWidgets: toggleWidgets,
-              ),
-            )
-          else
-            const Align(
-              alignment: Alignment.center,
-              child: _ForgotPasswordWigdet(),
+                MediaQuery.of(context).viewInsets.bottom == 0
+                    ? Image.asset(
+                        'assets/images/main_icon.png',
+                        height: 60,
+                        width: 60,
+                      )
+                    : const SizedBox(
+                        height: 1,
+                      ),
+              ],
             ),
-        ],
+            if (!isForgotPassword)
+              Align(
+                alignment: Alignment.center,
+                child: _LogInCard(
+                  toggleWidgets: toggleWidgets,
+                ),
+              )
+            else
+              const Align(
+                alignment: Alignment.center,
+                child: _ForgotPasswordWigdet(),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -389,7 +399,7 @@ class __ForgotPasswordWigdetState extends State<_ForgotPasswordWigdet> {
                     },
                   ),
                   const SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
                   SizedBox(
                     width: 290,
