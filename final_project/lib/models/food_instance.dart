@@ -19,7 +19,7 @@ class FoodInstance {
   factory FoodInstance.fromjson(Map<String, dynamic> json) {
     return FoodInstance(
         id: json['id'],
-        food: DietFood.fromjsonMeal(json['food']),
+        food: DietFood.fromjson(json['food']),
         quantity: json['quantity'],
         totalCalories: json['total_calories'].toInt(),
         totalCarbs: json['total_carbs'].toDouble(),

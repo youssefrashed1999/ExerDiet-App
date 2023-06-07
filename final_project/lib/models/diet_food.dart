@@ -30,15 +30,5 @@ class DietFood {
         imageUrl: json['image'],
         category: json['category']);
   }
-  factory DietFood.fromjsonMeal(Map<String, dynamic> json) {
-    return DietFood(
-      id: json['id'],
-      name: json['name'],
-      calories: json['calories'].toInt(),
-      fats: json['fats'].toDouble(),
-      protein: json['protein'].toDouble(),
-      carbs: json['carbs'].toDouble(),
-      imageUrl: json['image'],
-    );
-  }
+  
 }
