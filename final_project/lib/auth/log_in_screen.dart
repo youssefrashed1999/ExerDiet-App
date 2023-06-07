@@ -23,7 +23,7 @@ class LogInScreen extends StatefulWidget {
 
 class _LogInScreenState extends State<LogInScreen> {
   bool isForgotPassword = false;
-  void setstate() {
+  void toggleWidgets() {
     setState(() {
       //toggle the boolean
       isForgotPassword = !isForgotPassword;
@@ -75,12 +75,17 @@ class _LogInScreenState extends State<LogInScreen> {
             ],
           ),
           if (!isForgotPassword)
-            const Align(
+            Align(
               alignment: Alignment.center,
-              child: _LogInCard(),
+              child: _LogInCard(
+                toggleWidgets: toggleWidgets,
+              ),
             )
           else
-            const _ForgotPasswordWigdet()
+            const Align(
+              alignment: Alignment.center,
+              child: _ForgotPasswordWigdet(),
+            ),
         ],
       ),
     );
@@ -88,9 +93,8 @@ class _LogInScreenState extends State<LogInScreen> {
 }
 
 class _LogInCard extends StatefulWidget {
-  const _LogInCard({
-    Key? key,
-  }) : super(key: key);
+  final Function() toggleWidgets;
+  const _LogInCard({Key? key, required this.toggleWidgets}) : super(key: key);
 
   @override
   _LogInCardState createState() => _LogInCardState();
@@ -285,7 +289,7 @@ class _LogInCardState extends State<_LogInCard> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
                             shadowColor: Colors.transparent),
-                        onPressed: () => navigateToSignUpScreen(context),
+                        onPressed: () => widget.toggleWidgets(),
                         child: const Text('Forgot password?',
                             style: TextStyle(
                                 color: Color.fromARGB(255, 97, 219, 213),
