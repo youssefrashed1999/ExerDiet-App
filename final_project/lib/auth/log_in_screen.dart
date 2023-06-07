@@ -483,6 +483,35 @@ class _ForgotPasswordWigdetState extends State<_ForgotPasswordWigdet> {
                           ),
                         ],
                       ),
+                    )
+                  : Column(
+                      children: [
+                        Icon(
+                          Icons.check_circle_outline,
+                          color: Theme.of(context).primaryColor,
+                          size: 50,
+                        ),
+                        Text(
+                          'Email is sent successfully!',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(color: Theme.of(context).primaryColor),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                            'A reset password email is sent to your email address. Reset your password and login again.',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall!
+                                .copyWith(color: Colors.black, fontSize: 14)),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    )),
         )
       ],
     );
