@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:final_project/Food/filter_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -104,24 +105,37 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
             style: const TextStyle(
                 color: Color.fromARGB(255, 97, 219, 213), fontSize: 12),
             decoration: InputDecoration(
-              filled: true,
-              fillColor: const Color(0x00000000),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-              hintText: "eg: Orange",
-              suffixIcon: InkWell(
-                child: const Icon(Icons.search),
-                onTap: () {
-                  setState(() {
-                    nextFoodPage = widget.nextPage;
+                filled: true,
+                fillColor: const Color(0x00000000),
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+                hintText: "eg: Orange",
+                suffixIcon: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      child: const Icon(Icons.search),
+                      onTap: () {
+                        setState(() {
+                          nextFoodPage = widget.nextPage;
 
-                    loadedfood = List.empty(growable: true);
-                    isFoodLoadingComplete = false;
-                  });
-                  searchFood(foodController.text);
-                },
-              ),
-            ),
+                          loadedfood = List.empty(growable: true);
+                          isFoodLoadingComplete = false;
+                        });
+                        searchFood(foodController.text);
+                      },
+                    ),
+                    InkWell(
+                      child: const Icon(Icons.filter_alt),
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (context) => const FilterWidget());
+                      },
+                    ),
+                  ],
+                )),
           ),
         ),
         if (isFoodLoadingComplete == false)
@@ -154,7 +168,7 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
           )
         else
           const Center(child: Text('No Food found on Database!')),
-        if (widget.category == 'CustomFood' && widget.mealDomain=='meals')
+        if (widget.category == 'CustomFood' && widget.mealDomain == 'meals')
           Align(
             alignment: Alignment.bottomCenter,
             child: ElevatedButton(
