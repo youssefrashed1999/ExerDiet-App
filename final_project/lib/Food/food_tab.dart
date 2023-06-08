@@ -27,6 +27,18 @@ class FoodTab extends StatefulWidget {
 }
 
 class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
+  // ignore: prefer_final_fields
+  Map<String, String> _filterData = {
+    'category': '',
+    'calories_less_than': '',
+    'calories_greater_than': '',
+    'protein_less_than': '',
+    'protein_greater_than': '',
+    'carbs_less_than': '',
+    'carbs_greater_than': '',
+    'fats_less_than': '',
+    'fats_greater_than': '',
+  };
   List<DietFood> loadedfood = List.empty(growable: true);
   late String? nextFoodPage = widget.nextPage;
   TextEditingController foodController = TextEditingController();
@@ -131,7 +143,9 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
                         showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
-                            builder: (context) => const FilterWidget());
+                            builder: (context) => FilterWidget(
+                                  filterData: _filterData,
+                                ));
                       },
                     ),
                   ],

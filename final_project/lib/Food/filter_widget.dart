@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class FilterWidget extends StatefulWidget {
-  const FilterWidget({super.key});
+  //used only to fill inital values of the textfields
+  final Map<String, String> filterData;
+  const FilterWidget({super.key, required this.filterData});
 
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
@@ -60,7 +62,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                 style: TextStyle(fontSize: 14, color: Colors.black),
               ),
               DropdownButtonFormField(
-                value: '',
+                value: widget.filterData['category'],
                 items: const [
                   DropdownMenuItem(
                     value: '',
@@ -93,6 +95,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   SizedBox(
                       width: deviceSize.width * 0.5 - 10,
                       child: TextFormField(
+                        initialValue: widget.filterData['calories_less_than'],
                         keyboardType: TextInputType.number,
                       )),
                   Text('cal',
@@ -112,6 +115,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   SizedBox(
                       width: deviceSize.width * 0.5 - 10,
                       child: TextFormField(
+                        initialValue: widget.filterData['calories_greater_than'],
                         keyboardType: TextInputType.number,
                       )),
                   Text('cal',
@@ -131,6 +135,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   SizedBox(
                       width: deviceSize.width * 0.5 - 10,
                       child: TextFormField(
+                        initialValue: widget.filterData['protein_less_than'],
                         keyboardType: TextInputType.number,
                       )),
                   Text('g',
@@ -150,6 +155,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   SizedBox(
                       width: deviceSize.width * 0.5 - 10,
                       child: TextFormField(
+                        initialValue: widget.filterData['protein_greater_than'],
                         keyboardType: TextInputType.number,
                       )),
                   Text('g',
@@ -169,6 +175,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   SizedBox(
                       width: deviceSize.width * 0.5 - 10,
                       child: TextFormField(
+                        initialValue: widget.filterData['carbs_less_than'],
                         keyboardType: TextInputType.number,
                       )),
                   Text('g',
@@ -188,6 +195,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   SizedBox(
                       width: deviceSize.width * 0.5 - 10,
                       child: TextFormField(
+                        initialValue: widget.filterData['carbs_greater_than'],
                         keyboardType: TextInputType.number,
                       )),
                   Text('g',
@@ -207,6 +215,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   SizedBox(
                       width: deviceSize.width * 0.5 - 10,
                       child: TextFormField(
+                        initialValue: widget.filterData['fats_less_than'],
                         keyboardType: TextInputType.number,
                       )),
                   Text('g',
@@ -226,6 +235,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   SizedBox(
                       width: deviceSize.width * 0.5 - 10,
                       child: TextFormField(
+                        initialValue: widget.filterData['fats_greater_than'],
                         keyboardType: TextInputType.number,
                       )),
                   Text('g',
