@@ -46,7 +46,7 @@ class _SortWidgetState extends State<SortWidget> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 18),
                     child: Text(
-                      'Filter',
+                      'Sort',
                       textAlign: TextAlign.center,
                       style: Theme.of(context)
                           .textTheme
