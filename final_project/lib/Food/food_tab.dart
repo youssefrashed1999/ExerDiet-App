@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:final_project/Food/filter_widget.dart';
+import 'package:final_project/Food/sort_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,6 +40,7 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
     'carbs_greater_than': '',
     'fats_less_than': '',
     'fats_greater_than': '',
+    'ordering': '',
   };
   List<DietFood> loadedfood = List.empty(growable: true);
   late String? nextFoodPage = widget.nextPage;
@@ -121,6 +123,11 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
     _filterData['fats_less_than'] = '';
     _filterData['fats_greater_than'] = '';
     _filterData['search'] = '';
+    _filterData['ordering'] = '';
+  }
+
+  void setOrderingMethod(String value) {
+    _filterData['ordering'] = value;
   }
 
   String createSearchQuery() {
@@ -133,7 +140,8 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
         '&fats__lte=${_filterData['fats_less_than']}'
         '&protein__gte=${_filterData['protein_greater_than']}'
         '&protein__lte=${_filterData['protein_less_than']}'
-        '&search=${_filterData['search']}';
+        '&search=${_filterData['search']}'
+        '&ordering=${_filterData['ordering']}';
     return query;
   }
 
@@ -207,7 +215,19 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
             ),
             InkWell(
               child: const Icon(Icons.sort),
-              onTap: () {},
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => SortWidget(
+                          selectedSortMethod: _filterData['ordering']!,
+                          setOrderingMethod: setOrderingMethod,
+                          onSearchClicked: onSearchClicked,
+                        ));
+              },
+            ),
+            const SizedBox(
+              width: 5,
             ),
           ],
         ),
