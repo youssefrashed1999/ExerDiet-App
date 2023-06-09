@@ -5,7 +5,13 @@ import '../constants.dart';
 class FilterWidget extends StatefulWidget {
   //used only to fill inital values of the textfields
   final Map<String, String> filterData;
-  const FilterWidget({super.key, required this.filterData});
+  final Function(Map<String, String>) setFilteredData;
+  final Function() onSearchClicked;
+  const FilterWidget(
+      {super.key,
+      required this.filterData,
+      required this.setFilteredData,
+      required this.onSearchClicked});
 
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
@@ -33,7 +39,9 @@ class _FilterWidgetState extends State<FilterWidget> {
       return;
     }
     _formKey.currentState!.save();
-    // TO-DO
+    widget.setFilteredData(_filterData);
+    Navigator.of(context).pop();
+    widget.onSearchClicked();
   }
 
   @override
@@ -386,7 +394,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   SizedBox(
                     width: deviceSize.width * 0.45,
                     child: ElevatedButton(
-                      onPressed: () =>_submit(),
+                      onPressed: () => _submit(),
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40),

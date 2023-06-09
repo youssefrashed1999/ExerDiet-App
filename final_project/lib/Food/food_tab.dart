@@ -29,6 +29,7 @@ class FoodTab extends StatefulWidget {
 class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
   // ignore: prefer_final_fields
   Map<String, String> _filterData = {
+    'search': '',
     'category': '',
     'calories_less_than': '',
     'calories_greater_than': '',
@@ -69,12 +70,13 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
     } catch (_) {}
   }
 
-  void searchFood(String value) async {
+  void searchFood() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? accessKey = prefs.getString(ACCESS_KEY);
+    String query = createSearchQuery();
     try {
       final response = await http.get(
-        Uri.parse('${nextFoodPage!}?search=$value'),
+        Uri.parse('${nextFoodPage!}?$query'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'JWT $accessKey'
@@ -93,6 +95,42 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
         });
       }
     } catch (_) {}
+  }
+
+  void setFilteredData(Map<String, String> data) {
+    _filterData['category'] = data['category']!;
+    _filterData['calories_less_than'] = data['calories_less_than']!;
+    _filterData['calories_greater_than'] = data['calories_greater_than']!;
+    _filterData['protein_less_than'] = data['protein_less_than']!;
+    _filterData['protein_greater_than'] = data['protein_greater_than']!;
+    _filterData['carbs_less_than'] = data['carbs_less_than']!;
+    _filterData['carbs_greater_than'] = data['carbs_greater_than']!;
+    _filterData['fats_less_than'] = data['fats_less_than']!;
+    _filterData['fats_greater_than'] = data['fats_greater_than']!;
+  }
+
+  String createSearchQuery() {
+    String query = 'category=${_filterData['category']}'
+        '&calories__gte=${_filterData['calories_greater_than']}'
+        '&calories__lte=${_filterData['calories_less_than']}'
+        '&carbs__gte=${_filterData['carbs_greater_than']}'
+        '&carbs__lte=${_filterData['carbs_less_than']}'
+        '&fats__gte=${_filterData['fats_greater_than']}'
+        '&fats__lte=${_filterData['fats_less_than']}'
+        '&protein__gte=${_filterData['protein_greater_than']}'
+        '&protein__lte=${_filterData['protein_less_than']}'
+        '&search=${_filterData['search']}';
+    return query;
+  }
+
+  void onSearchClicked() {
+    setState(() {
+      //reset nextPage
+      nextFoodPage = widget.nextPage;
+      loadedfood = List.empty(growable: true);
+      isFoodLoadingComplete = false;
+    });
+    searchFood();
   }
 
   @override
@@ -128,13 +166,8 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
                     InkWell(
                       child: const Icon(Icons.search),
                       onTap: () {
-                        setState(() {
-                          nextFoodPage = widget.nextPage;
-
-                          loadedfood = List.empty(growable: true);
-                          isFoodLoadingComplete = false;
-                        });
-                        searchFood(foodController.text);
+                        _filterData['search'] = foodController.text;
+                        onSearchClicked();
                       },
                     ),
                     InkWell(
@@ -145,6 +178,8 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
                             isScrollControlled: true,
                             builder: (context) => FilterWidget(
                                   filterData: _filterData,
+                                  setFilteredData: setFilteredData,
+                                  onSearchClicked: onSearchClicked,
                                 ));
                       },
                     ),
