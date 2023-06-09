@@ -146,46 +146,53 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
         const SizedBox(
           height: 7,
         ),
-        Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.1),
-          child: TextField(
-            controller: foodController,
-            //onChanged: (value) => updateList(value),
-            style: const TextStyle(
-                color: Color.fromARGB(255, 97, 219, 213), fontSize: 12),
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: const Color(0x00000000),
-                border:
-                    OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-                hintText: "eg: Orange",
-                suffixIcon: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(
-                      child: const Icon(Icons.search),
-                      onTap: () {
-                        _filterData['search'] = foodController.text;
-                        onSearchClicked();
-                      },
-                    ),
-                    InkWell(
-                      child: const Icon(Icons.filter_alt),
-                      onTap: () {
-                        showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (context) => FilterWidget(
-                                  filterData: _filterData,
-                                  setFilteredData: setFilteredData,
-                                  onSearchClicked: onSearchClicked,
-                                ));
-                      },
-                    ),
-                  ],
-                )),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10),
+                child: TextField(
+                  controller: foodController,
+                  //onChanged: (value) => updateList(value),
+                  style: const TextStyle(
+                      color: Color.fromARGB(255, 97, 219, 213), fontSize: 12),
+                  decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color(0x00000000),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30)),
+                      hintText: "eg: Orange",
+                      suffixIcon: InkWell(
+                        child: const Icon(Icons.search),
+                        onTap: () {
+                          _filterData['search'] = foodController.text;
+                          onSearchClicked();
+                        },
+                      )),
+                ),
+              ),
+            ),
+            InkWell(
+              child: const Icon(Icons.filter_alt),
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => FilterWidget(
+                          filterData: _filterData,
+                          setFilteredData: setFilteredData,
+                          onSearchClicked: onSearchClicked,
+                        ));
+              },
+            ),
+            const SizedBox(width: 5,),
+            InkWell(
+              child: const Icon(Icons.sort),
+              onTap: () {},
+            ),
+          ],
         ),
         if (isFoodLoadingComplete == false)
           const CircularProgressIndicator()
