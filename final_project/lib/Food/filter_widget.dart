@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
-
 class FilterWidget extends StatefulWidget {
   //used only to fill inital values of the textfields
   final Map<String, String> filterData;
   final Function(Map<String, String>) setFilteredData;
+  final Function() resetFilteredData;
   final Function() onSearchClicked;
   const FilterWidget(
       {super.key,
       required this.filterData,
       required this.setFilteredData,
-      required this.onSearchClicked});
+      required this.onSearchClicked,
+      required this.resetFilteredData});
 
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
@@ -40,6 +40,14 @@ class _FilterWidgetState extends State<FilterWidget> {
     }
     _formKey.currentState!.save();
     widget.setFilteredData(_filterData);
+    Navigator.of(context).pop();
+    widget.onSearchClicked();
+  }
+
+  //reset function
+  void _reset() {
+    FocusManager.instance.primaryFocus?.unfocus();
+    widget.resetFilteredData();
     Navigator.of(context).pop();
     widget.onSearchClicked();
   }
@@ -408,7 +416,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   SizedBox(
                     width: deviceSize.width * 0.45,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => _reset(),
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40),

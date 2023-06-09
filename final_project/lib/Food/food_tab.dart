@@ -109,6 +109,20 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
     _filterData['fats_greater_than'] = data['fats_greater_than']!;
   }
 
+  void resetFilteredData() {
+    foodController.text = '';
+    _filterData['category'] = '';
+    _filterData['calories_less_than'] = '';
+    _filterData['calories_greater_than'] = '';
+    _filterData['protein_less_than'] = '';
+    _filterData['protein_greater_than'] = '';
+    _filterData['carbs_less_than'] = '';
+    _filterData['carbs_greater_than'] = '';
+    _filterData['fats_less_than'] = '';
+    _filterData['fats_greater_than'] = '';
+    _filterData['search'] = '';
+  }
+
   String createSearchQuery() {
     String query = 'category=${_filterData['category']}'
         '&calories__gte=${_filterData['calories_greater_than']}'
@@ -141,6 +155,7 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Column(
       children: [
         const SizedBox(
@@ -151,8 +166,7 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
           children: [
             Expanded(
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: TextField(
                   controller: foodController,
                   //onChanged: (value) => updateList(value),
@@ -184,10 +198,13 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
                           filterData: _filterData,
                           setFilteredData: setFilteredData,
                           onSearchClicked: onSearchClicked,
+                          resetFilteredData: resetFilteredData,
                         ));
               },
             ),
-            const SizedBox(width: 5,),
+            const SizedBox(
+              width: 5,
+            ),
             InkWell(
               child: const Icon(Icons.sort),
               onTap: () {},
