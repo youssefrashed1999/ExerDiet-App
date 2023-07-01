@@ -19,8 +19,12 @@ import 'package:final_project/home/meals/snack_detailed.dart';
 import 'package:final_project/home/meals/snacks_screen.dart';
 import 'package:final_project/splash_screen.dart';
 import 'package:final_project/workouts/exercise_overview_screen.dart';
+import 'package:final_project/home/meals/performed_workouts_screen.dart';
 import 'package:flutter/material.dart';
 import 'Food/food_overview_screen.dart';
+import 'package:final_project/workouts/add_workout_screen.dart';
+import 'package:final_project/workouts/add_exercise_instances_to_workout.dart';
+import 'package:final_project/workouts/add_exercise_screen.dart';
 import 'constants.dart';
 
 void main() {
@@ -86,8 +90,13 @@ class MyApp extends StatelessWidget {
         AddRecipeScreen.routeName: (context) => const AddRecipeScreen(),
         RecipeDetailedItem.routeName: (context) => RecipeDetailedItem(),
         SnackScreen.routeName: (context) => const SnackScreen(),
-        SnackDetailedScreen.routeName:(context) => SnackDetailedScreen(),
-        AddWater.routeName:(context) => const AddWater()
+        SnackDetailedScreen.routeName: (context) => SnackDetailedScreen(),
+        AddWater.routeName: (context) => const AddWater(),
+        PerformedWorkoutsScreen.routeName: (context) =>
+            const PerformedWorkoutsScreen(),
+        AddWorkoutScreen.routeName: (context) => const AddWorkoutScreen(),
+        AddExerciseInsances.routeName: (context) => const AddExerciseInsances(),
+        AddExerciseScreen.routeName: (context) => const AddExerciseScreen(),
       },
     );
   }
