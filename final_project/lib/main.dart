@@ -25,6 +25,7 @@ import 'Food/food_overview_screen.dart';
 import 'package:final_project/workouts/add_workout_screen.dart';
 import 'package:final_project/workouts/add_exercise_instances_to_workout.dart';
 import 'package:final_project/workouts/add_exercise_screen.dart';
+import 'package:final_project/workouts/workout_detailed_item.dart';
 import 'constants.dart';
 
 void main() {
@@ -97,6 +98,7 @@ class MyApp extends StatelessWidget {
         AddWorkoutScreen.routeName: (context) => const AddWorkoutScreen(),
         AddExerciseInsances.routeName: (context) => const AddExerciseInsances(),
         AddExerciseScreen.routeName: (context) => const AddExerciseScreen(),
+        WorkoutDetailedItem.routeName: (context) => WorkoutDetailedItem(),
       },
     );
   }
