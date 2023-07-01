@@ -50,11 +50,11 @@ class DashboardMainScreen extends StatelessWidget {
                       size: 40,
                     ),
                     title: Text(
-                      'Rashood',
-                      style: Theme.of(context).textTheme.headlineLarge,
+                      'Update Personal data',
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     subtitle: Text(
-                      '3 days streak',
+                      'your streak is : ' + user.dailyStreak.toString(),
                       style: Theme.of(context)
                           .textTheme
                           .titleSmall!
