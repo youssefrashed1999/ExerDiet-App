@@ -1,8 +1,8 @@
 class Execise {
-  final String id;
+  final int id;
   final String name;
   final String bodypart;
-  final double caloriesBurnt;
+  final int caloriesBurnt;
   final bool isRepetitive;
   final String? imageUrl;
   final int rate;
