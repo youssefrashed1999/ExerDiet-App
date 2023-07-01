@@ -1,6 +1,7 @@
 import 'package:final_project/Food/add_water_screen.dart';
 
 import 'package:final_project/home/meals/meals_screen.dart';
+import 'package:final_project/home/meals/performed_workouts_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'meals/snacks_screen.dart';
@@ -10,11 +11,19 @@ class AddingButtons extends StatelessWidget {
   void _navigateToFoodList(BuildContext context, String mealName) {
     Navigator.of(context).pushNamed(MealsScreen.routeName, arguments: mealName);
   }
-  void _naviagateToSnackList(BuildContext context){
+
+  void _naviagateToSnackList(BuildContext context) {
     Navigator.of(context).pushNamed(SnackScreen.routeName);
   }
+
   void _navigateToAddWater(BuildContext context) {
     Navigator.of(context).pushNamed(AddWater.routeName);
+  }
+
+  void _navigateToAddWorkoutList(
+      BuildContext context, String performedWorkoutName) {
+    Navigator.of(context).pushNamed(PerformedWorkoutsScreen.routeName,
+        arguments: performedWorkoutName);
   }
 
   @override
@@ -125,17 +134,17 @@ class AddingButtons extends StatelessWidget {
                 colorFilter: ColorFilter.mode(
                     Colors.black.withOpacity(0.6), BlendMode.darken))),
         child: ListTile(
-          title: Text(
-            'Add workout',
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
-          trailing: const Icon(
-            Icons.navigate_next_outlined,
-            color: Colors.white,
-          ),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
+            title: Text(
+              'Add workout',
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+            trailing: const Icon(
+              Icons.navigate_next_outlined,
+              color: Colors.white,
+            ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            onTap: () => _navigateToAddWorkoutList(context, 'workout')),
       ),
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
