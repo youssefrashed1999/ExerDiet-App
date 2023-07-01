@@ -229,19 +229,6 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              elevation: 0,
-                              backgroundColor: Colors.white,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: -1)),
-                          onPressed: () {},
-                          child: Row(
-                            children: const [
-                              Text('ingredients'),
-                              Icon(Icons.arrow_right)
-                            ],
-                          )),
                       const SizedBox(
                         height: 30,
                       ),
