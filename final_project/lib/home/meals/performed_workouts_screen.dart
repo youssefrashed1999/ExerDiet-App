@@ -172,7 +172,7 @@ class _PerformedWorkoutsScreenState extends State<PerformedWorkoutsScreen>
                   showDetails();
                 },
                 child: Text(
-                    'Total calories Burnt: ${performedWorkout!.totalCaloriesBurnt.toString()}',
+                    'Total calories Burnt: ${performedWorkout?.totalCaloriesBurnt.toString()}',
                     style: Theme.of(context).textTheme.titleMedium)),
         ],
       ),
