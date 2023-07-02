@@ -52,6 +52,8 @@ dependencies:
   image_picker: ^0.8.7+5
   path_provider: ^2.0.15
   dio: ^5.1.2
+  flutter_vision: ^1.1.1
+  camera: ^0.10.3+2
 
 dev_dependencies:
   flutter_test:
@@ -89,7 +91,9 @@ flutter:
     - assets/icons/bottle-350.png
     - assets/icons/bottle-450.png
     - assets/icons/cup-250.png
-    
+
+    - assets/yolo/yolov8n.tflite
+    - assets/yolo/yolov8n.txt
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
