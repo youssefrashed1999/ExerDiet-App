@@ -59,26 +59,26 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
           'instructions': _recipeData['instructions'].toString(),
           'image': await MultipartFile.fromFile(image.path)
         });
-        final dio = Dio();
-        final response = await dio.post('${BASE_URL}diet/recipes/',
-            options: Options(headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization': 'JWT $accessKey'
-            }),
-            data: formData);
-        if (response.statusCode == 201) {
-          _btnController.success();
-          recipeId = response.data['id'] as int;
-          Timer(const Duration(seconds: 2), () {
-            Navigator.of(context)
-                .pushNamed(AddFoodInsances.routeName, arguments: recipeId);
-          });
-        } else {
-          _btnController.error();
-          Timer(const Duration(seconds: 2), () {
-            _btnController.reset();
-          });
-        }
+      }
+      final dio = Dio();
+      final response = await dio.post('${BASE_URL}diet/recipes/',
+          options: Options(headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'JWT $accessKey'
+          }),
+          data: formData);
+      if (response.statusCode == 201) {
+        _btnController.success();
+        recipeId = response.data['id'] as int;
+        Timer(const Duration(seconds: 2), () {
+          Navigator.of(context)
+              .pushNamed(AddFoodInsances.routeName, arguments: recipeId);
+        });
+      } else {
+        _btnController.error();
+        Timer(const Duration(seconds: 2), () {
+          _btnController.reset();
+        });
       }
     } catch (e) {
       _btnController.error();
