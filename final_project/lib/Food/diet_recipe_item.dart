@@ -22,7 +22,7 @@ class DietRecipeItem extends StatelessWidget {
                 'Content-Type': 'application/json; charset=UTF-8',
                 'Authorization': 'JWT $accessKey'
               },
-              body: jsonEncode(<String, dynamic>{'food_id': recipe.id}));
+              body: jsonEncode(<String, dynamic>{'id': recipe.id}));
 
       if (response.statusCode == 201) {
         Fluttertoast.showToast(
