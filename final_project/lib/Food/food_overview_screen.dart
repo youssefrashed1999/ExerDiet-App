@@ -1,7 +1,10 @@
 import 'package:final_project/Food/food_tab.dart';
 import 'package:final_project/Food/recipe_tab.dart';
+import 'package:final_project/Food/yolo.dart';
 
 import 'package:flutter/material.dart';
+
+enum Options { none, image, frame, vision }
 
 class FoodOverviewScreen extends StatefulWidget {
   static const routeName = '/food';
@@ -64,7 +67,19 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
           category: 'CustomFood',
           mealDomain: 'meals',
         )
+        
       ]),
+  floatingActionButton: CircleAvatar(
+        backgroundColor: Colors.blue,
+        child: IconButton(
+          icon: const Icon(
+            Icons.camera,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushNamed(Yolo.routeName,arguments: mealId);
+          },
+        ),),
     );
   }
 }

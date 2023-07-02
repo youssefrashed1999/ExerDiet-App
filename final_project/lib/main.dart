@@ -3,6 +3,7 @@ import 'package:final_project/Food/add_food_screen.dart';
 import 'package:final_project/Food/add_recipe_screen.dart';
 import 'package:final_project/Food/add_water_screen.dart';
 import 'package:final_project/Food/recipe_detailed_item.dart';
+import 'package:final_project/Food/yolo.dart';
 import 'package:final_project/auth/log_in_screen.dart';
 import 'package:final_project/auth/open_screen.dart';
 import 'package:final_project/auth/sign_up_screen.dart';
@@ -99,6 +100,7 @@ class MyApp extends StatelessWidget {
         AddExerciseInsances.routeName: (context) => const AddExerciseInsances(),
         AddExerciseScreen.routeName: (context) => const AddExerciseScreen(),
         WorkoutDetailedItem.routeName: (context) => WorkoutDetailedItem(),
+        Yolo.routeName:(context) => Yolo(),
       },
     );
   }
