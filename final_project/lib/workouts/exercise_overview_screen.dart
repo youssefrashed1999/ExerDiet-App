@@ -5,7 +5,8 @@ import 'package:final_project/workouts/add_workout_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:final_project/workouts/filter.dart';
+import 'package:final_project/workouts/sort.dart';
 import '../constants.dart';
 import '../models/exercise.dart';
 import '../models/workout.dart';
@@ -23,7 +24,15 @@ class ExerciseOverviewScreen extends StatefulWidget {
 
 class _ExerciseOverviewScreenState extends State<ExerciseOverviewScreen>
     with SingleTickerProviderStateMixin {
+  Map<String, String> _filterData = {
+    'search': '',
+    'body_part': '',
+    'calories_less_than': '',
+    'calories_greater_than': '',
+    'ordering': '',
+  };
   //exercise tab controllers and attributes
+
   List<Execise> loadedexercise = List.empty(growable: true);
   String? nextExercisePage =
       "https://exerdiet.pythonanywhere.com/gym/exercises/";
@@ -126,12 +135,13 @@ class _ExerciseOverviewScreenState extends State<ExerciseOverviewScreen>
   }
 
   //search methods
-  void searchExercise(String value) async {
+  void searchExercise() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? accessKey = prefs.getString(ACCESS_KEY);
+    String query = createSearchQuery();
     try {
       final response = await http.get(
-        Uri.parse('${nextExercisePage!}?search=$value'),
+        Uri.parse('${nextExercisePage!}?$query'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'JWT $accessKey'
@@ -150,6 +160,44 @@ class _ExerciseOverviewScreenState extends State<ExerciseOverviewScreen>
         });
       }
     } catch (_) {}
+  }
+
+  void setFilteredData(Map<String, String> data) {
+    _filterData['body_part'] = data['body_part']!;
+    _filterData['calories_less_than'] = data['calories_less_than']!;
+    _filterData['calories_greater_than'] = data['calories_greater_than']!;
+  }
+
+  void resetFilteredData() {
+    exerciseController.text = '';
+    _filterData['body_part'] = '';
+    _filterData['calories_less_than'] = '';
+    _filterData['calories_greater_than'] = '';
+    _filterData['search'] = '';
+    _filterData['ordering'] = '';
+  }
+
+  void setOrderingMethod(String value) {
+    _filterData['ordering'] = value;
+  }
+
+  String createSearchQuery() {
+    String query = 'body_part=${_filterData['body_part']}'
+        '&calories__gte=${_filterData['calories_greater_than']}'
+        '&calories__lte=${_filterData['calories_less_than']}'
+        '&search=${_filterData['search']}'
+        '&ordering=${_filterData['ordering']}';
+    return query;
+  }
+
+  void onSearchClicked() {
+    setState(() {
+      //reset nextPage
+      nextExercisePage = "https://exerdiet.pythonanywhere.com/gym/exercises/";
+      loadedexercise = List.empty(growable: true);
+      isExerciseLoadingComplete = false;
+    });
+    searchExercise();
   }
 
   void searchWorkout(String value) async {
@@ -211,35 +259,69 @@ class _ExerciseOverviewScreenState extends State<ExerciseOverviewScreen>
         const SizedBox(
           height: 7,
         ),
-        Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.1),
-          child: TextField(
-            controller: exerciseController,
-            //onChanged: (value) => updateList(value),
-            style: const TextStyle(
-                color: Color.fromARGB(255, 97, 219, 213), fontSize: 12),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: const Color(0x00000000),
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
-              hintText: "eg: Pushups",
-              suffixIcon: InkWell(
-                child: const Icon(Icons.search),
-                onTap: () {
-                  setState(() {
-                    nextExercisePage =
-                        "https://exerdiet.pythonanywhere.com/gym/exercises/";
-
-                    loadedexercise = List.empty(growable: true);
-                    isExerciseLoadingComplete = false;
-                  });
-                  searchExercise(exerciseController.text);
-                },
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.1),
+                child: TextField(
+                  controller: exerciseController,
+                  //onChanged: (value) => updateList(value),
+                  style: const TextStyle(
+                      color: Color.fromARGB(255, 97, 219, 213), fontSize: 12),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: const Color(0x00000000),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    hintText: "eg: Pushups",
+                    suffixIcon: InkWell(
+                      child: const Icon(Icons.search),
+                      onTap: () {
+                        _filterData['search'] = exerciseController.text;
+                        onSearchClicked();
+                      },
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
+            InkWell(
+              child: const Icon(Icons.filter_alt),
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => Filter(
+                          filterData: _filterData,
+                          setFilteredData: setFilteredData,
+                          onSearchClicked: onSearchClicked,
+                          resetFilteredData: resetFilteredData,
+                        ));
+              },
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            InkWell(
+              child: const Icon(Icons.sort),
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => Sort(
+                          selectedSortMethod: _filterData['ordering']!,
+                          setOrderingMethod: setOrderingMethod,
+                          onSearchClicked: onSearchClicked,
+                        ));
+              },
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+          ],
         ),
         if (isExerciseLoadingComplete == false)
           const CircularProgressIndicator()
