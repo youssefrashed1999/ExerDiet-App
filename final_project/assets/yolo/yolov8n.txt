@@ -1,5 +1,5 @@
-Apple pie
 Apple
+Apple pie
 Banana
 Bell pepper
 Bread
@@ -10,7 +10,7 @@ Chicken nugget
 Chicken roast
 Chips
 Chips
-Chocolate bar packaged
+Chocolate bar
 Chocolate bar
 Coke
 Cookie
@@ -33,11 +33,11 @@ Mango
 Milk
 Muffin
 Mushroom
-Oil pasta
+Pasta
 Orange
 Pancake
-Pasta al ragu
-Pasta with carbonara sauce
+Pasta
+Pasta
 Peach
 Pear
 Pineapple
@@ -55,9 +55,9 @@ Tomato
 Waffle
 Watermelon
 Zucchini
-flafel
-fool
-koshary
-molokhia
-roz blabn
-wara enab
+Flafel
+Fool
+Koshary
+Molokhia
+Roz-blabn
+Wara-enab
