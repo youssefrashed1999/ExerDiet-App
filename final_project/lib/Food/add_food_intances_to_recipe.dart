@@ -40,7 +40,7 @@ class _AddFoodInsancesState extends State<AddFoodInsances>
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge!
-                    .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+                    .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
               ))
         ],
         bottom: TabBar(

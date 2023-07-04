@@ -122,6 +122,7 @@ class _ChangeGoalScreenState extends State<ChangeGoalScreen> {
       ),
       body: SingleChildScrollView(
         child: Container(
+          color: Colors.grey.shade200,
           padding: const EdgeInsets.all(10),
           width: deviceSize.width,
           child: Form(

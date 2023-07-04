@@ -161,6 +161,7 @@ class _SetCaloriesScreenState extends State<SetCaloriesScreen> {
       body: Container(
         padding: const EdgeInsets.all(10),
         width: deviceSize.width,
+        color: Colors.grey.shade200,
         child: Form(
             key: _formkey,
             child: Column(

@@ -50,6 +50,7 @@ class FoodInstanceItem extends StatelessWidget {
         child: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          
           width: deviceSize.width,
           height: 150,
           child: Row(
@@ -98,7 +99,7 @@ class FoodInstanceItem extends StatelessWidget {
                     },
                     icon: const Icon(Icons.star),
                     iconSize: 40,
-                    color: const Color.fromARGB(255, 97, 219, 213),
+                    color: Theme.of(context).primaryColor,
                   )
                 ],
               ),

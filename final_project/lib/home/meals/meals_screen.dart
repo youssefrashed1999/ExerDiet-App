@@ -11,7 +11,6 @@ import '../../Food/food_overview_screen.dart';
 import '../../constants.dart';
 import 'package:intl/intl.dart';
 
-
 import '../../main.dart';
 import '../../models/meal.dart';
 
@@ -176,45 +175,60 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
                   showDetails();
                 },
                 child: Text('Total calories: ${meal?.totalCalories.toString()}',
-                    style: Theme.of(context).textTheme.titleMedium)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: Colors.white))),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
-          const SizedBox(
-            height: 20,
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: Colors.grey.shade200,
           ),
-          if (isLoadingComplete == false) const CircularProgressIndicator(),
-          if (isLoadingComplete == true &&
-              (loadedRecipe.isEmpty && loadedfood.isEmpty))
-            Center(child: Text('No $mealName added today!'))
-          else
-            Expanded(
-              child: ListView.builder(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                itemCount: loadedfood.length,
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) =>
-                    FoodInstanceItem(food: loadedfood[index]),
-                scrollDirection: Axis.vertical,
+          Column(
+            children: [
+              const SizedBox(
+                height: 20,
               ),
-            ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.9,
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 4,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.horizontal(
-                          right: Radius.circular(40),
-                          left: Radius.circular(40))),
+              if (isLoadingComplete == false) const CircularProgressIndicator(),
+              if (isLoadingComplete == true &&
+                  (loadedRecipe.isEmpty && loadedfood.isEmpty))
+                Center(child: Text('No $mealName added today!'))
+              else
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 20),
+                    itemCount: loadedfood.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) =>
+                        FoodInstanceItem(food: loadedfood[index]),
+                    scrollDirection: Axis.vertical,
+                  ),
                 ),
-                onPressed: () {
-                  createMeal();
-                },
-                child: const Text('Add more',
-                    style: TextStyle(color: Colors.white))),
+              Container(
+                color: Colors.grey.shade200,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 4,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.horizontal(
+                                right: Radius.circular(40),
+                                left: Radius.circular(40))),
+                      ),
+                      onPressed: () {
+                        createMeal();
+                      },
+                      child: const Text('Add more',
+                          style: TextStyle(color: Colors.white))),
+                ),
+              ),
+            ],
           ),
         ],
       ),

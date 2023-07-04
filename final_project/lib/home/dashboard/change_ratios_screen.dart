@@ -154,8 +154,9 @@ class _ChangeRatiosState extends State<ChangeRatiosScreen> {
           ),
           centerTitle: true,
         ),
-        body: Padding(
+        body: Container(
           padding: const EdgeInsets.all(10),
+          color: Colors.grey.shade200,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

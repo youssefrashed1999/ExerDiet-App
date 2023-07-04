@@ -170,12 +170,12 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
             const SizedBox(
               height: 20,
             ),
-            const Text('Add new food',
+            Text('Add new food',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color.fromARGB(255, 97, 219, 213),
+                  color: Theme.of(context).primaryColor,
                   fontSize: 20,
-                  fontFamily: 'Anton',
+                  fontFamily: 'RobotoCondensed',
                   fontWeight: FontWeight.normal,
                 )),
             Center(

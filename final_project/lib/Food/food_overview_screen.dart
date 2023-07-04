@@ -53,23 +53,27 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                   padding: EdgeInsets.only(bottom: 2), child: Text('My Food')),
             ]),
       ),
-      body: TabBarView(controller: controller, children: [
-        FoodTab(
-          mealId: mealId,
-          nextPage: "https://exerdiet.pythonanywhere.com/diet/foods/",
-          category: 'Food',
-          mealDomain: 'meals',
-        ),
-        RecipeTab(mealId: mealId),
-        FoodTab(
-          mealId: mealId,
-          nextPage: "https://exerdiet.pythonanywhere.com/diet/custom_foods/",
-          category: 'CustomFood',
-          mealDomain: 'meals',
-        )
-        
-      ]),
-  floatingActionButton: CircleAvatar(
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width,
+        color: Colors.grey.shade200,
+        child: TabBarView(controller: controller, children: [
+          FoodTab(
+            mealId: mealId,
+            nextPage: "https://exerdiet.pythonanywhere.com/diet/foods/",
+            category: 'Food',
+            mealDomain: 'meals',
+          ),
+          RecipeTab(mealId: mealId),
+          FoodTab(
+            mealId: mealId,
+            nextPage: "https://exerdiet.pythonanywhere.com/diet/custom_foods/",
+            category: 'CustomFood',
+            mealDomain: 'meals',
+          )
+        ]),
+      ),
+      floatingActionButton: CircleAvatar(
         backgroundColor: Colors.blue,
         child: IconButton(
           icon: const Icon(
@@ -77,9 +81,10 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.of(context).pushNamed(Yolo.routeName,arguments: mealId);
+            Navigator.of(context).pushNamed(Yolo.routeName, arguments: mealId);
           },
-        ),),
+        ),
+      ),
     );
   }
 }

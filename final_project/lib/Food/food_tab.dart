@@ -34,7 +34,7 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
     'category': '',
     'calories_less_than': '',
     'calories_greater_than': '',
-    'protein_less_than': '',
+    'protein_less_than ': '',
     'protein_greater_than': '',
     'carbs_less_than': '',
     'carbs_greater_than': '',
@@ -178,8 +178,8 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
                 child: TextField(
                   controller: foodController,
                   //onChanged: (value) => updateList(value),
-                  style: const TextStyle(
-                      color: Color.fromARGB(255, 97, 219, 213), fontSize: 12),
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor, fontSize: 12),
                   decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0x00000000),

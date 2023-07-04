@@ -48,7 +48,7 @@ class _LogInScreenState extends State<LogInScreen> {
             Container(
               width: deviceSize.width,
               height: deviceSize.height,
-              decoration: BOX_DECORATION,
+              decoration: AUTH_BACKGROUND,
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -256,10 +256,10 @@ class _LogInCardState extends State<_LogInCard> {
                   children: <Widget>[
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: const Text(
+                      child: Text(
                         'Login',
                         style: TextStyle(
-                          color: Color.fromARGB(255, 97, 219, 213),
+                          color: Theme.of(context).primaryColor,
                           fontSize: 20,
                           fontFamily: 'RobotoCondensed',
                           fontWeight: FontWeight.normal,
@@ -300,9 +300,9 @@ class _LogInCardState extends State<_LogInCard> {
                             backgroundColor: Colors.transparent,
                             shadowColor: Colors.transparent),
                         onPressed: () => widget.toggleWidgets(),
-                        child: const Text('Forgot password?',
+                        child: Text('Forgot password?',
                             style: TextStyle(
-                                color: Color.fromARGB(255, 97, 219, 213),
+                                color: Theme.of(context).primaryColor,
                                 fontSize: 13)),
                       ),
                     ),
@@ -325,9 +325,9 @@ class _LogInCardState extends State<_LogInCard> {
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent),
                       onPressed: () => navigateToSignUpScreen(context),
-                      child: const Text('dont have an account? signup',
+                      child: Text('dont have an account? signup',
                           style: TextStyle(
-                              color: Color.fromARGB(255, 97, 219, 213),
+                              color: Theme.of(context).primaryColor,
                               fontSize: 13)),
                     ),
                   ],
@@ -443,10 +443,10 @@ class _ForgotPasswordWigdetState extends State<_ForgotPasswordWigdet> {
                         children: <Widget>[
                           Container(
                             padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: const Text(
+                            child: Text(
                               'Forgot Password',
                               style: TextStyle(
-                                color: Color.fromARGB(255, 97, 219, 213),
+                                color: Theme.of(context).primaryColor,
                                 fontSize: 20,
                                 fontFamily: 'RobotoCondensed',
                                 fontWeight: FontWeight.normal,
@@ -506,7 +506,10 @@ class _ForgotPasswordWigdetState extends State<_ForgotPasswordWigdet> {
                             style: Theme.of(context)
                                 .textTheme
                                 .titleSmall!
-                                .copyWith(color: Colors.black, fontSize: 14)),
+                                .copyWith(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                )),
                         const SizedBox(
                           height: 30,
                         ),
