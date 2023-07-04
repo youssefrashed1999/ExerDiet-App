@@ -193,14 +193,14 @@ class _YoloVideoState extends State<YoloVideo> {
   Future<void> stopDetection() async {
     setState(() {
       isDetecting = false;
-      // showDialog(
-      //     context: context,
-      //     builder: ((context) => AlertDialog(
-      //           title: const Text("Results"),
-      //           content: Text(yoloResults.toString()),
-      //         ))).then((value) {
-      //   yoloResults.clear();
-      // });
+        // showDialog(
+        //     context: context,
+        //     builder: ((context) => AlertDialog(
+        //           title: const Text("Results"),
+        //           content: Text(yoloResults.toString()),
+        //         ))).then((value) {
+        //   yoloResults.clear();
+        // });
       showModalBottomSheet(
           context: context,
           builder: (context) => YoloSubmitFood(
