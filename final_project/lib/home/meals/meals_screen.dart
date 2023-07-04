@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:final_project/home/meals/food_instance_item.dart';
+import 'package:final_project/home/meals/snack_detailed.dart';
 import 'package:final_project/models/diet_recipe.dart';
 import 'package:final_project/models/food_instance.dart';
 import 'package:flutter/material.dart';
@@ -53,10 +54,10 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
           }
           //recipes
           int recipesCount =
-              jsonDecode(response.body)['results'][0]['food_instances'].length;
+              jsonDecode(response.body)['results'][0]['recipes'].length;
           for (int i = 0; i < recipesCount; i++) {
-            loadedfood.add(FoodInstance.fromjson(
-                jsonDecode(response.body)['results'][0]['food_instances'][i]));
+            loadedRecipe.add(DietRecipe.fromjson(
+                jsonDecode(response.body)['results'][0]['recipes'][i]));
           }
           //TO-DO
           //Display recipes also
@@ -211,8 +212,14 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
                         horizontal: 10, vertical: 20),
                     itemCount: loadedfood.length + loadedRecipe.length,
                     shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) =>
-                        FoodInstanceItem(food: loadedfood[index]),
+                    itemBuilder: (BuildContext context, int index) {
+                      if (index < loadedfood.length) {
+                        return FoodInstanceItem(food: loadedfood[index]);
+                      } else {
+                        return recipeItem(
+                            context, loadedRecipe[index - loadedfood.length]);
+                      }
+                    },
                     scrollDirection: Axis.vertical,
                   ),
                 ),
