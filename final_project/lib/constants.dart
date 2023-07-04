@@ -6,30 +6,48 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'models/user.dart';
 
-const BOX_DECORATION = BoxDecoration(
+final BOX_DECORATION = BoxDecoration(
   gradient: LinearGradient(
     colors: [
-      Color.fromRGBO(125, 236, 216, 1),
-      Color.fromRGBO(208, 251, 222, 1),
+      Colors.grey.shade200,
+      Colors.grey.shade200,
+
+      //Color.fromRGBO(125, 236, 216, 1),
+      //Color.fromRGBO(208, 251, 222, 1),
     ],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     stops: [0, 1],
   ),
 );
+const AUTH_BACKGROUND = BoxDecoration(
+  gradient: LinearGradient(
+    colors: [
+      Color(0xFF4A148C),
+      Color(0xFF4A148C),
+
+      //Color.fromRGBO(125, 236, 216, 1),
+      //Color.fromRGBO(208, 251, 222, 1),
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    stops: [0, 1],
+  ),
+);
+final BACKGROUND_COLOR=Colors.grey.shade200;
 MaterialColor MY_COLOR = const MaterialColor(
-  0xFF61DBD5,
+  0xFF4A148C,
   <int, Color>{
-    50: Color(0x0061DBD5),
-    100: Color(0xFF61DBD5),
-    200: Color(0xFF61DBD5),
-    300: Color(0xFF61DBD5),
-    400: Color(0xFF61DBD5),
-    500: Color(0xFF61DBD5),
-    600: Color(0xFF61DBD5),
-    700: Color(0xFF61DBD5),
-    800: Color(0xFF61DBD5),
-    900: Color(0xFF61DBD5),
+    50: Color(0xFF4A148C),
+    100: Color(0xFF4A148C),
+    200: Color(0xFF4A148C),
+    300: Color(0xFF4A148C),
+    400: Color(0xFF4A148C),
+    500: Color(0xFF4A148C),
+    600: Color(0xFF4A148C),
+    700: Color(0xFF4A148C),
+    800: Color(0xFF4A148C),
+    900: Color(0xFF4A148C),
   },
 );
 const APP_NAME = 'ExerDiet';

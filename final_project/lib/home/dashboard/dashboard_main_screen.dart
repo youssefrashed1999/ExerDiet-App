@@ -31,7 +31,7 @@ class DashboardMainScreen extends StatelessWidget {
           Container(
             width: deviceSize.width,
             height: deviceSize.height,
-            color: Colors.white,
+            color: Colors.grey.shade200,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,

@@ -32,17 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromRGBO(125, 236, 216, 1),
-              Color.fromRGBO(208, 251, 222, 1),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            stops: [0, 1],
-          ),
-        ),
+        decoration: AUTH_BACKGROUND,
         child: SizedBox(
           height: deviceSize.height,
           width: deviceSize.width,
@@ -246,10 +236,10 @@ class _SignUpCardState extends State<_SignUpCard> {
                   children: <Widget>[
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: const Text(
+                      child: Text(
                         'Create Account',
                         style: TextStyle(
-                          color: Color.fromARGB(255, 97, 219, 213),
+                          color: Theme.of(context).primaryColor,
                           fontSize: 20,
                           fontFamily: 'RobotoCondensed',
                           fontWeight: FontWeight.normal,
@@ -355,9 +345,9 @@ class _SignUpCardState extends State<_SignUpCard> {
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent),
                       onPressed: () => navigateToLogInScreen(context),
-                      child: const Text('already have an account? Login',
+                      child: Text('already have an account? Login',
                           style: TextStyle(
-                              color: Color.fromARGB(255, 97, 219, 213),
+                              color: Theme.of(context).primaryColor,
                               fontSize: 13)),
                     ),
                   ],

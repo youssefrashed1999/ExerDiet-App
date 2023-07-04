@@ -55,24 +55,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
           ? AppBar(
               centerTitle: true,
               title: const Text('ExerDiet'),
-              actions: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.white),
-                  child: Center(
-                    child: Text(
-                      '${user.dailyStreak}',
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                )
-              ],
             )
           : null,
-      body: IndexedStack(index: selectedIndex,children: pages),
+      body: IndexedStack(index: selectedIndex, children: pages),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.grey.shade200,
+        elevation: 0,
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: false,
         showSelectedLabels: false,

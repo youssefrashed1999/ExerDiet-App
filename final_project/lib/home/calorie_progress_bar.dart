@@ -35,6 +35,17 @@ Widget _innerWidget(double value, double max, BuildContext context) {
   );
 }
 
+double determineValue(User user) {
+  double userCalories =
+      (user.caloriesIntakeToday - user.caloriesBurnedToday).toDouble();
+  if (userCalories < 0) return 0;
+  if (userCalories > user.dailyCaloriesNeeds) {
+    return user.dailyCaloriesNeeds.toDouble();
+  } else {
+    return userCalories;
+  }
+}
+
 class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
   User _user = User.instance;
   @override
@@ -62,9 +73,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                   width: deviceSize.width * 0.4,
                   height: deviceSize.height * 0.24,
                   child: SleekCircularSlider(
-                    initialValue:
-                        (_user.caloriesIntakeToday - _user.caloriesBurnedToday)
-                            .toDouble(),
+                    initialValue: determineValue(_user),
                     min: 0,
                     max: _user.dailyCaloriesNeeds.toDouble(),
                     appearance: CircularSliderAppearance(
@@ -72,15 +81,18 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                       angleRange: 360,
                       customColors: CustomSliderColors(
                           trackColor: Colors.grey,
-                          progressBarColors: const [
-                            Color.fromRGBO(125, 236, 216, 1),
-                            Color.fromRGBO(208, 251, 222, 1),
+                          progressBarColors:  [
+                            Colors.purple.shade900,
+                            Colors.purple.shade600,
                           ],
                           hideShadow: true,
                           dotColor: Colors.white),
                     ),
-                    innerWidget: (percentage) => _innerWidget(percentage,
-                        _user.dailyCaloriesNeeds.toDouble(), context),
+                    innerWidget: (percentage) => _innerWidget(
+                        (_user.caloriesIntakeToday - _user.caloriesBurnedToday)
+                            .toDouble(),
+                        _user.dailyCaloriesNeeds.toDouble(),
+                        context),
                   ),
                 ),
                 Column(
@@ -136,7 +148,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                       height: 10,
                     ),
                     Row(children: [
-                      const Icon(Icons.fireplace_rounded, color: Colors.orange),
+                      const Icon(Icons.whatshot_rounded, color: Colors.orange),
                       const SizedBox(width: 10),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,
