@@ -1,6 +1,7 @@
 import 'package:final_project/Food/food_tab.dart';
 import 'package:final_project/Food/recipe_tab.dart';
 import 'package:final_project/Food/yolo.dart';
+import 'package:final_project/constants.dart';
 
 import 'package:flutter/material.dart';
 
@@ -55,8 +56,8 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.width,
-        color: Colors.grey.shade200,
+        height: MediaQuery.of(context).size.height,
+        color: BACKGROUND_COLOR,
         child: TabBarView(controller: controller, children: [
           FoodTab(
             mealId: mealId,
@@ -74,11 +75,11 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
         ]),
       ),
       floatingActionButton: CircleAvatar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Theme.of(context).primaryColor,
         child: IconButton(
           icon: const Icon(
             Icons.camera,
-            color: Colors.black,
+            color: Colors.white,
           ),
           onPressed: () {
             Navigator.of(context).pushNamed(Yolo.routeName, arguments: mealId);

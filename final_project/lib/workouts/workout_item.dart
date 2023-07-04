@@ -22,7 +22,7 @@ class WorkoutItem extends StatelessWidget {
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'JWT $accessKey'
           },
-          body: jsonEncode(<String, dynamic>{'exercise_id': workout.id}));
+          body: jsonEncode(<String, dynamic>{'id': workout.id}));
 
       if (response.statusCode == 201) {
         Fluttertoast.showToast(

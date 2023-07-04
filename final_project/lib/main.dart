@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ExerDiet',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: MY_COLOR,
           textTheme: const TextTheme(

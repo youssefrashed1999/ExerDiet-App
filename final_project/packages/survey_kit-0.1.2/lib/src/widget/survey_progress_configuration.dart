@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SurveyProgressConfiguration {
   /// Color of the progressbar
-  final Color progressbarColor;
+  Color progressbarColor;
 
   /// Color of the value of the progressbar
   final Color? valueProgressbarColor;
@@ -30,7 +30,7 @@ class SurveyProgressConfiguration {
   final BorderRadius? borderRadius;
 
   SurveyProgressConfiguration({
-    this.progressbarColor = Colors.white,
+    this.progressbarColor = const Color(0xFFEEEEEE),
     this.height = 6.0,
     this.padding = const EdgeInsets.symmetric(horizontal: 24.0),
     this.showLabel = false,

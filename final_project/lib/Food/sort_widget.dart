@@ -1,3 +1,4 @@
+import 'package:final_project/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -30,6 +31,7 @@ class _SortWidgetState extends State<SortWidget> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
+        color: BACKGROUND_COLOR,
         padding: EdgeInsets.only(
             left: 10,
             right: 10,

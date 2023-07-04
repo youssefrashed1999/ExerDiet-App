@@ -105,8 +105,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.camera),
-                      title: Text('Camera'),
+                      leading: const Icon(Icons.camera),
+                      title: const Text('Camera'),
                       onTap: () {
                         _uploadFromCamera(context);
                       },
@@ -141,114 +141,117 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
         title: const Text('Create new recipe'),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(
-              height: 20,
-            ),
-            const Text('Create new recipe',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 97, 219, 213),
-                  fontSize: 20,
-                  fontFamily: 'Anton',
-                  fontWeight: FontWeight.normal,
-                )),
-            Center(
-              child: _myimage != null
-                  ? Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 10),
-                      width: 150,
-                      height: 150,
-                      child: Image.file(
-                        _myimage,
+        child: Container(
+          color: BACKGROUND_COLOR,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(
+                height: 20,
+              ),
+              Text('Create new recipe',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 20,
+                    fontFamily: 'RobotoCondensed',
+                    fontWeight: FontWeight.normal,
+                  )),
+              Center(
+                child: _myimage != null
+                    ? Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
                         width: 150,
                         height: 150,
-                      ),
-                    )
-                  : Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 10),
-                      width: 150,
-                      height: 150,
-                      color: const Color.fromARGB(134, 158, 158, 158),
-                      child: Center(
-                        child: IconButton(
-                            onPressed: () {
-                              _showOption(context);
-                            },
-                            icon: const Icon(Icons.camera_alt_rounded)),
-                      ),
-                    ),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              elevation: 8.0,
-              child: Container(
-                constraints: BoxConstraints(minWidth: deviceSize.width * 0.75),
-                width: deviceSize.width * 0.75,
-                padding: const EdgeInsets.all(20),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      TextFormField(
-                        decoration: const InputDecoration(hintText: 'name'),
-                        keyboardType: TextInputType.name,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'name is required!';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _recipeData['name'] = value;
-                        },
-                      ),
-                      TextFormField(
-                        decoration:
-                            const InputDecoration(hintText: 'instructions'),
-                        keyboardType: TextInputType.multiline,
-                        minLines: 1,
-                        maxLines: 30,
-                        validator: (value) {
-                          return null;
-                        },
-                        onSaved: (value) {
-                          if (value!.isEmpty) {
-                            _recipeData['instructions'] = '';
-                          } else {
-                            _recipeData['instructions'] = value;
-                          }
-                        },
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      SizedBox(
-                        width: 290,
-                        child: RoundedLoadingButton(
-                          controller: _btnController,
-                          onPressed: () => submit(),
-                          color: MY_COLOR[300],
-                          borderRadius: 40,
-                          child: const Text('Save',
-                              style: TextStyle(color: Colors.white)),
+                        child: Image.file(
+                          _myimage,
+                          width: 150,
+                          height: 150,
                         ),
                       )
-                    ],
+                    : Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 10),
+                        width: 150,
+                        height: 150,
+                        color: const Color.fromARGB(134, 158, 158, 158),
+                        child: Center(
+                          child: IconButton(
+                              onPressed: () {
+                                _showOption(context);
+                              },
+                              icon: const Icon(Icons.camera_alt_rounded)),
+                        ),
+                      ),
+              ),
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                elevation: 8.0,
+                child: Container(
+                  constraints: BoxConstraints(minWidth: deviceSize.width * 0.75),
+                  width: deviceSize.width * 0.75,
+                  padding: const EdgeInsets.all(20),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          decoration: const InputDecoration(hintText: 'name'),
+                          keyboardType: TextInputType.name,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'name is required!';
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            _recipeData['name'] = value;
+                          },
+                        ),
+                        TextFormField(
+                          decoration:
+                              const InputDecoration(hintText: 'instructions'),
+                          keyboardType: TextInputType.multiline,
+                          minLines: 1,
+                          maxLines: 30,
+                          validator: (value) {
+                            return null;
+                          },
+                          onSaved: (value) {
+                            if (value!.isEmpty) {
+                              _recipeData['instructions'] = '';
+                            } else {
+                              _recipeData['instructions'] = value;
+                            }
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        SizedBox(
+                          width: 290,
+                          child: RoundedLoadingButton(
+                            controller: _btnController,
+                            onPressed: () => submit(),
+                            color: MY_COLOR[300],
+                            borderRadius: 40,
+                            child: const Text('Save',
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

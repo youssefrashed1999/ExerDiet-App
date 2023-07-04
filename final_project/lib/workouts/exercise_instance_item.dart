@@ -56,8 +56,8 @@ class ExerciseInstanceItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                width: 100,
-                height: 100,
+                width: deviceSize.width * 0.22,
+                height: deviceSize.height * 0.25,
                 child: exercise.execise.imageUrl == null
                     ? null
                     : Image.network('$BASE_URL${exercise.execise.imageUrl!}',

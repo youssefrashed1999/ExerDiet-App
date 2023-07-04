@@ -164,121 +164,128 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
-      children: [
-        const SizedBox(
-          height: 7,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: TextField(
-                  controller: foodController,
-                  //onChanged: (value) => updateList(value),
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor, fontSize: 12),
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: const Color(0x00000000),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                      hintText: "eg: Orange",
-                      suffixIcon: InkWell(
-                        child: const Icon(Icons.search),
-                        onTap: () {
-                          _filterData['search'] = foodController.text;
-                          onSearchClicked();
-                        },
-                      )),
+    final deviceSize=MediaQuery.of(context).size;
+    return Container(
+      color: BACKGROUND_COLOR,
+      width: deviceSize.width,
+      height: deviceSize.height,
+      child: Column(
+        children: [
+          const SizedBox(
+            height: 7,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: TextField(
+                    controller: foodController,
+                    //onChanged: (value) => updateList(value),
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor, fontSize: 12),
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: const Color(0x00000000),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        hintText: "eg: Orange",
+                        suffixIcon: InkWell(
+                          child: const Icon(Icons.search),
+                          onTap: () {
+                            _filterData['search'] = foodController.text;
+                            onSearchClicked();
+                          },
+                        )),
+                  ),
                 ),
               ),
-            ),
-            InkWell(
-              child: const Icon(Icons.filter_alt),
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context) => FilterWidget(
-                          filterData: _filterData,
-                          setFilteredData: setFilteredData,
-                          onSearchClicked: onSearchClicked,
-                          resetFilteredData: resetFilteredData,
-                        ));
-              },
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            InkWell(
-              child: const Icon(Icons.sort),
-              onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context) => SortWidget(
-                          selectedSortMethod: _filterData['ordering']!,
-                          setOrderingMethod: setOrderingMethod,
-                          onSearchClicked: onSearchClicked,
-                        ));
-              },
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-          ],
-        ),
-        if (isFoodLoadingComplete == false)
-          const CircularProgressIndicator()
-        else if (isFoodLoadingComplete == true && loadedfood.isNotEmpty)
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              itemCount: nextFoodPage == null
-                  ? loadedfood.length
-                  : loadedfood.length + 1,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                if (nextFoodPage != null && index == loadedfood.length) {
-                  return ElevatedButton(
-                      onPressed: () {
-                        getFood();
-                      },
-                      child: const Text('Load more'));
-                } else {
-                  return DietFoodItem(
-                    dietFood: loadedfood[index],
-                    mealId: widget.mealId,
-                    mealDomain: widget.mealDomain,
-                  );
-                }
-              },
-              scrollDirection: Axis.vertical,
-            ),
-          )
-        else
-          const Center(child: Text('No Food found on Database!')),
-        if (widget.category == 'CustomFood' && widget.mealDomain == 'meals')
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 4,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.horizontal(
-                          right: Radius.circular(40),
-                          left: Radius.circular(40))),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(AddFoodScreen.routeName);
+              InkWell(
+                child: const Icon(Icons.filter_alt),
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) => FilterWidget(
+                            filterData: _filterData,
+                            setFilteredData: setFilteredData,
+                            onSearchClicked: onSearchClicked,
+                            resetFilteredData: resetFilteredData,
+                          ));
                 },
-                child: const Text('create new food',
-                    style: TextStyle(color: Colors.white))),
-          )
-      ],
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              InkWell(
+                child: const Icon(Icons.sort),
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) => SortWidget(
+                            selectedSortMethod: _filterData['ordering']!,
+                            setOrderingMethod: setOrderingMethod,
+                            onSearchClicked: onSearchClicked,
+                          ));
+                },
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+            ],
+          ),
+          if (isFoodLoadingComplete == false)
+            const CircularProgressIndicator()
+          else if (isFoodLoadingComplete == true && loadedfood.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                itemCount: nextFoodPage == null
+                    ? loadedfood.length
+                    : loadedfood.length + 1,
+                shrinkWrap: true,
+                itemBuilder: (BuildContext context, int index) {
+                  if (nextFoodPage != null && index == loadedfood.length) {
+                    return ElevatedButton(
+                        onPressed: () {
+                          getFood();
+                        },
+                        child: const Text('Load more'));
+                  } else {
+                    return DietFoodItem(
+                      dietFood: loadedfood[index],
+                      mealId: widget.mealId,
+                      mealDomain: widget.mealDomain,
+                    );
+                  }
+                },
+                scrollDirection: Axis.vertical,
+              ),
+            )
+          else
+            const Center(child: Text('No Food found on Database!')),
+          if (widget.category == 'CustomFood' && widget.mealDomain == 'meals')
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 4,
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.horizontal(
+                            right: Radius.circular(40),
+                            left: Radius.circular(40))),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(AddFoodScreen.routeName);
+                  },
+                  child: const Text('create new food',
+                      style: TextStyle(color: Colors.white))),
+            )
+        ],
+      ),
     );
   }
 

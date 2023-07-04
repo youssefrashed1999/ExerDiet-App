@@ -61,7 +61,8 @@ class FoodInstanceItem extends StatelessWidget {
                 height: 100,
                 child: food.food.imageUrl == null
                     ? null
-                    : Image.network('$BASE_URL${food.food.imageUrl!}', fit: BoxFit.fill),
+                    : Image.network('$BASE_URL${food.food.imageUrl!}',
+                        fit: BoxFit.fill),
               ),
               const SizedBox(
                 width: 7,
@@ -79,9 +80,11 @@ class FoodInstanceItem extends StatelessWidget {
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    FittedBox(child: Text('total calories: ${food.totalCalories} g')),
+                    FittedBox(
+                        child: Text('total calories: ${food.totalCalories} g')),
                     FittedBox(child: Text('total fats: ${food.totalFats} g')),
-                    FittedBox(child: Text('total protien: ${food.totalProtein} g')),
+                    FittedBox(
+                        child: Text('total protien: ${food.totalProtein} g')),
                     FittedBox(child: Text('total carbs: ${food.totalCarbs} g')),
                   ],
                 ),

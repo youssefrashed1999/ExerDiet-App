@@ -16,115 +16,86 @@ class WorkoutDetailedItem extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(workout.name)),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: double.infinity,
-              height: deviceSize.height * 0.2,
-              child: workout.imageUrl != null
-                  ? Image.network(
-                      '$BASE_URL${workout.imageUrl}',
-                      fit: BoxFit.fitHeight,
-                    )
-                  : null,
-            ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+        child: Container(
+          margin: EdgeInsets.only(left: 20, right: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 20,
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: Text('Name',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineLarge!
-                        .copyWith(fontSize: 16)),
+              SizedBox(
+                width: double.infinity,
+                height: deviceSize.height * 0.2,
+                child: workout.imageUrl != null
+                    ? Image.network(
+                        '$BASE_URL${workout.imageUrl}',
+                        fit: BoxFit.fitHeight,
+                      )
+                    : null,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Text(
-                workout.name,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 14),
+              const SizedBox(
+                height: 20,
               ),
-            ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+              Card(
+                margin: EdgeInsets.only(bottom: 10),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                elevation: 8.0,
+                child: Container(
+                  constraints: BoxConstraints(minWidth: deviceSize.width * 0.8),
+                  width: deviceSize.width * 0.8,
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Name:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(workout.name),
+                      const Divider(
+                        color: Color.fromARGB(255, 213, 211, 211),
+                        height: 2,
+                        thickness: 1,
+                        indent: 0,
+                        endIndent: 5,
+                      ),
+                      Text(
+                        'Instructions:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(workout.instructions!),
+                      const Divider(
+                        color: Color.fromARGB(255, 213, 211, 211),
+                        height: 2,
+                        thickness: 1,
+                        indent: 0,
+                        endIndent: 5,
+                      ),
+                      Text('Nutritional Facts:',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(
+                          'Total Calories Burnt: ${workout.totalCaloriesBurnt} cal'),
+                    ],
+                  ),
+                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: Text('Instructions',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineLarge!
-                        .copyWith(fontSize: 16)),
+              Container(
+                child: Text('Ingredients',
+                    style: TextStyle(fontWeight: FontWeight.bold)),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Text(
-                workout.instructions!,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 14),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: workout.exerciseInstance.length,
+                itemBuilder: (BuildContext context, int index) =>
+                    ExerciseInstanceItem(
+                        exercise: workout.exerciseInstance[index]),
+                scrollDirection: Axis.vertical,
               ),
-            ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: Text('Details',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineLarge!
-                        .copyWith(fontSize: 16)),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Text(
-                'Total calories burnt: ${workout.totalCaloriesBurnt} cal',
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 14),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: Text('Exercises',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineLarge!
-                        .copyWith(fontSize: 16)),
-              ),
-            ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: workout.exerciseInstance.length,
-              itemBuilder: (BuildContext context, int index) =>
-                  ExerciseInstanceItem(
-                      exercise: workout.exerciseInstance[index]),
-              scrollDirection: Axis.vertical,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
