@@ -85,14 +85,14 @@ class _AddWaterState extends State<AddWater> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
-    void change_cup_measurements() => showDialog(
+    void changeCupMeasurements() => showDialog(
           context: context,
           builder: (BuildContext context) {
             return Expanded(
               child: AlertDialog(
-                title: const Text(
+                title: Text(
                   'Measurements',
-                  style: TextStyle(color: Color.fromRGBO(125, 236, 216, 1)),
+                  style: TextStyle(color: Theme.of(context).primaryColor),
                 ),
                 content: const Text('pick your amount of choice'),
                 actions: [
@@ -107,6 +107,7 @@ class _AddWaterState extends State<AddWater> {
                                 onPressed: () {
                                   setState(() {
                                     amount = 250;
+                                    Navigator.of(context).pop();
                                   });
                                 },
                                 icon: Image.asset('assets/icons/cup-250.png'))
@@ -119,6 +120,7 @@ class _AddWaterState extends State<AddWater> {
                               onPressed: () {
                                 setState(() {
                                   amount = 350;
+                                  Navigator.of(context).pop();
                                 });
                               },
                               icon: Image.asset('assets/icons/bottle-350.png'),
@@ -132,6 +134,7 @@ class _AddWaterState extends State<AddWater> {
                                 onPressed: () {
                                   setState(() {
                                     amount = 450;
+                                    Navigator.of(context).pop();
                                   });
                                 },
                                 icon:
@@ -160,101 +163,89 @@ class _AddWaterState extends State<AddWater> {
       appBar: AppBar(
         title: const Text('Add Water'),
       ),
-      /*
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromRGBO(125, 236, 216, 1),
-        foregroundColor: Colors.white,
-        onPressed: () {},
-        child: Icon(Icons.add),
-      ),*/
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: deviceSize.height * 0.05,
-          ),
-          Center(
-            child: SizedBox(
-              height: deviceSize.height * 0.3,
-              width: deviceSize.width * 0.85,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                elevation: 8,
-                child: SizedBox(
-                  width: deviceSize.width * 0.3,
-                  height: deviceSize.height * 0.1,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: SleekCircularSlider(
-                      initialValue: _user.waterIntakeToday.toDouble(),
-                      min: 0,
-                      max: _user.dailyWaterNeeds.toDouble(),
-                      appearance: CircularSliderAppearance(
-                        startAngle: 270,
-                        angleRange: 360,
-                        customColors: CustomSliderColors(
-                            trackColor: Colors.grey,
-                            progressBarColors: const [
-                              Color.fromRGBO(125, 236, 216, 1),
-                              Color.fromRGBO(208, 251, 222, 1),
-                            ],
-                            hideShadow: true,
-                            dotColor: Colors.white),
+      body: Container(
+        color: BACKGROUND_COLOR,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: deviceSize.height * 0.05,
+            ),
+            Center(
+              child: SizedBox(
+                height: deviceSize.height * 0.3,
+                width: deviceSize.width * 0.85,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  elevation: 8,
+                  child: SizedBox(
+                    width: deviceSize.width * 0.3,
+                    height: deviceSize.height * 0.1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: SleekCircularSlider(
+                        initialValue: _user.waterIntakeToday.toDouble() >
+                                _user.dailyWaterNeeds
+                            ? _user.dailyWaterNeeds.toDouble()
+                            : _user.waterIntakeToday.toDouble(),
+                        min: 0,
+                        max: _user.dailyWaterNeeds.toDouble(),
+                        appearance: CircularSliderAppearance(
+                          startAngle: 270,
+                          angleRange: 360,
+                          customColors: CustomSliderColors(
+                              trackColor: Colors.grey,
+                              progressBarColors: [
+                                Colors.purple.shade900,
+                                Colors.purple.shade600,
+                              ],
+                              hideShadow: true,
+                              dotColor: Colors.white),
+                        ),
+                        innerWidget: (percentage) => _innerWidget(
+                            _user.waterIntakeToday.toDouble(),
+                            _user.dailyWaterNeeds.toDouble(),
+                            context),
                       ),
-                      innerWidget: (percentage) => _innerWidget(percentage,
-                          _user.dailyWaterNeeds.toDouble(), context),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: deviceSize.height * 0.4,
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      add_water_amount();
-                    },
-                    style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
-                        padding: const EdgeInsets.all(20),
-                        backgroundColor:
-                            const Color.fromRGBO(125, 236, 216, 1)),
-                    child: const Icon(Icons.add),
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        change_cup_measurements();
-                      },
-                      icon: iconpicker()),
-                  /* ElevatedButton(
-                    onPressed: () {
-                      change_cup_measurements();
-                    },
-                    child: iconpicker(),
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(10),
-                        backgroundColor: Colors.transparent),
-                  ),*/
-                ],
-              ),
+            SizedBox(
+              height: deviceSize.height * 0.4,
             ),
-          )
-        ],
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        add_water_amount();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(20),
+                          backgroundColor: Theme.of(context).primaryColor),
+                      child: const Icon(Icons.add),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          changeCupMeasurements();
+                        },
+                        icon: iconpicker()),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

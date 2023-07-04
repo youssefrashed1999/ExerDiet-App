@@ -194,7 +194,7 @@ class DietFoodItem extends StatelessWidget {
                 height: 100,
                 child: dietFood.imageUrl == null
                     ? null
-                    : Image.network('${BASE_URL}${dietFood.imageUrl!}',
+                    : Image.network('$BASE_URL${dietFood.imageUrl!}',
                         fit: BoxFit.fill),
               ),
               const SizedBox(

@@ -69,7 +69,6 @@ class _YoloSubmitFoodState extends State<YoloSubmitFood> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Container(
-      height: deviceSize.height,
       padding: EdgeInsets.only(
           left: 10,
           right: 10,

@@ -98,19 +98,19 @@ class _HealthQuizScreenState extends State<HealthQuizScreen> {
   }
 
   ThemeData theme = ThemeData(
-    primarySwatch: const MaterialColor(
-      0xFF61DBD5,
+    primarySwatch: MaterialColor(
+      0xFF4A148C,
       <int, Color>{
-        50: Color(0x0061DBD5),
-        100: Color(0xFF61DBD5),
-        200: Colors.white,
-        300: Color(0xFF61DBD5),
-        400: Color(0xFF61DBD5),
-        500: Color(0xFF61DBD5),
-        600: Color(0xFF61DBD5),
-        700: Color(0xFF61DBD5),
-        800: Color(0xFF61DBD5),
-        900: Color(0xFF61DBD5),
+        50: const Color(0x0061DBD5),
+        100: const Color(0xFF4A148C),
+        200: Colors.grey.shade200,
+        300: const Color(0xFF4A148C),
+        400: const Color(0xFF4A148C),
+        500: const Color(0xFF4A148C),
+        600: const Color(0xFF4A148C),
+        700: const Color(0xFF4A148C),
+        800: const Color(0xFF4A148C),
+        900: const Color(0xFF4A148C),
       },
     ),
     textTheme: const TextTheme(

@@ -1,3 +1,4 @@
+import 'package:final_project/constants.dart';
 import 'package:flutter/material.dart';
 
 class FilterWidget extends StatefulWidget {
@@ -57,6 +58,7 @@ class _FilterWidgetState extends State<FilterWidget> {
     final deviceSize = MediaQuery.of(context).size;
     return SingleChildScrollView(
         child: Container(
+          color: BACKGROUND_COLOR,
       padding: EdgeInsets.only(
           left: 10,
           right: 10,

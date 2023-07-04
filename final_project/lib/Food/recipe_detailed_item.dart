@@ -17,7 +17,7 @@ class RecipeDetailedItem extends StatelessWidget {
       appBar: AppBar(title: Text(recipe.name)),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(left: 20, right: 20),
+          margin: const EdgeInsets.only(left: 20, right: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -38,7 +38,7 @@ class RecipeDetailedItem extends StatelessWidget {
                 height: 20,
               ),
               Card(
-                margin: EdgeInsets.only(bottom: 10),
+                margin: const EdgeInsets.only(bottom: 10),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
                 elevation: 8.0,
@@ -49,7 +49,7 @@ class RecipeDetailedItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Name:',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
@@ -61,7 +61,7 @@ class RecipeDetailedItem extends StatelessWidget {
                         indent: 0,
                         endIndent: 5,
                       ),
-                      Text(
+                      const Text(
                         'Instructions:',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
@@ -73,7 +73,7 @@ class RecipeDetailedItem extends StatelessWidget {
                         indent: 0,
                         endIndent: 5,
                       ),
-                      Text('Nutritional Facts:',
+                      const Text('Nutritional Facts:',
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       Text('Total calories: ${recipe.totalCalories} cal'),
                       Text('Total Protein: ${recipe.totalProtein} g'),
@@ -83,10 +83,8 @@ class RecipeDetailedItem extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                child: Text('Ingredients',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-              ),
+              const Text('Ingredients',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

@@ -51,6 +51,13 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
             loadedfood.add(FoodInstance.fromjson(
                 jsonDecode(response.body)['results'][0]['food_instances'][i]));
           }
+          //recipes
+          int recipesCount =
+              jsonDecode(response.body)['results'][0]['food_instances'].length;
+          for (int i = 0; i < recipesCount; i++) {
+            loadedfood.add(FoodInstance.fromjson(
+                jsonDecode(response.body)['results'][0]['food_instances'][i]));
+          }
           //TO-DO
           //Display recipes also
           meal = Meal(
@@ -202,7 +209,7 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10, vertical: 20),
-                    itemCount: loadedfood.length,
+                    itemCount: loadedfood.length + loadedRecipe.length,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) =>
                         FoodInstanceItem(food: loadedfood[index]),
