@@ -3,7 +3,6 @@ import 'package:final_project/home/calorie_progress_bar.dart';
 import 'package:final_project/home/adding_buttons.dart';
 import 'package:final_project/home/dashboard/dashboard_main_screen.dart';
 import 'package:flutter/material.dart';
-
 import '../models/user.dart';
 
 class HomePageScreen extends StatefulWidget {
@@ -48,6 +47,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
     ),
     DashboardMainScreen()
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

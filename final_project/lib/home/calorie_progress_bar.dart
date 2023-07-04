@@ -1,6 +1,8 @@
+import 'package:final_project/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
+import '../main.dart';
 import '../models/user.dart';
 
 class CaloriesProgressBar extends StatefulWidget {
@@ -46,8 +48,24 @@ double determineValue(User user) {
   }
 }
 
-class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
+class _CaloriesProgressBarState extends State<CaloriesProgressBar>
+    with RouteAware {
   User _user = User.instance;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      routeObserver.subscribe(this, ModalRoute.of(context)!);
+    });
+  }
+
+  @override
+  void didPopNext() async {
+    super.didPopNext();
+    await getUserInfo();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -81,7 +99,7 @@ class _CaloriesProgressBarState extends State<CaloriesProgressBar> {
                       angleRange: 360,
                       customColors: CustomSliderColors(
                           trackColor: Colors.grey,
-                          progressBarColors:  [
+                          progressBarColors: [
                             Colors.purple.shade900,
                             Colors.purple.shade600,
                           ],
