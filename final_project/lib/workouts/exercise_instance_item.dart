@@ -100,7 +100,7 @@ class ExerciseInstanceItem extends StatelessWidget {
                     },
                     icon: const Icon(Icons.star),
                     iconSize: 40,
-                    color: const Color.fromARGB(255, 97, 219, 213),
+                    color: Theme.of(context).primaryColor,
                   )
                 ],
               ),
