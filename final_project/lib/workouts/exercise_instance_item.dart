@@ -79,11 +79,8 @@ class ExerciseInstanceItem extends StatelessWidget {
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    FittedBox(
-                        child: Text(
-                            'total calories burnt: ${exercise.totalCalories} cal')),
-                    FittedBox(
-                        child: Text('body part: ${exercise.execise.bodypart}')),
+                    Text('Total calories burnt: ${exercise.totalCalories} cal'),
+                    Text('body part: ${exercise.execise.bodypart}'),
                   ],
                 ),
               ),

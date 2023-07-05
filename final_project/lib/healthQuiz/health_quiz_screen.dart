@@ -213,6 +213,7 @@ class _HealthQuizScreenState extends State<HealthQuizScreen> {
             text: 'Thanks for taking the survey\nLet\'s begin the journy!',
             title: 'Done!',
             buttonText: 'Submit survey',
+            
           ),
         ]),
       ),

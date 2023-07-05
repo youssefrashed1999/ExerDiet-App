@@ -166,6 +166,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
       body: SingleChildScrollView(
         child: Container(
           color: BACKGROUND_COLOR,
+          width: deviceSize.width,
+          height: deviceSize.height,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -211,7 +213,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               Center(
                 child: DropdownButton<String>(
                   value: _foodData['category'],
-        
+
                   items: <String>['F', 'B', 'S']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
@@ -242,7 +244,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                 ),
                 elevation: 8.0,
                 child: Container(
-                  constraints: BoxConstraints(minWidth: deviceSize.width * 0.75),
+                  constraints:
+                      BoxConstraints(minWidth: deviceSize.width * 0.75),
                   width: deviceSize.width * 0.75,
                   padding: const EdgeInsets.all(20),
                   child: Form(
@@ -281,7 +284,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         ),
                         TextFormField(
                           decoration: InputDecoration(
-                              hintText: 'fats', suffix: Text(measurmentPicker())),
+                              hintText: 'fats',
+                              suffix: Text(measurmentPicker())),
                           keyboardType: TextInputType.number,
                           validator: (value) {
                             if (value!.isEmpty || double.parse(value) < 0) {

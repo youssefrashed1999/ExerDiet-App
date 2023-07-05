@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:final_project/workouts/exercise_instance_item.dart';
 import 'package:final_project/models/workout.dart';
 import 'package:final_project/models/exercise_instance.dart';
+import 'package:final_project/workouts/workout_item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,8 +56,13 @@ class _PerformedWorkoutsScreenState extends State<PerformedWorkoutsScreen>
                 jsonDecode(response.body)['results'][0]['exercise_instances']
                     [i]));
           }
-          //TO-DO
           //Display recipes also
+          int WorkoutsCount =
+              jsonDecode(response.body)['results'][0]['workouts'].length;
+          for (int i = 0; i < WorkoutsCount; i++) {
+            loadedWorkout.add(Workout.fromjson(
+                jsonDecode(response.body)['results'][0]['workouts'][i]));
+          }
           performedWorkout = PerformedWorkout(
             id: jsonDecode(response.body)['results'][0]['id'],
             name: jsonDecode(response.body)['results'][0]['name'],
@@ -173,7 +179,10 @@ class _PerformedWorkoutsScreenState extends State<PerformedWorkoutsScreen>
                 },
                 child: Text(
                     'Total calories Burnt: ${performedWorkout?.totalCaloriesBurnt.toString()}',
-                    style: Theme.of(context).textTheme.titleMedium)),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(color: Colors.white))),
         ],
       ),
       body: Column(
@@ -190,10 +199,19 @@ class _PerformedWorkoutsScreenState extends State<PerformedWorkoutsScreen>
               child: ListView.builder(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                itemCount: loadedExercise.length,
+                itemCount: loadedExercise.length + loadedWorkout.length,
                 shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) =>
-                    ExerciseInstanceItem(exercise: loadedExercise[index]),
+                itemBuilder: (BuildContext context, int index) {
+                  if (index < loadedExercise.length) {
+                    return ExerciseInstanceItem(
+                        exercise: loadedExercise[index]);
+                  } else {
+                    return WorkoutItem(
+                      exerciseId: performedWorkoutId,
+                      workout: loadedWorkout[index - loadedExercise.length],
+                    );
+                  }
+                },
                 scrollDirection: Axis.vertical,
               ),
             ),

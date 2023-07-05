@@ -503,6 +503,7 @@ class _ForgotPasswordWigdetState extends State<_ForgotPasswordWigdet> {
                         ),
                         Text(
                             'A reset password email is sent to your email address. Reset your password and login again.',
+                            textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleSmall!

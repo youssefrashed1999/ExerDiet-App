@@ -393,11 +393,13 @@ class _CompletedSignUp extends StatelessWidget {
               height: 15,
             ),
             Text('An activation email is sent to your email address.',
+                textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!
                     .copyWith(color: Colors.black, fontSize: 14)),
             Text('Activate your account to start your journey.',
+                textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
                     .titleSmall!

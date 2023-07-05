@@ -36,7 +36,7 @@ class SurveyProgressConfiguration {
     this.showLabel = false,
     this.borderRadius,
     this.label,
-    this.backgroundColor,
+    this.backgroundColor= const Color(0xFFEEEEEE),
     this.valueProgressbarColor,
   });
 }

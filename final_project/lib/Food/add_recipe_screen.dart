@@ -143,6 +143,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
       body: SingleChildScrollView(
         child: Container(
           color: BACKGROUND_COLOR,
+          width: deviceSize.width,
+          height: deviceSize.height,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
