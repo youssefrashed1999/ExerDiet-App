@@ -102,7 +102,7 @@ class WorkoutItem extends StatelessWidget {
                       },
                       icon: const Icon(Icons.add_circle_outline_rounded),
                       iconSize: 40,
-                      color: const Color.fromARGB(255, 97, 219, 213),
+                      color: Theme.of(context).primaryColor,
                     ),
                   ],
                 ),
