@@ -162,10 +162,10 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
             const SizedBox(
               height: 20,
             ),
-            const Text('Add new exercise',
+            Text('Add new exercise',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color.fromARGB(255, 97, 219, 213),
+                  color: Theme.of(context).primaryColor,
                   fontSize: 20,
                   fontFamily: 'Anton',
                   fontWeight: FontWeight.normal,
