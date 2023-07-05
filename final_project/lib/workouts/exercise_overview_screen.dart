@@ -269,8 +269,8 @@ class _ExerciseOverviewScreenState extends State<ExerciseOverviewScreen>
                 child: TextField(
                   controller: exerciseController,
                   //onChanged: (value) => updateList(value),
-                  style: const TextStyle(
-                      color: Color.fromARGB(255, 97, 219, 213), fontSize: 12),
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor, fontSize: 12),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: const Color(0x00000000),
@@ -565,9 +565,12 @@ class _ExerciseOverviewScreenState extends State<ExerciseOverviewScreen>
                   child: Text('My Exercise')),
             ]),
       ),
-      body: TabBarView(
-          controller: controller,
-          children: [exerciseTab(), workoutTab(), customExerciseTab()]),
+      body: Container(
+        color: Colors.grey.shade200,
+        child: TabBarView(
+            controller: controller,
+            children: [exerciseTab(), workoutTab(), customExerciseTab()]),
+      ),
     );
   }
 }
