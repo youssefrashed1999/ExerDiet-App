@@ -147,10 +147,10 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
             const SizedBox(
               height: 20,
             ),
-            const Text('Create new workout',
+            Text('Create new workout',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color.fromARGB(255, 97, 219, 213),
+                  color: Theme.of(context).primaryColor,
                   fontSize: 20,
                   fontFamily: 'Anton',
                   fontWeight: FontWeight.normal,
