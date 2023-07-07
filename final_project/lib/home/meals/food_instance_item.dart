@@ -57,8 +57,8 @@ class FoodInstanceItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                width: 100,
-                height: 100,
+                width: deviceSize.width*0.24,
+                height: deviceSize.width*0.24,
                 child: food.food.imageUrl == null
                     ? null
                     : Image.network('$BASE_URL${food.food.imageUrl!}',
@@ -90,7 +90,7 @@ class FoodInstanceItem extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                width: 30,
+                width: 20,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,

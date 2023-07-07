@@ -135,7 +135,7 @@ class AddingButtons extends StatelessWidget {
                     Colors.black.withOpacity(0.6), BlendMode.darken))),
         child: ListTile(
             title: Text(
-              'Add workout',
+              'Add Workout',
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             trailing: const Icon(
@@ -158,7 +158,7 @@ class AddingButtons extends StatelessWidget {
                     Colors.black.withOpacity(0.6), BlendMode.darken))),
         child: ListTile(
             title: Text(
-              'Add water',
+              'Add Water',
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             trailing: const Icon(

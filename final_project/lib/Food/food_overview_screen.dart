@@ -40,7 +40,7 @@ class _FoodOverviewScreenState extends State<FoodOverviewScreen>
                 .textTheme
                 .bodyLarge!
                 .copyWith(color: Colors.black, fontWeight: FontWeight.normal),
-            unselectedLabelColor: Colors.black,
+            unselectedLabelColor: Colors.grey.shade200,
             labelColor: Colors.white,
             labelStyle: Theme.of(context)
                 .textTheme

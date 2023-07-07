@@ -23,7 +23,7 @@ class OpenScreen extends StatelessWidget {
           height: double.infinity,
           width: double.infinity,
           child: Image.asset(
-            'assets/images/main_screen_background_3.jpg',
+            'assets/images/main_screen_background.jpg',
             fit: BoxFit.fill,
           ),
         ),

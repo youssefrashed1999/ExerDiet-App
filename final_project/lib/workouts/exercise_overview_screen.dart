@@ -370,8 +370,8 @@ class _ExerciseOverviewScreenState extends State<ExerciseOverviewScreen>
           child: TextField(
             controller: workoutController,
             //onChanged: (value) => updateList(value),
-            style: const TextStyle(
-                color: Color.fromARGB(255, 97, 219, 213), fontSize: 12),
+            style:  TextStyle(
+                color: Theme.of(context).primaryColor, fontSize: 12),
             decoration: InputDecoration(
               filled: true,
               fillColor: const Color(0x00000000),
@@ -453,8 +453,8 @@ class _ExerciseOverviewScreenState extends State<ExerciseOverviewScreen>
           child: TextField(
             controller: customExerciseController,
             //onChanged: (value) => updateList(value),
-            style: const TextStyle(
-                color: Color.fromARGB(255, 97, 219, 213), fontSize: 12),
+            style:  TextStyle(
+                color: Theme.of(context).primaryColor, fontSize: 12),
             decoration: InputDecoration(
               filled: true,
               fillColor: const Color(0x00000000),
@@ -542,14 +542,14 @@ class _ExerciseOverviewScreenState extends State<ExerciseOverviewScreen>
     exerciseId = ModalRoute.of(context)!.settings.arguments as int;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add'),
+        title: const Text('Add exercise'),
         bottom: TabBar(
             controller: controller,
             unselectedLabelStyle: Theme.of(context)
                 .textTheme
                 .bodyLarge!
                 .copyWith(color: Colors.black, fontWeight: FontWeight.normal),
-            unselectedLabelColor: Colors.black,
+            unselectedLabelColor: Colors.grey.shade200,
             labelColor: Colors.white,
             labelStyle: Theme.of(context)
                 .textTheme

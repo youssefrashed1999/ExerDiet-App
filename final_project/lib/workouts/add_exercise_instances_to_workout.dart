@@ -306,7 +306,7 @@ class _AddExerciseInsancesState extends State<AddExerciseInsances>
                 style: Theme.of(context)
                     .textTheme
                     .bodyLarge!
-                    .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
+                    .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
               ))
         ],
         bottom: TabBar(
@@ -315,7 +315,7 @@ class _AddExerciseInsancesState extends State<AddExerciseInsances>
                 .textTheme
                 .bodyLarge!
                 .copyWith(color: Colors.black, fontWeight: FontWeight.normal),
-            unselectedLabelColor: Colors.black,
+            unselectedLabelColor: Colors.grey.shade200,
             labelColor: Colors.white,
             labelStyle: Theme.of(context)
                 .textTheme

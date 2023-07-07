@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../home/home_page_screen.dart';
+
 class AddFoodScreen extends StatefulWidget {
   AddFoodScreen({super.key});
   static const routeName = '/add-food';
@@ -94,6 +96,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
         Timer(const Duration(seconds: 2), () {
           _btnController.reset();
         });
+        Navigator.of(context).pushReplacementNamed(HomePageScreen.routeName);
       } else {
         _btnController.error();
         Timer(const Duration(seconds: 2), () {

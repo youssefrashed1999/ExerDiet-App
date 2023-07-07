@@ -140,7 +140,7 @@ class ExerciseItem extends StatelessWidget {
                             duration = double.parse(newValue!),
                       ),
                     ),
-                    if (exercise.isRepetitive == 'T')
+                    if (exercise.isRepetitive)
                       const Text('reps')
                     else
                       const Text('sec'),

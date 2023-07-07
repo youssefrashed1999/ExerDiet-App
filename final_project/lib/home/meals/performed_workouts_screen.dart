@@ -170,7 +170,8 @@ class _PerformedWorkoutsScreenState extends State<PerformedWorkoutsScreen>
         );
     return Scaffold(
       appBar: AppBar(
-        title: Text(performedWorkoutName),
+        title: Text(performedWorkoutName[0].toUpperCase() +
+            performedWorkoutName.substring(1)),
         actions: [
           if (performedWorkoutId != -1)
             TextButton(

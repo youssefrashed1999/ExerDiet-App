@@ -175,7 +175,7 @@ class _MealsScreenState extends State<MealsScreen> with RouteAware {
         );
     return Scaffold(
       appBar: AppBar(
-        title: Text(mealName),
+        title: Text(mealName[0].toUpperCase()+mealName.substring(1)),
         actions: [
           if (mealId != -1)
             TextButton(
