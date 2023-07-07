@@ -59,6 +59,7 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
           'instructions': _workoutData['instructions'].toString(),
           'image': await MultipartFile.fromFile(image.path)
         });
+        }
         final dio = Dio();
         final response = await dio.post('${BASE_URL}gym/workouts/',
             options: Options(headers: <String, String>{
@@ -80,7 +81,7 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
           });
         }
       }
-    } catch (e) {
+     catch (e) {
       _btnController.error();
       Timer(const Duration(seconds: 2), () {
         _btnController.reset();

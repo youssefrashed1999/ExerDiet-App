@@ -4,6 +4,7 @@ import 'package:final_project/workouts/exercise_instance_item.dart';
 import 'package:final_project/models/workout.dart';
 import 'package:final_project/models/exercise_instance.dart';
 import 'package:final_project/workouts/workout_item.dart';
+import 'package:final_project/workouts/workout_performed_item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -207,8 +208,7 @@ class _PerformedWorkoutsScreenState extends State<PerformedWorkoutsScreen>
                     return ExerciseInstanceItem(
                         exercise: loadedExercise[index]);
                   } else {
-                    return WorkoutItem(
-                      exerciseId: performedWorkoutId,
+                    return WorkoutPerformedItem(
                       workout: loadedWorkout[index - loadedExercise.length],
                     );
                   }
