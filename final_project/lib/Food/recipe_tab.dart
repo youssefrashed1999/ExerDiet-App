@@ -100,7 +100,18 @@ class _RecipeTabState extends State<RecipeTab>
             padding: EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width * 0.1),
             child: TextField(
+              textInputAction: TextInputAction.search,
               controller: recipeController,
+              onEditingComplete: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                setState(() {
+                  nextRecipePage =
+                      "https://exerdiet.pythonanywhere.com/diet/recipes/";
+                  loadedrecipe = List.empty(growable: true);
+                  isRecipeLoadingComplete = false;
+                });
+                searchRecipe(recipeController.text);
+              },
               //onChanged: (value) => updateList(value),
               style: TextStyle(
                   color: Theme.of(context).primaryColor, fontSize: 12),
@@ -114,6 +125,7 @@ class _RecipeTabState extends State<RecipeTab>
                   child: const Icon(Icons.search),
                   onTap: () {
                     setState(() {
+                      FocusManager.instance.primaryFocus?.unfocus();
                       nextRecipePage =
                           "https://exerdiet.pythonanywhere.com/diet/recipes/";
                       loadedrecipe = List.empty(growable: true);

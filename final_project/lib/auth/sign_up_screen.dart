@@ -249,6 +249,7 @@ class _SignUpCardState extends State<_SignUpCard> {
                     TextFormField(
                       decoration:
                           const InputDecoration(labelText: 'First Name'),
+                      textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.name,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -263,6 +264,7 @@ class _SignUpCardState extends State<_SignUpCard> {
                     TextFormField(
                       decoration: const InputDecoration(labelText: 'Last Name'),
                       keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Lastname is required!';
@@ -277,6 +279,7 @@ class _SignUpCardState extends State<_SignUpCard> {
                       decoration: InputDecoration(
                           labelText: 'Username', errorText: _usernameErrorText),
                       keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Username is required!';
@@ -291,6 +294,7 @@ class _SignUpCardState extends State<_SignUpCard> {
                       decoration: InputDecoration(
                           labelText: 'E-Mail', errorText: _emailErrorText),
                       keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
                       validator: (value) {
                         if (value!.isEmpty || !value.contains('@')) {
                           return 'Invalid email!';
@@ -305,6 +309,7 @@ class _SignUpCardState extends State<_SignUpCard> {
                       decoration: InputDecoration(
                           labelText: 'Password', errorText: _passwordErrorText),
                       obscureText: true,
+                      textInputAction: TextInputAction.next,
                       controller: _passwordController,
                       validator: (value) {
                         if (value!.isEmpty || value.length < 8) {
@@ -320,6 +325,8 @@ class _SignUpCardState extends State<_SignUpCard> {
                       decoration:
                           const InputDecoration(labelText: 'Confirm Password'),
                       obscureText: true,
+                      textInputAction: TextInputAction.done,
+                      onEditingComplete: () => _submit(),
                       validator: (value) {
                         if (value != _passwordController.text) {
                           return 'Passwords do not match!';

@@ -269,6 +269,7 @@ class _LogInCardState extends State<_LogInCard> {
                     TextFormField(
                       decoration: const InputDecoration(labelText: 'Username'),
                       keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Invalid username!';
@@ -283,6 +284,10 @@ class _LogInCardState extends State<_LogInCard> {
                       decoration: const InputDecoration(labelText: 'Password'),
                       obscureText: true,
                       controller: _passwordController,
+                      textInputAction: TextInputAction.done,
+                      onEditingComplete: () {
+                        _submit(context);
+                      },
                       validator: (value) {
                         if (value!.isEmpty || value.length < 5) {
                           return 'Password is too short!';

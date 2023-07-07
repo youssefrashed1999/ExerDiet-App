@@ -34,7 +34,7 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
     'category': '',
     'calories_less_than': '',
     'calories_greater_than': '',
-    'protein_less_than ': '',
+    'protein_less_than': '',
     'protein_greater_than': '',
     'carbs_less_than': '',
     'carbs_greater_than': '',
@@ -164,7 +164,7 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final deviceSize=MediaQuery.of(context).size;
+    final deviceSize = MediaQuery.of(context).size;
     return Container(
       color: BACKGROUND_COLOR,
       width: deviceSize.width,
@@ -182,6 +182,12 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: TextField(
                     controller: foodController,
+                    textInputAction: TextInputAction.search,
+                    onEditingComplete: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      _filterData['search'] = foodController.text;
+                      onSearchClicked();
+                    },
                     //onChanged: (value) => updateList(value),
                     style: TextStyle(
                         color: Theme.of(context).primaryColor, fontSize: 12),
@@ -194,6 +200,7 @@ class _FoodTabState extends State<FoodTab> with AutomaticKeepAliveClientMixin {
                         suffixIcon: InkWell(
                           child: const Icon(Icons.search),
                           onTap: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
                             _filterData['search'] = foodController.text;
                             onSearchClicked();
                           },
