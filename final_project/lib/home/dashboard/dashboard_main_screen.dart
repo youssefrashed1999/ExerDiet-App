@@ -50,7 +50,7 @@ class DashboardMainScreen extends StatelessWidget {
                       size: 40,
                     ),
                     title: Text(
-                      'Update Personal data',
+                      user.username.toString(),
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     subtitle: Text(

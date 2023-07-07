@@ -12,6 +12,7 @@ class User {
 
   String _birthdate = '';
   String _gender = '';
+  String _username = '';
   double _height = -1;
   double _weight = -1;
   int _dailyCaloriesNeeds = -1;
@@ -69,6 +70,8 @@ class User {
 
   get proteinNeeds => _proteinNeeds;
 
+  get username => _username;
+
   String get activityLevel => _activityLevel;
 
   String get goal => _goal;
@@ -78,6 +81,7 @@ class User {
   //setters - not every attribute has setters
   set setDailyWaterNeeds(int value) => _dailyWaterNeeds = value;
   set setDailyCaloriesNeeds(int value) => _dailyCaloriesNeeds = value;
+  set setUsername(String value) => _username = value;
 
   // This method sets the name of the user.
 

@@ -34,7 +34,7 @@ const AUTH_BACKGROUND = BoxDecoration(
     stops: [0, 1],
   ),
 );
-final BACKGROUND_COLOR=Colors.grey.shade200;
+final BACKGROUND_COLOR = Colors.grey.shade200;
 MaterialColor MY_COLOR = const MaterialColor(
   0xFF4A148C,
   <int, Color>{
@@ -58,9 +58,31 @@ const BASE_URL = 'https://exerdiet.pythonanywhere.com/';
 const ACCESS_KEY = 'access-key';
 const REFRESH_KEY = 'refresh-key';
 
+void getUsername() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? accessKey = prefs.getString(ACCESS_KEY);
+  try {
+    final response = await http.get(
+      Uri.parse('${BASE_URL}auth/users/me/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'JWT $accessKey'
+      },
+    );
+    //success response
+    if (response.statusCode == 200) {
+      User user = User.instance;
+      user.setUsername = jsonDecode(response.body)['username'].toString();
+    }
+  }
+  //no internet connection
+  catch (_) {}
+}
+
 Future<int> getUserInfo() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final String? accessKey = prefs.getString(ACCESS_KEY);
+  getUsername();
   try {
     final response = await http.get(
       Uri.parse('${BASE_URL}core/trainees/me/'),
