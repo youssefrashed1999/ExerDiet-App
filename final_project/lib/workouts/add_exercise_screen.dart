@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../home/home_page_screen.dart';
+
 class AddExerciseScreen extends StatefulWidget {
   const AddExerciseScreen({super.key});
   static const routeName = '/add-execise';
@@ -69,7 +71,7 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
         formData = FormData.fromMap({
           'name': _ExerciseData['name'].toString(),
           'body_part': _ExerciseData['bodypart'].toString(),
-          'calories': int.parse(_ExerciseData['caloriesBurnt']),
+          'calories_burned': int.parse(_ExerciseData['caloriesBurnt']),
           'is_repetitive': _ExerciseData['isRepetitive'].toString(),
           'image': await MultipartFile.fromFile(image.path)
         });
@@ -86,6 +88,8 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
         Timer(const Duration(seconds: 2), () {
           _btnController.reset();
         });
+        Navigator.of(context)
+                    .pushReplacementNamed(HomePageScreen.routeName);
       } else {
         _btnController.error();
         Timer(const Duration(seconds: 2), () {
@@ -295,7 +299,7 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
                           return null;
                         },
                         onSaved: (value) {
-                          _ExerciseData['caloriesBurnt'] = value;
+                          _ExerciseData['caloriesBurnt'] =value;
                         },
                       ),
                       const SizedBox(
